@@ -259,14 +259,17 @@ void importSkeleton(const std::string & filename)
 
    //Load Character Skeleton
    std::vector<cg3::Vec3d>     joints;
+   std::vector<cg3::Vec3d>     jointsRotations;
    std::vector<int>            fathers;
    std::vector<std::string>    names;
 
    loadSkeleton(filename.c_str(),
                 joints,
+                jointsRotations,
                 fathers,
                 names);
    c->skeleton->create(joints,
+                       jointsRotations,
                        fathers,
                        names);
    c->skeleton->initPicking();

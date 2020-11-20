@@ -15,11 +15,12 @@ DrawableSkeleton::DrawableSkeleton()
 }
 
 DrawableSkeleton::DrawableSkeleton(const std::vector<cg3::Vec3d>     & joints,
+                                   const std::vector<cg3::Vec3d> & jointsRotations,
                                    const std::vector<int>            & fathers,
                                    const std::vector<std::string>    & names)
 
 {
-    create(joints, fathers, names);
+    create(joints, jointsRotations, fathers, names);
 }
 
 bool DrawableSkeleton::create()
@@ -31,11 +32,11 @@ bool DrawableSkeleton::create()
     return true;
 }
 
-bool DrawableSkeleton::create(const std::vector<cg3::Vec3d> &joints, const std::vector<int> &fathers, const std::vector<std::string> &names)
+bool DrawableSkeleton::create(const std::vector<cg3::Vec3d> &joints, const std::vector<cg3::Vec3d> &jointsRotations, const std::vector<int> &fathers, const std::vector<std::string> &names)
 {
     clear();
 
-    Skeleton::create(joints, fathers, names);
+    Skeleton::create(joints, jointsRotations, fathers, names);
 
     init();
     //TODO: call initPicking() here

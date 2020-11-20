@@ -24,13 +24,15 @@ Skeleton::Skeleton()
 }
 
 Skeleton::Skeleton(const std::vector<cg3::Vec3d>     & joints,
+                   const std::vector<cg3::Vec3d>     & jointsRotations,
                    const std::vector<int>            & fathers,
                    const std::vector<std::string>    & names)
 {
-   create(joints, fathers, names);
+   create(joints, jointsRotations, fathers, names);
 }
 
 bool Skeleton::create(const std::vector<cg3::Vec3d>     & joints,
+                      const std::vector<cg3::Vec3d>     & jointsRotations,
                       const std::vector<int>            & fathers,
                       const std::vector<std::string>    & names)
 {
@@ -41,7 +43,11 @@ bool Skeleton::create(const std::vector<cg3::Vec3d>     & joints,
       double x = joints[i].x();
       double y = joints[i].y();
       double z = joints[i].z();
-      addNode(names[i], fathers[i], cg3::Transform(), cg3::Transform(x,y,z));
+      double rx = jointsRotations[i].x();
+      double ry = jointsRotations[i].y();
+      double rz = jointsRotations[i].z();
+
+      addNode(names[i], fathers[i], cg3::Transform(), cg3::Transform(rx, ry, rz, x, y, z));
    }
 
    for(int i:rootIndexes)
@@ -172,10 +178,10 @@ void Skeleton::setKeyframe(const std::vector<cg3::Transform> & keyframe)
 {
    for(unsigned long i = 0; i < nodes.size(); ++i)
    {
-      nodes[i].localTCurrent = nodes[i].localTRest.cumulateWith(keyframe[i]);
+      nodes[i].localTCurrent = keyframe[i];
    }
 
-   for(int i:rootIndexes)
+   /*for(int i:rootIndexes)
    {
       propagatePose(i);
 
@@ -183,7 +189,8 @@ void Skeleton::setKeyframe(const std::vector<cg3::Transform> & keyframe)
                       nodes[i].getGlobalTRest().getTranslation());
       rootMotion = cg3::Transform(t.x(),t.y(),t.z());
 
-   }
+   }*/
+   updateGlobalFromLocalCurrent();
 }
 
 void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframeLow,
@@ -193,18 +200,19 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
    for(unsigned long i = 0; i < nodes.size(); ++i)
    {
 
-      nodes[i].localTCurrent = nodes[i].localTRest.cumulateWith(
-            keyframeLow[i].interpolate(keyframeTop[i],a));
+      nodes[i].localTCurrent =
+            keyframeLow[i].interpolate(keyframeTop[i],a);
    }
 
-   for(int i:rootIndexes)
+   /*for(int i:rootIndexes)
    {
       propagatePose(i);
 
       cg3::Vec3d t = (nodes[i].getGlobalTCurrent().getTranslation()-
                       nodes[i].getGlobalTRest().getTranslation());
       rootMotion = cg3::Transform(t.x(),t.y(),t.z());
-   }
+   }*/
+   updateGlobalFromLocalCurrent();
 }
 
 //aggiorna il globalTCurrent del nodo con indice nodeIndex, e propaga ai figli

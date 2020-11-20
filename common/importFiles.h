@@ -40,7 +40,7 @@ void loadMAXVOL (const char         * filename,
                  std::vector<int>   & selectedvertices );
 
 void loadSkeleton (const char                  * filename,
-                   std::vector<cg3::Vec3d>     & joints,
+                   std::vector<cg3::Vec3d> & joints, std::vector<cg3::Vec3d> & jointsRotations,
                    std::vector<int>            & fathers,
                    std::vector<std::string>    & names);
 

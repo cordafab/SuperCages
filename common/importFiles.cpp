@@ -372,6 +372,7 @@ void loadOFF(const char            * filename,
 
 void loadSkeleton(const char                  * filename,
                   std::vector<cg3::Vec3d>     & joints,
+                  std::vector<cg3::Vec3d>     & jointsRotations,
                   std::vector<int>            & fathers,
                   std::vector<std::string>    & names)
 {
@@ -396,9 +397,10 @@ void loadSkeleton(const char                  * filename,
       {
          int i, father;
          std::string name;
-         double x, y, z;
-         iss >> i >> name >> father >> x >> y >> z;
+         double x, y, z, rx, ry, rz;
+         iss >> i >> name >> father >> x >> y >> z >> rx >> ry >> rz;
          joints.push_back(cg3::Vec3d(x,y,z));
+         jointsRotations.push_back(cg3::Vec3d(rx,ry,rz));
          fathers.push_back(father);
          names.push_back(name);
          //cout << "v " << x << " " << y << " " << z << endl;

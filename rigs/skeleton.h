@@ -80,11 +80,12 @@ class Skeleton
 public:
 
    Skeleton();
-   Skeleton(const std::vector<cg3::Vec3d>     & joints,
+   Skeleton(const std::vector<cg3::Vec3d>     & joints, const std::vector<cg3::Vec3d> & jointsRotations,
             const std::vector<int>            & fathers,
             const std::vector<std::string>    & names);
 
    bool create(const std::vector<cg3::Vec3d>     & joints,
+               const std::vector<cg3::Vec3d> & jointsRotations,
                const std::vector<int>            & fathers,
                const std::vector<std::string>    & names);
 
