@@ -58,11 +58,25 @@ void loadSkelAnimationFromFile()
          double charRadius = 0.0;   c->character->sceneRadius(charRadius);
          std::vector<double> t;
          std::vector<std::vector<cg3::Transform>> skelKeyframes;
+         int animationFileVersionNumber;
 
          loadSkelAnimation(
                   filename.c_str(),
                   t,
-                  skelKeyframes);
+                  skelKeyframes,
+                  animationFileVersionNumber);
+
+         if(animationFileVersionNumber==2)
+         {
+            std::vector<Node> skelNodes = c->skeleton->getNodesVector();
+
+            for(int i=0; i<skelKeyframes.size(); i++){
+               for(int j=0; j<skelKeyframes.size(); j++){
+                  skelKeyframes[i][j] = skelNodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
+                  skelKeyframes[i][j] = skelNodes[skelNodes[j].getFather()].getGlobalTRest().cumulateWith(skelKeyframes[i][j]);
+               }
+            }
+         }
 
          c->asyncAnimator->loadSkelAnimation(t,skelKeyframes);
       }

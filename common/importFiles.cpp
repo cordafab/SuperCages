@@ -371,7 +371,7 @@ void loadOFF(const char            * filename,
 }
 
 void loadSkeleton(const char                  * filename,
-                  std::vector<cg3::Vec3d>     & joints,
+                  std::vector<cg3::Vec3d>     & jointsTranslations,
                   std::vector<cg3::Vec3d>     & jointsRotations,
                   std::vector<int>            & fathers,
                   std::vector<std::string>    & names)
@@ -398,12 +398,12 @@ void loadSkeleton(const char                  * filename,
          int i, father;
          std::string name;
          double x, y, z, rx, ry, rz;
-         iss >> i >> name >> father >> x >> y >> z >> rx >> ry >> rz;
-         joints.push_back(cg3::Vec3d(x,y,z));
-         jointsRotations.push_back(cg3::Vec3d(rx,ry,rz));
+         iss >> i >> name >> father >> x >> y >> z /*>> rx >> ry >> rz*/;
+         jointsTranslations.push_back(cg3::Vec3d(x,y,z));
+         //jointsRotations.push_back(cg3::Vec3d(rx,ry,rz));
+         jointsRotations.push_back(cg3::Vec3d(0,0,0));
          fathers.push_back(father);
          names.push_back(name);
-         //cout << "v " << x << " " << y << " " << z << endl;
       }
    }
    file.close();
@@ -461,10 +461,10 @@ void loadSparseWeights(const char *filename, SparseWeights & weights)
    file.close();
 }
 
-void loadSkelAnimation(
-      const char                       * filename,
+void loadSkelAnimation(const char * filename,
       std::vector<double>              & t,
-      std::vector<std::vector<cg3::Transform>> & skelKeyframes)
+      std::vector<std::vector<cg3::Transform>> & skelKeyframes,
+      int & animationFileVersionNumber)
 {
 
    ifstream file(filename);
@@ -477,7 +477,7 @@ void loadSkelAnimation(
 
    string line;
    bool areKeyframeInitialized = false;
-   bool isItAnOldAnimation=true;
+   animationFileVersionNumber=1;
    while (getline(file, line))
    {
       istringstream iss(line);
@@ -490,7 +490,8 @@ void loadSkelAnimation(
 
       if (token.size() > 1) continue; // vn,fn  .... I don't care
 
-      if (token[0] == 't') { isItAnOldAnimation = false; }
+      if ((line.compare("#V2")==0) || (line.compare("t rt")==0)) { animationFileVersionNumber = 2; } else
+         if ((line.compare("#V3")==0))                           { animationFileVersionNumber = 3; }
 
       if (token[0] == 'k')
       {
@@ -509,7 +510,7 @@ void loadSkelAnimation(
 
          ulong i;
 
-         if(isItAnOldAnimation)
+         if(animationFileVersionNumber==1)
          {
             double v[16];
             iss >> i >>
@@ -534,8 +535,7 @@ void loadSkelAnimation(
             skelKeyframes[i].push_back(T);
          }
 
-         else
-
+         if(animationFileVersionNumber==2)
          {
 
             double v[6];
@@ -557,9 +557,31 @@ void loadSkelAnimation(
                   );
 
             skelKeyframes[i].push_back(T);
-
          }
 
+         if(animationFileVersionNumber==3)
+         {
+
+            double v[6];
+            iss >> i >>
+                  v[ 0] >>
+                  v[ 1] >>
+                  v[ 2] >>
+                  v[ 3] >>
+                  v[ 4] >>
+                  v[ 5];
+
+            cg3::Transform T(
+                  v[0],
+                  v[1],
+                  v[2],
+                  v[3],
+                  v[4],
+                  v[5]
+                  );
+
+            skelKeyframes[i].push_back(T);
+         }
 
       }
    }
