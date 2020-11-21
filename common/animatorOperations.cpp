@@ -1,4 +1,4 @@
-#include "animatorOperations.h"
+﻿#include "animatorOperations.h"
 
 #include "GUI/qtUtils.h"
 #include "GUI/asyncAnimatorPanel.h"
@@ -17,6 +17,8 @@
 #include "controller.h"
 #include <QInputDialog>
 #include <vector>
+
+#include <stack>
 
 void initializeAnimator()
 {
@@ -66,23 +68,61 @@ void loadSkelAnimationFromFile()
                   skelKeyframes,
                   animationFileVersionNumber);
 
-         if(animationFileVersionNumber==2)
+         if(animationFileVersionNumber!=3)
          {
-            std::vector<Node> nodes = c->skeleton->getNodesVector();
+            convertSkelKeyframes(skelKeyframes, c->skeleton);
 
-            for(int i=0; i<skelKeyframes.size(); i++){
-
-               for(int j=0; j<skelKeyframes[i].size(); j++){
-
-                  skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
-
-               }
-            }
          }
 
          c->asyncAnimator->loadSkelAnimation(t,skelKeyframes);
       }
    }
+}
+
+void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyframes, Skeleton * skel)
+{
+   std::vector<Node> nodes = skel->getNodesVector();
+
+   //Compute the local transform for the current pose keyframes
+   for(int i=0; i<skelKeyframes.size(); i++){
+
+      for(int j=0; j<skelKeyframes[i].size(); j++){
+
+         skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
+
+      }
+   }
+
+   //compute the global transform for the current pose keyframes
+   for(int i=0; i<skelKeyframes.size(); i++){
+      std::stack<int> stack;
+
+      for(int n:skel->getRootsIndexes())
+      {
+         stack.push(n);
+      }
+
+      while (!stack.empty())
+      {
+         const int n = stack.top();
+         stack.pop();
+         Node & node = nodes[n];
+         const int fatherIndex = node.getFather();
+
+         if(fatherIndex != -1)
+         {
+            skelKeyframes[i][n] = skelKeyframes[i][fatherIndex].cumulateWith(skelKeyframes[i][n]);
+         }
+
+
+         const std::vector<ulong> & childs = node.getNext();
+         for(ulong child:childs)
+         {
+            stack.push(child);
+         }
+      }
+   }
+
 }
 
 void saveSkelAnimationToFile()
