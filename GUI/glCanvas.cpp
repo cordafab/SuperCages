@@ -176,7 +176,7 @@ void GlCanvas::runSkinningPipeline()
 
       if(controller->isSkeletonUpdaterActive)
       {
-         controller->skeletonUpdater->updatePosition();
+         //controller->skeletonUpdater->updatePosition();
       }
    }
 
@@ -190,7 +190,7 @@ void GlCanvas::runSkinningPipeline()
 
    if(controller->isCageUpdaterActive)
    {
-      controller->cageUpdater->updatePosition();
+      //controller->cageUpdater->updatePosition();
    }
 
 }
@@ -381,8 +381,8 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
 
             if(controller->isCageUpdaterActive)
             {
-               controller->cageTranslator->skeletonEdited();
-               controller->cageUpdater->updatePosition();
+               //controller->cageTranslator->skeletonEdited();
+               //controller->cageUpdater->updatePosition();
             }
 
             //controller->cageSkinning->deform();
@@ -408,8 +408,8 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
 
             if(controller->isSkeletonUpdaterActive)
             {
-               controller->skeletonUpdater->updatePosition();
-               controller->skeleton->updateGlobalT();
+               //controller->skeletonUpdater->updatePosition();
+               //controller->skeleton->updateGlobalT();
             }
 
             controller->skeletonSkinning->deform();
