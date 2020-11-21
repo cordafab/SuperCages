@@ -68,12 +68,14 @@ void loadSkelAnimationFromFile()
 
          if(animationFileVersionNumber==2)
          {
-            std::vector<Node> skelNodes = c->skeleton->getNodesVector();
+            std::vector<Node> nodes = c->skeleton->getNodesVector();
 
             for(int i=0; i<skelKeyframes.size(); i++){
-               for(int j=0; j<skelKeyframes.size(); j++){
-                  skelKeyframes[i][j] = skelNodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
-                  skelKeyframes[i][j] = skelNodes[skelNodes[j].getFather()].getGlobalTRest().cumulateWith(skelKeyframes[i][j]);
+
+               for(int j=0; j<skelKeyframes[i].size(); j++){
+
+                  skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
+
                }
             }
          }
