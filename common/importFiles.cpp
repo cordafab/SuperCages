@@ -398,10 +398,11 @@ void loadSkeleton(const char                  * filename,
          int i, father;
          std::string name;
          double x, y, z, rx, ry, rz;
-         iss >> i >> name >> father >> x >> y >> z ;//>> rx >> ry >> rz;
+         //iss >> i >> name >> father >> x >> y >> z ;//>> rx >> ry >> rz;
+         iss >> i >> name >> father >> rx >> ry >> rz >> x >> y >> z;
          jointsTranslations.push_back(cg3::Vec3d(x,y,z));
-         //jointsRotations.push_back(cg3::Vec3d(rx,ry,rz));
-         jointsRotations.push_back(cg3::Vec3d(0,0,0));
+         jointsRotations.push_back(cg3::Vec3d(rx,ry,rz));
+         //jointsRotations.push_back(cg3::Vec3d(0,0,0));
          fathers.push_back(father);
          names.push_back(name);
       }
@@ -477,11 +478,11 @@ void loadSkelAnimation(const char * filename,
 
    string line;
    bool areKeyframeInitialized = false;
-   animationFileVersionNumber = 2;
+   animationFileVersionNumber = 1;
    while (getline(file, line))
    {
-      //if ((line.compare("#V2")==0) || (line.compare("t rt")==0)) { animationFileVersionNumber = 2;}
-      //if ((line.compare("#V3")==0))                              { animationFileVersionNumber = 3;}
+      if ((line.compare("#V2")==0) || (line.compare("t rt")==0)) { animationFileVersionNumber = 2;}
+      if ((line.compare("#V3")==0))                              { animationFileVersionNumber = 3;}
 
       istringstream iss(line);
 

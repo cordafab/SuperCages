@@ -178,7 +178,7 @@ void Skeleton::setKeyframe(const std::vector<cg3::Transform> & keyframe)
 {
    for(unsigned long i = 0; i < nodes.size(); ++i)
    {
-      nodes[i].localTCurrent = keyframe[i];
+      nodes[i].globalTCurrent = keyframe[i];
    }
 
    /*for(int i:rootIndexes)
@@ -190,7 +190,7 @@ void Skeleton::setKeyframe(const std::vector<cg3::Transform> & keyframe)
       rootMotion = cg3::Transform(t.x(),t.y(),t.z());
 
    }*/
-   updateGlobalFromLocalCurrent();
+   updateLocalFromGlobalCurrent();
 }
 
 void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframeLow,
@@ -200,7 +200,7 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
    for(unsigned long i = 0; i < nodes.size(); ++i)
    {
 
-      nodes[i].localTCurrent =
+      nodes[i].globalTCurrent =
                   keyframeLow[i].interpolate(keyframeTop[i],a);
    }
 
@@ -212,7 +212,7 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
                       nodes[i].getGlobalTRest().getTranslation());
       rootMotion = cg3::Transform(t.x(),t.y(),t.z());
    }*/
-   updateGlobalFromLocalCurrent();
+   updateLocalFromGlobalCurrent();
 }
 
 //aggiorna il globalTCurrent del nodo con indice nodeIndex, e propaga ai figli
