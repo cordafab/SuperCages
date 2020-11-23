@@ -58,6 +58,8 @@ void loadSkelAnimationFromFile()
          std::cout << "Loading animation: " << filename << std::endl;
 
          double charRadius = 0.0;   c->character->sceneRadius(charRadius);
+
+
          std::vector<double> t;
          std::vector<std::vector<cg3::Transform>> skelKeyframes;
          int animationFileVersionNumber;
@@ -68,10 +70,8 @@ void loadSkelAnimationFromFile()
                   skelKeyframes,
                   animationFileVersionNumber);
 
-         if(animationFileVersionNumber!=3)
-         {
+         if(animationFileVersionNumber!=3) {
             convertSkelKeyframes(skelKeyframes, c->skeleton);
-
          }
 
          c->asyncAnimator->loadSkelAnimation(t,skelKeyframes);

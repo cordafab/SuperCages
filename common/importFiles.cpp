@@ -481,8 +481,8 @@ void loadSkelAnimation(const char * filename,
    animationFileVersionNumber = 1;
    while (getline(file, line))
    {
-      if ((line.compare("#V2")==0) || (line.compare("t rt")==0)) { animationFileVersionNumber = 2;}
-      if ((line.compare("#V3")==0))                              { animationFileVersionNumber = 3;}
+      if ((line.compare("#V2")==0) || (line.compare("# V2")==0) || (line.compare("t rt")==0)) { animationFileVersionNumber = 2;}
+      if ((line.compare("#V3")==0) || (line.compare("# V3")==0))                              { animationFileVersionNumber = 3;}
 
       istringstream iss(line);
 
