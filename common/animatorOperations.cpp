@@ -323,50 +323,28 @@ void setNextSkelKeyframe()
 {
    Controller * c = Controller::get();
 
-   int frameIndex = c->asyncAnimator->getSkelKeyframeIndex();
-   c->asyncAnimator->setSkeletonKeyframeIndex(frameIndex+1);
-
    //Skeleton Skinning
-   if(c->isSkeletonSkinningInitialized)
+   if((c->isSkeletonSkinningInitialized) && (c->isAnimatorInitialized))
    {
+      int frameIndex = c->asyncAnimator->getSkelKeyframeIndex();
 
-      c->skeletonSkinning->deform();
+      c->asyncAnimator->setSkeletonKeyframeIndex(frameIndex+1);
 
-      if(c->isCageUpdaterActive)
-      {
-         c->cageUpdater->updatePosition();
-      }
-
+      c->glCanvas->runSkinningPipeline();
    }
-   c->character->updateNormals();
-
-   c->glCanvas->refreshScene();
 }
 
 void setNextCageKeyframe()
 {
    Controller * c = Controller::get();
 
-   int frameIndex = c->asyncAnimator->getCageKeyframeIndex();
-   c->asyncAnimator->setCageKeyframeIndex(frameIndex+1);
-
-   //Cage Skinning
-   if(c->isCageSkinningInitialized)
+   if((c->isCageSkinningInitialized) && (c->isAnimatorInitialized))
    {
-      c->cageSkinning->deform();
+      int frameIndex = c->asyncAnimator->getCageKeyframeIndex();
+      c->asyncAnimator->setCageKeyframeIndex(frameIndex+1);
 
-      if(c->isSkeletonUpdaterActive)
-      {
-         c->skeletonUpdater->updatePosition();
-      }
-
-      c->skeletonSkinning->deform();
-      c->cageUpdater->updatePosition();
+      c->glCanvas->runSkinningPipeline();
    }
-
-   c->character->updateNormals();
-
-   c->glCanvas->refreshScene();
 }
 
 void deleteSkelKeyframe(int index)

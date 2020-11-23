@@ -193,8 +193,8 @@ void AsyncAnimatorPanel::on_deleteCageKeyframe_clicked()
 void AsyncAnimatorPanel::on_nextSkelKeyframe_clicked()
 {
    setNextSkelKeyframe();
-   Controller * c = Controller::get();
-   c->cageTranslator->skeletonEdited();
+   //Controller * c = Controller::get();
+   //c->cageTranslator->skeletonEdited();
 }
 
 void AsyncAnimatorPanel::on_nextCageKeyframe_clicked()
