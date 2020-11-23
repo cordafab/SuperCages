@@ -163,6 +163,7 @@ void AsyncAnimatorPanel::on_deleteSkelKeyframe_clicked()
 
          int keyFrameIndex;
          iss >> keyFrameIndex;
+
          deleteSkelKeyframe(keyFrameIndex);
          updateKeyframeList();
       }

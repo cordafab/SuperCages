@@ -225,7 +225,7 @@ void AsyncAnimator::setCageKeyframeIndex(unsigned long frameIndex)
 
 void AsyncAnimator::deleteSkelKeyframe(unsigned long frameIndex)
 {
-   if(frameIndex < cageKeyframes.size())
+   if(frameIndex < skelKeyframes.size())
    {
       skelKeyframeTime.erase(skelKeyframeTime.begin()+frameIndex);
       skelKeyframes.erase(skelKeyframes.begin()+frameIndex);
