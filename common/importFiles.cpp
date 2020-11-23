@@ -400,7 +400,7 @@ void loadSkeleton(const char                  * filename,
 
          if(lineData.size()==7){
             jointsTranslations.push_back(cg3::Vec3d(std::stod(lineData[4]),std::stod(lineData[5]),std::stod(lineData[6])));
-            jointsRotations.push_back   (cg3::Vec3d(0.0, 0.0,0.0));
+            jointsRotations.push_back   (cg3::Vec3d(0.0, 0.0, 0.0));
          } else
          if(lineData.size()==10){
             jointsTranslations.push_back(cg3::Vec3d(std::stod(lineData[7]),std::stod(lineData[8]),std::stod(lineData[9])));
