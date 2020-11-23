@@ -226,7 +226,10 @@ void saveSkelAnimation (
       exit(-1);
    }
 
-   fp << "t rt" << std::endl;
+   fp << "# V3" << std::endl;
+   fp << "# Composition of the .ska file:" << std::endl;
+   fp << "# s <keyframeIndex> <(globalCurrentPoseRotation) x y z> <(globalCurrentPoseTranslation) x y z>" << std::endl << std::endl;
+
 
    for( unsigned long  i = 0; i < t.size(); ++i )
    {
