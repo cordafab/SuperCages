@@ -130,7 +130,7 @@ void saveSkelAnimationToFile()
    std::string filename;
    Controller * c = Controller::get();
 
-   if (openFileSaveDialog(filename, "Save Skel Animation", "Text File (*.txt)"))
+   if (openFileSaveDialog(filename, "Save Skel Animation", "Skeleton Animation (*.ska *.txt)"))
    {
       if(c->isAnimatorInitialized)
       {

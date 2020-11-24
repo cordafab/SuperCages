@@ -19,7 +19,7 @@ bool openFileSelectionDialog(std::string & filename,
     dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setNameFilter(filter.c_str());
     dialog.setViewMode(QFileDialog::Detail);
-    dialog.setOption(QFileDialog::DontUseNativeDialog);
+    //dialog.setOption(QFileDialog::DontUseNativeDialog);
     QStringList fileNames;
     if (dialog.exec())
     {
@@ -40,8 +40,8 @@ bool openFileSaveDialog(std::string & filename,
                                                       caption.c_str(),
                                                       ".",
                                                       filter.c_str(),
-                                                      Q_NULLPTR,
-                                                      QFileDialog::DontUseNativeDialog);
+                                                      Q_NULLPTR/*,
+                                                      QFileDialog::DontUseNativeDialog*/);
 
     filename = qtFilename.toStdString();
 
