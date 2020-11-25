@@ -355,7 +355,7 @@ void deleteSkelKeyframe(int index)
 {
    Controller * c = Controller::get();
 
-   if(c->asyncAnimator!=nullptr)
+   if(c->isAnimatorInitialized)
    {
       c->asyncAnimator->deleteSkelKeyframe(index);
 
