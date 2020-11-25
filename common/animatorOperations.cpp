@@ -102,19 +102,30 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
 
    if(version==3)
    {
-      std::cout << "CONVERSION" << std::endl;
       //compute the local transform from the global current pose keyframes
       for(int i=0; i<skelKeyframes.size(); i++)
       {
          std::stack<int> stack;
-         std::vector<cg3::Transform> globalTransforms(skelKeyframes[i]);
-
-         for(int n:skel->getRootsIndexes())
+         std::vector<cg3::Transform> globalTransforms(skelKeyframes[i].size());
+         for(int n=0; n<skelKeyframes[i].size(); n++)
          {
-            stack.push(n);
+            globalTransforms[n] = skelKeyframes[i][n];
          }
 
-         while (!stack.empty())
+         for(int n=0; n<skelKeyframes[i].size(); n++)
+         {
+            Node & node = nodes[n];
+            const int fatherIndex = node.getFather();
+
+            if(fatherIndex != -1)
+            {
+               cg3::Transform fatherTransformation = globalTransforms[fatherIndex];
+               skelKeyframes[i][n] = globalTransforms[n].cumulateWith(fatherTransformation.inverse());
+               //skelKeyframes[i][n] = fatherTransformation.cumulateWith(globalTransforms[n].inverse());
+            }
+         }
+
+         /*while (!stack.empty())
          {
             const int n = stack.top();
             stack.pop();
@@ -134,7 +145,7 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
             {
                stack.push(child);
             }
-         }
+         }*/
       }
    }
 }
