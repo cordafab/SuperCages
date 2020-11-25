@@ -50,10 +50,12 @@ bool Skeleton::create(const std::vector<cg3::Vec3d>     & joints,
       addNode(names[i], fathers[i], cg3::Transform(), cg3::Transform(rx, ry, rz, x, y, z));
    }
 
-   for(int i:rootIndexes)
+   /*for(int i:rootIndexes)
    {
       updateLocalTransformations(i);
-   }
+   }*/
+   updateLocalFromGlobalRest();
+   updateLocalFromGlobalCurrent();
 
    return true;
 }
@@ -425,7 +427,7 @@ void Skeleton::updateGlobalT()
    }
 }*/
 
-void Skeleton::updateLocalTransformations(int nodeIndex)
+/*void Skeleton::updateLocalTransformations(int nodeIndex)
 {
    int fatherIndex = nodes[nodeIndex].getFather();
    cg3::Transform fatherTransformation;
@@ -456,5 +458,5 @@ void Skeleton::updateLocalTransformations(int nodeIndex)
    {
       updateLocalTransformations(i);
    }
-}
+}*/
 

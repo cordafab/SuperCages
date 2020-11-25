@@ -351,7 +351,7 @@ void RestPoseCanvas::computePickableObjectsTranslation()
    cg3::Vec3d delta;
    clickConverter.getTranslation(delta);
 
-   controller->skeleton->translateRest(delta);
+   //controller->skeleton->translateRest(delta);
    controller->cage->translateRest(delta);
 
 }
@@ -361,7 +361,7 @@ void RestPoseCanvas::computePickableObjectsRotation()
    cg3::dQuaternion rotation;
    clickConverter.getRotation(rotation, sceneRadius);
 
-   controller->skeleton->rotateRest(rotation);
+   //controller->skeleton->rotateRest(rotation);
    controller->cage->rotateRest(rotation);
 }
 

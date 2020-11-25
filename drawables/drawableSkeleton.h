@@ -66,8 +66,8 @@ public:
     void rotate(const cg3::dQuaternion & rotation);
 
     //Deformation Rest Pose
-    void translateRest(const cg3::Vec3d & translation);
-    void rotateRest(const cg3::dQuaternion & rotation);
+    //void translateRest(const cg3::Vec3d & translation);
+    //void rotateRest(const cg3::dQuaternion & rotation);
 
     inline const std::vector<bool> & getSelectedNodes() const
     { return sonsOfSelectedNode; }

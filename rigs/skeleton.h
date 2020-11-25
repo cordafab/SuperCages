@@ -99,7 +99,7 @@ protected:
    cg3::Transform       rootMotion;
 
 
-   void propagatePose(int nodeIndex);
+   void propagatePose(int nodeIndex); //TO DELETE
    int  addNode(std::string nodeName,
                 int father,
                 const cg3::Transform & localTransformation,
@@ -153,7 +153,7 @@ public:
    //cg3::Vec3d getLocalNodePosition(unsigned long nodeIndex);
    //void setLocalNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position);
 
-   void updateLocalTransformations(int nodeIndex);
+   //void updateLocalTransformations(int nodeIndex);
 };
 
 #endif // SKELETON_H
