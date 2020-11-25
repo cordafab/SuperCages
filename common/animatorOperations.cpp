@@ -70,21 +70,20 @@ void loadSkelAnimationFromFile()
                   skelKeyframes,
                   animationFileVersionNumber);
 
-         convertSkelKeyframes(skelKeyframes, c->skeleton, animationFileVersionNumber);
+         convertSkelKeyframes(animationFileVersionNumber, skelKeyframes);
 
          c->asyncAnimator->loadSkelAnimation(t,skelKeyframes);
       }
    }
 }
 
-void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyframes, Skeleton * skel, uint version)
+void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Transform>> & skelKeyframes)
 {
 
-   std::vector<Node> nodes = skel->getNodesVector();
+   Controller * c = Controller::get();
+   std::vector<Node> nodes = c->skeleton->getNodesVector();
 
-   std::vector<double> m(16);
-
-   if(version==2)
+   if(keyframesVersion==2)
    {
       //Compute the local transform for the current pose keyframes
       for(int i=0; i<skelKeyframes.size(); i++)
@@ -102,27 +101,22 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
       }
    }
 
-   if(version==3)
+   if(keyframesVersion==3)
    {
       //compute the local transform from the global current pose keyframes
-      for(int i=0; i<skelKeyframes.size(); i++)
+      for(ulong i=0; i<skelKeyframes.size(); i++)
       {
+         std::vector<cg3::Transform> v3GlobalTransforms(skelKeyframes[i]);
 
-         std::vector<cg3::Transform> globalTransforms(skelKeyframes[i].size());
-         for(int n=0; n<skelKeyframes[i].size(); n++)
-         {
-            globalTransforms[n] = skelKeyframes[i][n];
-         }
-
-         for(int n=0; n<skelKeyframes[i].size(); n++)
+         for(ulong n=0; n<skelKeyframes[i].size(); n++)
          {
             Node & node = nodes[n];
             const int fatherIndex = node.getFather();
 
             if(fatherIndex != -1)
             {
-               cg3::Transform fatherTransformation = globalTransforms[fatherIndex];
-               skelKeyframes[i][n] = fatherTransformation.inverse().cumulateWith(globalTransforms[n]);
+               cg3::Transform fatherTransformation = v3GlobalTransforms[fatherIndex];
+               skelKeyframes[i][n] = fatherTransformation.inverse().cumulateWith(v3GlobalTransforms[n]);
             }
          }
       }

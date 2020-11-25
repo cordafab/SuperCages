@@ -23,6 +23,6 @@ void editSkelKeyframeTime(int index);
 void editCageKeyframeTime(int index);
 void quickLoadSkelAnimation(const char * filename);
 void quickLoadCageAnimation(const char * filename);
-void convertSkelKeyframes(std::vector<std::vector<cg3::Transform> > & skelKeyframes, Skeleton * skel, uint version);
+void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Transform> > & skelKeyframes);
 
 #endif // ANIMATOROPERATIONS_H
