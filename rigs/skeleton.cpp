@@ -119,7 +119,7 @@ void Skeleton::addGlobalTransformation(int nodeIndex, const cg3::Transform & tra
    }
 }
 
-void Skeleton::setGlobalNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position)
+/*void Skeleton::setGlobalNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position)
 {
    nodes[nodeIndex].globalTCurrent.setTranslation(position);
 
@@ -139,9 +139,9 @@ void Skeleton::setGlobalNodePosition(unsigned long nodeIndex, const cg3::Vec3d &
    }
 
    //std::cout << "Local: " << nodes[0].modelTransformation << std::endl;
-}
+}*/
 
-void Skeleton::setGlobalRestNodePosition(unsigned long nodeIndex, const cg3::Vec3d &position)
+/*void Skeleton::setGlobalRestNodePosition(unsigned long nodeIndex, const cg3::Vec3d &position)
 {
    nodes[nodeIndex].globalTRest.setTranslation(position);
 
@@ -159,20 +159,20 @@ void Skeleton::setGlobalRestNodePosition(unsigned long nodeIndex, const cg3::Vec
       nodes[nodeIndex].localTRest =
             nodes[nodeIndex].globalTRest;
    }
-}
+}*/
 
-cg3::Vec3d Skeleton::getLocalNodePosition(unsigned long nodeIndex)
+/*cg3::Vec3d Skeleton::getLocalNodePosition(unsigned long nodeIndex)
 {
    return nodes[nodeIndex].localTCurrent.getTranslation();
-}
+}*/
 
-void Skeleton::setLocalNodePosition(unsigned long nodeIndex, const cg3::Vec3d &position)
+/*void Skeleton::setLocalNodePosition(unsigned long nodeIndex, const cg3::Vec3d &position)
 {
    nodes[nodeIndex].localTCurrent.setTranslation(position);
 
    //TO DO: OPTIMIZE THIS
    propagatePose(nodeIndex);
-}
+}*/
 
 void Skeleton::setKeyframe(const std::vector<cg3::Transform> & keyframe)
 {

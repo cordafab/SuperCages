@@ -147,12 +147,11 @@ public:
    //TO DO: CLEAN THIS
    void addGlobalTransformation(int nodeIndex, const cg3::Transform & transformation);
 
-   void setGlobalNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position);
-   void setGlobalRestNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position);
+   //void setGlobalNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position);
+   //void setGlobalRestNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position);
 
-   cg3::Vec3d getLocalNodePosition(unsigned long nodeIndex);
-   void setLocalNodePosition(unsigned long nodeIndex,
-                             const cg3::Vec3d & position);
+   //cg3::Vec3d getLocalNodePosition(unsigned long nodeIndex);
+   //void setLocalNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position);
 
    void updateLocalTransformations(int nodeIndex);
 };

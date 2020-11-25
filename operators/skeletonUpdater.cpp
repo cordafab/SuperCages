@@ -48,7 +48,7 @@ bool SkeletonUpdater::create(Weights *_wSkeleton,
 
    for( unsigned long i = 0 ; i < skeleton->getNumNodes() ; ++i )
    {
-      originalNodePositions[i] = skeleton->getLocalNodePosition(i);
+      originalNodePositions[i] = skeleton->getNode(i).getLocalTCurrent().getTranslation();
    }
 
    return true;
