@@ -70,63 +70,73 @@ void loadSkelAnimationFromFile()
                   skelKeyframes,
                   animationFileVersionNumber);
 
-         if(animationFileVersionNumber!=3) {
-            convertSkelKeyframes(skelKeyframes, c->skeleton);
-         }
+         convertSkelKeyframes(skelKeyframes, c->skeleton, animationFileVersionNumber);
 
          c->asyncAnimator->loadSkelAnimation(t,skelKeyframes);
       }
    }
 }
 
-void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyframes, Skeleton * skel)
+void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyframes, Skeleton * skel, uint version)
 {
+
    std::vector<Node> nodes = skel->getNodesVector();
 
-   //Compute the local transform for the current pose keyframes
-   for(int i=0; i<skelKeyframes.size(); i++){
-
-      for(int j=0; j<skelKeyframes[i].size(); j++){
-
-         if(nodes[j].getFather()==-1)
-         {
-            skelKeyframes[i][j].setTranslation(skelKeyframes[i][j].getTranslation() - nodes[j].getLocalTRest().getTranslation());
-         }
-         skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
-
-      }
-   }
-
-   //compute the global transform for the current pose keyframes
-   for(int i=0; i<skelKeyframes.size(); i++){
-      std::stack<int> stack;
-
-      for(int n:skel->getRootsIndexes())
+   if(version==2)
+   {
+      //Compute the local transform for the current pose keyframes
+      for(int i=0; i<skelKeyframes.size(); i++)
       {
-         stack.push(n);
-      }
 
-      while (!stack.empty())
-      {
-         const int n = stack.top();
-         stack.pop();
-         Node & node = nodes[n];
-         const int fatherIndex = node.getFather();
+         for(int j=0; j<skelKeyframes[i].size(); j++){
 
-         if(fatherIndex != -1)
-         {
-            skelKeyframes[i][n] = skelKeyframes[i][fatherIndex].cumulateWith(skelKeyframes[i][n]);
-         }
+            if(nodes[j].getFather()==-1)
+            {
+               skelKeyframes[i][j].setTranslation(skelKeyframes[i][j].getTranslation() - nodes[j].getLocalTRest().getTranslation());
+            }
+            skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
 
-
-         const std::vector<ulong> & childs = node.getNext();
-         for(ulong child:childs)
-         {
-            stack.push(child);
          }
       }
    }
 
+   if(version==3)
+   {
+      std::cout << "CONVERSION" << std::endl;
+      //compute the local transform from the global current pose keyframes
+      for(int i=0; i<skelKeyframes.size(); i++)
+      {
+         std::stack<int> stack;
+         std::vector<cg3::Transform> globalTransforms(skelKeyframes[i]);
+
+         for(int n:skel->getRootsIndexes())
+         {
+            stack.push(n);
+         }
+
+         while (!stack.empty())
+         {
+            const int n = stack.top();
+            stack.pop();
+            Node & node = nodes[n];
+            const int fatherIndex = node.getFather();
+
+            if(fatherIndex != -1)
+            {
+               const cg3::Transform & fatherTransformation = globalTransforms[fatherIndex];
+
+               skelKeyframes[i][n] = fatherTransformation.cumulateWith(skelKeyframes[i][n].inverse());
+            }
+
+
+            const std::vector<ulong> & childs = node.getNext();
+            for(ulong child:childs)
+            {
+               stack.push(child);
+            }
+         }
+      }
+   }
 }
 
 void saveSkelAnimationToFile()
