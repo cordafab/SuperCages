@@ -94,7 +94,7 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
 
             if(nodes[j].getFather()==-1)
             {
-               skelKeyframes[i][j].setTranslation(skelKeyframes[i][j].getTranslation() - nodes[j].getLocalTRest().getTranslation());
+              // skelKeyframes[i][j].setTranslation(skelKeyframes[i][j].getTranslation() - nodes[j].getLocalTRest().getTranslation());
             }
             skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
 
@@ -122,47 +122,7 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
             if(fatherIndex != -1)
             {
                cg3::Transform fatherTransformation = globalTransforms[fatherIndex];
-
-
-
-               if(i==1)
-               {
-                  std::cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl << std::endl;
-                  skelKeyframes[i][n].data(m);
-                  std::cout <<
-                               m[0]  << " " << m[1]  << " " << m[2]  << " " << m[3]  << " " <<
-                               m[4]  << " " << m[5]  << " " << m[6]  << " " << m[7]  << " " <<
-                               m[8]  << " " << m[9]  << " " << m[10] << " " << m[11] << " " <<
-                               m[12] << " " << m[13] << " " << m[14] << " " << m[15] << " " << std::endl << std::endl;
-               }
-
                skelKeyframes[i][n] = fatherTransformation.inverse().cumulateWith(globalTransforms[n]);
-               //skelKeyframes[i][n] = globalTransforms[n].cumulateWith(fatherTransformation.inverse());
-
-               if(i==1)
-               {
-                  skelKeyframes[i][n].data(m);
-                  std::cout <<
-                               m[0]  << " " << m[1]  << " " << m[2]  << " " << m[3]  << " " <<
-                               m[4]  << " " << m[5]  << " " << m[6]  << " " << m[7]  << " " <<
-                               m[8]  << " " << m[9]  << " " << m[10] << " " << m[11] << " " <<
-                               m[12] << " " << m[13] << " " << m[14] << " " << m[15] << " " << std::endl << std::endl;
-
-
-                  cg3::Transform temp;
-                  temp = fatherTransformation.cumulateWith(skelKeyframes[i][n]);
-
-                  temp.data(m);
-                  std::cout <<
-                               m[0]  << " " << m[1]  << " " << m[2]  << " " << m[3]  << " " <<
-                                        m[4]  << " " << m[5]  << " " << m[6]  << " " << m[7]  << " " <<
-                                        m[8]  << " " << m[9]  << " " << m[10] << " " << m[11] << " " <<
-                                        m[12] << " " << m[13] << " " << m[14] << " " << m[15] << " " << std::endl << std::endl;
-
-                  std::cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
-               }
-
-
             }
          }
       }
