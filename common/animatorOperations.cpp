@@ -82,6 +82,8 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
 
    std::vector<Node> nodes = skel->getNodesVector();
 
+   std::vector<double> m(16);
+
    if(version==2)
    {
       //Compute the local transform for the current pose keyframes
@@ -105,7 +107,7 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
       //compute the local transform from the global current pose keyframes
       for(int i=0; i<skelKeyframes.size(); i++)
       {
-         std::stack<int> stack;
+
          std::vector<cg3::Transform> globalTransforms(skelKeyframes[i].size());
          for(int n=0; n<skelKeyframes[i].size(); n++)
          {
@@ -120,32 +122,49 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
             if(fatherIndex != -1)
             {
                cg3::Transform fatherTransformation = globalTransforms[fatherIndex];
-               skelKeyframes[i][n] = globalTransforms[n].cumulateWith(fatherTransformation.inverse());
-               //skelKeyframes[i][n] = fatherTransformation.cumulateWith(globalTransforms[n].inverse());
+
+
+
+               if(i==1)
+               {
+                  std::cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl << std::endl;
+                  skelKeyframes[i][n].data(m);
+                  std::cout <<
+                               m[0]  << " " << m[1]  << " " << m[2]  << " " << m[3]  << " " <<
+                               m[4]  << " " << m[5]  << " " << m[6]  << " " << m[7]  << " " <<
+                               m[8]  << " " << m[9]  << " " << m[10] << " " << m[11] << " " <<
+                               m[12] << " " << m[13] << " " << m[14] << " " << m[15] << " " << std::endl << std::endl;
+               }
+
+               skelKeyframes[i][n] = fatherTransformation.inverse().cumulateWith(globalTransforms[n]);
+               //skelKeyframes[i][n] = globalTransforms[n].cumulateWith(fatherTransformation.inverse());
+
+               if(i==1)
+               {
+                  skelKeyframes[i][n].data(m);
+                  std::cout <<
+                               m[0]  << " " << m[1]  << " " << m[2]  << " " << m[3]  << " " <<
+                               m[4]  << " " << m[5]  << " " << m[6]  << " " << m[7]  << " " <<
+                               m[8]  << " " << m[9]  << " " << m[10] << " " << m[11] << " " <<
+                               m[12] << " " << m[13] << " " << m[14] << " " << m[15] << " " << std::endl << std::endl;
+
+
+                  cg3::Transform temp;
+                  temp = fatherTransformation.cumulateWith(skelKeyframes[i][n]);
+
+                  temp.data(m);
+                  std::cout <<
+                               m[0]  << " " << m[1]  << " " << m[2]  << " " << m[3]  << " " <<
+                                        m[4]  << " " << m[5]  << " " << m[6]  << " " << m[7]  << " " <<
+                                        m[8]  << " " << m[9]  << " " << m[10] << " " << m[11] << " " <<
+                                        m[12] << " " << m[13] << " " << m[14] << " " << m[15] << " " << std::endl << std::endl;
+
+                  std::cout << " XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << std::endl;
+               }
+
+
             }
          }
-
-         /*while (!stack.empty())
-         {
-            const int n = stack.top();
-            stack.pop();
-            Node & node = nodes[n];
-            const int fatherIndex = node.getFather();
-
-            if(fatherIndex != -1)
-            {
-               const cg3::Transform & fatherTransformation = globalTransforms[fatherIndex];
-
-               skelKeyframes[i][n] = fatherTransformation.cumulateWith(skelKeyframes[i][n].inverse());
-            }
-
-
-            const std::vector<ulong> & childs = node.getNext();
-            for(ulong child:childs)
-            {
-               stack.push(child);
-            }
-         }*/
       }
    }
 }
