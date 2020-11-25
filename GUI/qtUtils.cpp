@@ -38,7 +38,7 @@ bool openFileSaveDialog(std::string & filename,
 {
     QString qtFilename = QFileDialog::getSaveFileName(parentWidget,
                                                       caption.c_str(),
-                                                      ".",
+                                                      QString(),
                                                       filter.c_str(),
                                                       Q_NULLPTR/*,
                                                       QFileDialog::DontUseNativeDialog*/);

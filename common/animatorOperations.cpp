@@ -88,6 +88,10 @@ void convertSkelKeyframes(std::vector<std::vector<cg3::Transform>> & skelKeyfram
 
       for(int j=0; j<skelKeyframes[i].size(); j++){
 
+         if(nodes[j].getFather()==-1)
+         {
+            skelKeyframes[i][j].setTranslation(skelKeyframes[i][j].getTranslation() - nodes[j].getLocalTRest().getTranslation());
+         }
          skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
 
       }

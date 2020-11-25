@@ -14,9 +14,9 @@ DEFINES += CUSTOM_LIGHTS
 
 unix:!macx{ # Linux
 
-#apt install libglew-dev
-#apt install libqglviewer-dev-qt5
-#apt install freeglut3-dev
+    #apt install libglew-dev
+    #apt install libqglviewer-dev-qt5
+    #apt install freeglut3-dev
 
     INCLUDEPATH += /usr/include/QGLViewer
     LIBS += /usr/lib/x86_64-linux-gnu/libQGLViewer-qt5.so
@@ -40,26 +40,28 @@ macx:{ # Mac
 ## Eigen
 
 unix:!macx{ # Linux
-
-#apt install libeigen3-dev
+    #apt install libeigen3-dev
     INCLUDEPATH    += /usr/include/eigen3
 }
 
 macx:{ # Mac
-   INCLUDEPATH += /Users/Shared/libs/include/eigen
+   #brew install eigen
+   INCLUDEPATH += /usr/local/include/eigen3
+   #INCLUDEPATH += /Users/Shared/libs/include/eigen
 }
 
 
 
 
 ## glm
-
 unix:!macx{ # Linux
    # apt-get install libglm-dev
 }
 
 macx:{ # Mac
-   INCLUDEPATH += /Users/Shared/libs/include/glm
+    #brew install eigen
+    INCLUDEPATH += /usr/local/include/glm
+    #INCLUDEPATH += /Users/Shared/libs/include/glm
 }
 
 
