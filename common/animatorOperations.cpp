@@ -96,7 +96,6 @@ void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Tra
                skelKeyframes[i][j].setTranslation(skelKeyframes[i][j].getTranslation() - nodes[j].getLocalTRest().getTranslation());
             }
             skelKeyframes[i][j] = nodes[j].getLocalTRest().cumulateWith(skelKeyframes[i][j]);
-
          }
       }
    }
