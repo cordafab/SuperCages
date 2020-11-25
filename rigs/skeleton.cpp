@@ -189,9 +189,9 @@ void Skeleton::setKeyframe(const std::vector<cg3::Transform> & keyframe)
    {
       //propagatePose(i);
 
-      //cg3::Vec3d t = (nodes[i].getGlobalTCurrent().getTranslation()-
-      //                nodes[i].getGlobalTRest().getTranslation());
-      //rootMotion = cg3::Transform(t.x(),t.y(),t.z());
+      cg3::Vec3d t = (nodes[i].getGlobalTCurrent().getTranslation()-
+                      nodes[i].getGlobalTRest().getTranslation());
+      rootMotion = cg3::Transform(t.x(),t.y(),t.z());
 
    }
 }
@@ -214,9 +214,9 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
    {
       //propagatePose(i);
 
-      //cg3::Vec3d t = (nodes[i].getGlobalTCurrent().getTranslation()-
-      //                nodes[i].getGlobalTRest().getTranslation());
-      //rootMotion = cg3::Transform(t.x(),t.y(),t.z());
+      cg3::Vec3d t = (nodes[i].getGlobalTCurrent().getTranslation()-
+                      nodes[i].getGlobalTRest().getTranslation());
+      rootMotion = cg3::Transform(t.x(),t.y(),t.z());
    }
 }
 
