@@ -96,39 +96,40 @@ protected:
    std::vector<int>     rootIndexes;
    std::vector<Node>    nodes;
    BoundingBox          boundingBox;
-   cg3::Transform       rootMotion;
+   cg3::Transform       rootMotion; //MOVE IT INTO SKELETON UPDATER
 
-
-   void propagatePose(int nodeIndex); //TO DELETE
    int  addNode(std::string nodeName,
                 int father,
                 const cg3::Transform & localTransformation,
                 const cg3::Transform & modelTransformation);
 
+   inline void addNodeAsRoot(int index) { rootIndexes.push_back(index); }
+   inline void setNextOnNode(ulong index, const ulong nextIndex)
+                                        { nodes[index].next.push_back(nextIndex); }
+
    void updateBoundingBox();
+
+   void propagatePose(int nodeIndex); //TO DELETE
 
 public:
 
-   inline void setNodesVector(std::vector<Node> & newNodes) { nodes = newNodes; }
-
-   inline const std::vector<int>    & getRootsIndexes()     const { return rootIndexes; }
-   inline const std::vector<Node>   & getNodesVector()      const { return nodes; }
-
-   inline const cg3::Transform      & getRootMotion()       const { return rootMotion; }
+   //inline void setNodesVector(std::vector<Node> & newNodes) { nodes = newNodes; }
 
    inline       unsigned long         getNumRoots()         const { return rootIndexes.size(); }
    inline       unsigned long         getNumNodes()         const { return nodes.size(); }
 
+   inline const std::vector<int>    & getRootsIndexes()     const { return rootIndexes; }
+
+   inline const std::vector<Node>   & getNodesVector()      const { return nodes; }
+   inline       std::vector<Node>   & getNodesVector()            { return nodes; }
+
    inline const Node                & getNode(ulong index)  const { return nodes[index]; }
    inline       Node                & getNode(ulong index)        { return nodes[index]; }
 
+   inline const cg3::Transform      & getRootMotion()       const { return rootMotion; } //MOVE IT INTO SKELETON UPDATER
+
    inline       void                  resetRootMotion()           { rootMotion.setTranslation
-                                                                    (cg3::Vec3d(0.0,0.0,0.0)); }
-
-
-   inline void addNodeAsRoot(int index) { rootIndexes.push_back(index); }
-   inline void setNextOnNode(ulong index, const ulong nextIndex)
-                                        { nodes[index].next.push_back(nextIndex); }
+                                                                    (cg3::Vec3d(0.0,0.0,0.0)); } //MOVE IT  INTO SKELETON UPDATER
 
    void updateLocalFromGlobalRest();
    void updateLocalFromGlobalCurrent();
@@ -139,10 +140,10 @@ public:
    void updateGlobalT();   //compute the globalT transformations
 // void updateLocalT();
 
-   void setKeyframe(const std::vector<cg3::Transform> & keyframe);
+   void setKeyframe(const std::vector<cg3::Transform> & keyframe); //MOVE IT INTO ANIMATOR
    void interpolateKeyframes(const std::vector<cg3::Transform> & keyframeLow,
                               const std::vector<cg3::Transform> & keyframeTop,
-                              double a);
+                              double a); //MOVE IT INTO ANIMATOR
 
    //TO DO: CLEAN THIS
    void addGlobalTransformation(int nodeIndex, const cg3::Transform & transformation);
