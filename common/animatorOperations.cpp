@@ -131,9 +131,48 @@ void saveSkelAnimationToFile()
    {
       if(c->isAnimatorInitialized)
       {
+         std::vector<std::vector<cg3::Transform>> skelKeyframes(c->asyncAnimator->getSkelKeyframeVector());
+
+         //SAVE V3 KEYFRAMES
+         std::stack<int> stack;
+
+         std::vector<Node> nodes = c->skeleton->getNodesVector();
+
+         for(int n:c->skeleton->getRootsIndexes())
+         {
+            stack.push(n);
+         }
+
+         while (!stack.empty())
+         {
+            const int n = stack.top();
+            stack.pop();
+            Node & node = nodes[n];
+            const int fatherIndex = node.getFather();
+
+            for(ulong i=0; i<skelKeyframes.size(); i++)
+            {
+               if(fatherIndex != -1)
+               {
+                  const cg3::Transform & restFatherTransformation = skelKeyframes[i][fatherIndex];
+                  skelKeyframes[i][n] =
+                        restFatherTransformation.cumulateWith
+                        (skelKeyframes[i][n]);
+               }
+            }
+
+            const std::vector<ulong> & childs = node.getNext();
+            for(ulong child:childs)
+            {
+               stack.push(child);
+            }
+         }
+
+
+
          saveSkelAnimation(filename.c_str(),
                            c->asyncAnimator->getSkelKeyframeTimeVector(),
-                           c->asyncAnimator->getSkelKeyframeVector());
+                           skelKeyframes);
       }
    }
 }
