@@ -50,10 +50,6 @@ bool Skeleton::create(const std::vector<cg3::Vec3d>     & joints,
       addNode(names[i], fathers[i], cg3::Transform(), cg3::Transform(rx, ry, rz, x, y, z));
    }
 
-   /*for(int i:rootIndexes)
-   {
-      updateLocalTransformations(i);
-   }*/
    updateLocalFromGlobalRest();
    updateLocalFromGlobalCurrent();
 
@@ -121,61 +117,6 @@ void Skeleton::addGlobalTransformation(int nodeIndex, const cg3::Transform & tra
    }
 }
 
-/*void Skeleton::setGlobalNodePosition(unsigned long nodeIndex, const cg3::Vec3d & position)
-{
-   nodes[nodeIndex].globalTCurrent.setTranslation(position);
-
-   int fatherIndex = nodes[nodeIndex].getFather();
-   if(fatherIndex != -1)
-   {
-      cg3::Transform fatherTransformation = nodes[fatherIndex].globalTCurrent;
-
-      nodes[nodeIndex].localTCurrent =
-            fatherTransformation.inverse()
-            .cumulateWith(nodes[nodeIndex].globalTCurrent);
-   }
-   else
-   {
-      nodes[nodeIndex].localTCurrent =
-            nodes[nodeIndex].globalTCurrent;
-   }
-
-   //std::cout << "Local: " << nodes[0].modelTransformation << std::endl;
-}*/
-
-/*void Skeleton::setGlobalRestNodePosition(unsigned long nodeIndex, const cg3::Vec3d &position)
-{
-   nodes[nodeIndex].globalTRest.setTranslation(position);
-
-   int fatherIndex = nodes[nodeIndex].getFather();
-   if(fatherIndex != -1)
-   {
-      cg3::Transform fatherTransformation = nodes[fatherIndex].globalTRest;
-
-      nodes[nodeIndex].localTRest =
-            fatherTransformation.inverse()
-            .cumulateWith(nodes[nodeIndex].globalTRest);
-   }
-   else
-   {
-      nodes[nodeIndex].localTRest =
-            nodes[nodeIndex].globalTRest;
-   }
-}*/
-
-/*cg3::Vec3d Skeleton::getLocalNodePosition(unsigned long nodeIndex)
-{
-   return nodes[nodeIndex].localTCurrent.getTranslation();
-}*/
-
-/*void Skeleton::setLocalNodePosition(unsigned long nodeIndex, const cg3::Vec3d &position)
-{
-   nodes[nodeIndex].localTCurrent.setTranslation(position);
-
-   //TO DO: OPTIMIZE THIS
-   propagatePose(nodeIndex);
-}*/
-
 void Skeleton::setKeyframe(const std::vector<cg3::Transform> & keyframe)
 {
    for(unsigned long i = 0; i < nodes.size(); ++i)
@@ -212,8 +153,9 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
    }
 }
 
-//aggiorna il globalTCurrent del nodo con indice nodeIndex, e propaga ai figli
+
 void Skeleton::propagatePose(int nodeIndex)
+//aggiorna il globalTCurrent del nodo con indice nodeIndex, e propaga ai figli
 {
    int fatherIndex = nodes[nodeIndex].getFather();
 
@@ -415,48 +357,3 @@ void Skeleton::updateGlobalT()
       nodes[i].globalT = TCurrent.cumulateWith(TRest.inverse());
    }
 }
-
-//Just for testing purposes
-/*void Skeleton::updateLocalT()
-{
-   for(ulong i=0; i < getNumNodes(); ++i)
-   {
-      const cg3::Transform & TRest = nodes[i].getLocalTRest();
-      const cg3::Transform & TCurrent = nodes[i].getLocalTCurrent();
-      nodes[i].localT = TCurrent.cumulateWith(TRest.inverse());
-   }
-}*/
-
-/*void Skeleton::updateLocalTransformations(int nodeIndex)
-{
-   int fatherIndex = nodes[nodeIndex].getFather();
-   cg3::Transform fatherTransformation;
-   cg3::Transform restFatherTransformation;
-   if(fatherIndex != -1)
-   {
-      fatherTransformation = nodes[fatherIndex].globalTCurrent;
-      restFatherTransformation = nodes[fatherIndex].globalTRest;
-
-      nodes[nodeIndex].localTCurrent =
-            nodes[nodeIndex].globalTCurrent.cumulateWith
-            (fatherTransformation.inverse());
-
-      nodes[nodeIndex].localTRest =
-            nodes[nodeIndex].globalTRest.cumulateWith
-            (restFatherTransformation.inverse());
-   }
-   else
-   {
-      nodes[nodeIndex].localTCurrent =
-            nodes[nodeIndex].globalTCurrent;
-
-      nodes[nodeIndex].localTRest =
-            nodes[nodeIndex].globalTRest;
-   }
-
-   for(int i:nodes[nodeIndex].next)
-   {
-      updateLocalTransformations(i);
-   }
-}*/
-
