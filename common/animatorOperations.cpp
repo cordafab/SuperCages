@@ -81,7 +81,7 @@ void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Tra
 {
 
    Controller * c = Controller::get();
-   std::vector<Node> nodes = c->skeleton->getNodesVector();
+   std::vector<SkeletonNode> nodes = c->skeleton->getNodesVector();
 
    if(keyframesVersion==2)
    {
@@ -109,7 +109,7 @@ void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Tra
 
          for(ulong n=0; n<skelKeyframes[i].size(); n++)
          {
-            Node & node = nodes[n];
+            SkeletonNode & node = nodes[n];
             const int fatherIndex = node.getFather();
 
             if(fatherIndex != -1)
@@ -136,7 +136,7 @@ void saveSkelAnimationToFile()
          //SAVE V3 KEYFRAMES
          std::stack<int> stack;
 
-         std::vector<Node> nodes = c->skeleton->getNodesVector();
+         std::vector<SkeletonNode> nodes = c->skeleton->getNodesVector();
 
          for(int n:c->skeleton->getRootsIndexes())
          {
@@ -147,7 +147,7 @@ void saveSkelAnimationToFile()
          {
             const int n = stack.top();
             stack.pop();
-            Node & node = nodes[n];
+            SkeletonNode & node = nodes[n];
             const int fatherIndex = node.getFather();
 
             for(ulong i=0; i<skelKeyframes.size(); i++)
@@ -270,7 +270,7 @@ void addSkelKeyframe()
          for(unsigned long i=0; i<c->skeleton->getNumNodes(); ++i)
          {
 
-            const Node & n = c->skeleton->getNode(i);
+            const SkeletonNode & n = c->skeleton->getNode(i);
             cg3::Transform Tdeformed(n.getLocalTCurrent().getRotation());
 
             skelKeyframes[i] = Tdeformed;//.cumulateWith(Trest.inverse());

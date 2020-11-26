@@ -92,12 +92,12 @@ void DrawableSkeleton::draw() const
             setSingleLighting();
             for(int i=0; i<getNumNodes(); ++i)
             {
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
                 if(isRootMotionEnabled) p = getRootMotion().applyToPoint(p);
                 for(int sonIndex: n.getNext())
                 {
-                    Node son = getNode(sonIndex);
+                    SkeletonNode son = getNode(sonIndex);
                     cg3::Vec3d s = son.getGlobalTCurrent().getTranslation();
                     if(isRootMotionEnabled) s = getRootMotion().applyToPoint(s);
                     //glLineWidth(3.0);
@@ -123,7 +123,7 @@ void DrawableSkeleton::draw() const
 
             for(int i=0; i<getNumNodes(); ++i)
             {
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
                 if(isRootMotionEnabled) p = getRootMotion().applyToPoint(p);
                 if(sonsOfSelectedNode[i])
@@ -157,11 +157,11 @@ void DrawableSkeleton::drawRest() const
             setSingleLighting();
             for(int i=0; i<getNumNodes(); ++i)
             {
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTRest().getTranslation();
                 for(int sonIndex: n.getNext())
                 {
-                    Node son = getNode(sonIndex);
+                    SkeletonNode son = getNode(sonIndex);
                     cg3::Vec3d s = son.getGlobalTRest().getTranslation();
                     glLineWidth(6.0);
                     glColor4f(0.156, 0.333, 0.8, 0.7);
@@ -187,7 +187,7 @@ void DrawableSkeleton::drawRest() const
 
             for(int i=0; i<getNumNodes(); ++i)
             {
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTRest().getTranslation();
 
                 drawDiamond(p, radius, 0.905, 0.305, 0.305, true);
@@ -212,7 +212,7 @@ void DrawableSkeleton::drawWithNames()
             {
                 glPushMatrix();
                 glPushName(node2PickableIndex[i]);
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
                 drawDiamond(p, radius, 0.0, 0.0, 1.0, true);
                 glPopName();

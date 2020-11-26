@@ -9,17 +9,17 @@
 #include "geom/transform.h"
 #include "geom/boundingBox.h"
 
-class Node
+class SkeletonNode
 {
 
    friend class Skeleton;
 
 public:
 
-   Node(      std::string      nodeName,
-              int              father,
-        const cg3::Transform & localT,
-        const cg3::Transform & globalT);
+   SkeletonNode(      std::string      nodeName,
+                      int              father,
+                const cg3::Transform & localT,
+                const cg3::Transform & globalT);
 
 
    inline       int                   getFather()              const { return father;         }
@@ -83,7 +83,7 @@ public:
 protected:
 
    std::vector<int>     rootIndexes;
-   std::vector<Node>    nodes;
+   std::vector<SkeletonNode>    nodes;
    BoundingBox          boundingBox;
 
    //TO DO: MOVE IT INTO SKELETON UPDATER
@@ -110,11 +110,11 @@ public:
 
    inline const std::vector<int>    & getRootsIndexes()     const { return rootIndexes; }
 
-   inline const std::vector<Node>   & getNodesVector()      const { return nodes; }
-   inline       std::vector<Node>   & getNodesVector()            { return nodes; }
+   inline const std::vector<SkeletonNode>   & getNodesVector()      const { return nodes; }
+   inline       std::vector<SkeletonNode>   & getNodesVector()            { return nodes; }
 
-   inline const Node                & getNode(ulong index)  const { return nodes[index]; }
-   inline       Node                & getNode(ulong index)        { return nodes[index]; }
+   inline const SkeletonNode                & getNode(ulong index)  const { return nodes[index]; }
+   inline       SkeletonNode                & getNode(ulong index)        { return nodes[index]; }
 
    //TO DO: MOVE IT INTO SKELETON UPDATER
    inline const cg3::Transform      & getRootMotion()       const { return rootMotion; }

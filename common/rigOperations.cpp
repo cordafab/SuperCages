@@ -125,7 +125,7 @@ void exportRig()
 
       if(c->isSkeletonLoaded)
       {
-         std::vector<Node> nodes = c->skeleton->getNodesVector();
+         std::vector<SkeletonNode> nodes = c->skeleton->getNodesVector();
          std::vector<cg3::Vec3d> joints;
          std::vector<int> fathers;
          std::vector<std::string> names;

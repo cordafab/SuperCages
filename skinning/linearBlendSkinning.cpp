@@ -29,7 +29,7 @@ void LinearBlendSkinning::deform()
 {
    //TO DO: Move in skeleton class
    ulong vertexNumber = character->getNumVertices();
-   const std::vector<Node> & skelNodes = skeleton->getNodesVector();
+   const std::vector<SkeletonNode> & skelNodes = skeleton->getNodesVector();
 
    #pragma omp parallel for schedule(static)
    for(ulong i=0; i<vertexNumber; ++i)

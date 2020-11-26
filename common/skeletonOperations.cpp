@@ -191,7 +191,7 @@ void initializeSkeletonUpdater()
 
 void addFakeBones(Skeleton * skeleton) //Is it necessary?
 {
-   std::vector<Node> nodesCopy = skeleton->getNodesVector();
+   std::vector<SkeletonNode> nodesCopy = skeleton->getNodesVector();
    for(int i=0; i<nodesCopy.size(); ++i)
    {
       if(nodesCopy[i].getNext().size()==0)

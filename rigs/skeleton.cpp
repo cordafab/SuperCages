@@ -3,10 +3,10 @@
 #include <stack>
 
 
-Node::Node(      std::string      nodeName,
-                 int              father,
-                 const cg3::Transform & localT,
-                 const cg3::Transform & globalT)
+SkeletonNode::SkeletonNode(      std::string      nodeName,
+                                 int              father,
+                           const cg3::Transform & localT,
+                           const cg3::Transform & globalT)
 
    : localTCurrent(localT),
      globalTCurrent(globalT),
@@ -69,7 +69,7 @@ int Skeleton::addNode(std::string nodeName,
                       const cg3::Transform & localTransformation,
                       const cg3::Transform & modelTransformation)
 {
-   Node node(nodeName,
+   SkeletonNode node(nodeName,
              father,
              localTransformation,
              modelTransformation);
@@ -212,7 +212,7 @@ void Skeleton::updateLocalFromGlobalRest()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)
@@ -249,7 +249,7 @@ void Skeleton::updateLocalFromGlobalCurrent()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)
@@ -286,7 +286,7 @@ void Skeleton::updateGlobalFromLocalRest()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)
@@ -323,7 +323,7 @@ void Skeleton::updateGlobalFromLocalCurrent()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)

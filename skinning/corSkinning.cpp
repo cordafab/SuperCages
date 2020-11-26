@@ -73,7 +73,7 @@ void CoRSkinning::deform()
    updateCoRs();
    ulong vertexNumber = character->getNumVertices();
 
-   const std::vector<Node> & skelNodes = skeleton->getNodesVector();
+   const std::vector<SkeletonNode> & skelNodes = skeleton->getNodesVector();
    std::vector<cg3::dQuaternion> qList;
 
    for(ulong h=0; h<skeleton->getNumNodes(); ++h)

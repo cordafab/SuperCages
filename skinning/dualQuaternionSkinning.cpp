@@ -33,7 +33,7 @@ void DualQuaternionSkinning::deform()
 
 
    std::vector<cg3::dDualQuaternion> qList;
-   const std::vector<Node> & skelNodes = skeleton->getNodesVector();
+   const std::vector<SkeletonNode> & skelNodes = skeleton->getNodesVector();
 
    for(ulong h=0; h<skeleton->getNumNodes(); ++h)
    {
