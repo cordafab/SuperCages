@@ -26,11 +26,12 @@ Transform::Transform(double rx, double ry, double rz, double tx, double ty, doub
    cg3::Transform T_ry (cg3::dQuaternion(cg3::Vec3d(0.0,1.0,0.0),ry*gradToRad));
    cg3::Transform T_rz (cg3::dQuaternion(cg3::Vec3d(0.0,0.0,1.0),rz*gradToRad));
 
-   cg3::Transform r = T_rz.cumulateWith(T_ry.cumulateWith(T_rx));
+   cg3::Transform T_rzy = T_rz.cumulateWith(T_ry);
+   cg3::Transform T_rzyx = T_rzy.cumulateWith(T_rx);
 
    cg3::Transform t (tx, ty, tz);
 
-   transformation=(t.cumulateWith(r)).transformation;
+   transformation=(t.cumulateWith(T_rzyx)).transformation;
 }
 
 Transform::Transform(dQuaternion r)
