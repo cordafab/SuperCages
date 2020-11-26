@@ -371,7 +371,8 @@ void loadOFF(const char            * filename,
 }
 
 void loadSkeleton(const char                  * filename,
-                  std::vector<cg3::Vec3d>     & joints,
+                  std::vector<cg3::Vec3d>     & jointsTranslations,
+                  std::vector<cg3::Vec3d>     & jointsRotations,
                   std::vector<int>            & fathers,
                   std::vector<std::string>    & names)
 {
@@ -388,20 +389,26 @@ void loadSkeleton(const char                  * filename,
    {
       istringstream iss(line);
 
-      string token;
-      iss >> token;
-      if (token.size() > 1) continue; // vn,fn  .... I don't care
+      std::vector<std::string> lineData{
+         std::istream_iterator<std::string>(iss), {}
+      };
 
-      if (token[0] == 'j')
+      if(!lineData.empty())
       {
-         int i, father;
-         std::string name;
-         double x, y, z;
-         iss >> i >> name >> father >> x >> y >> z;
-         joints.push_back(cg3::Vec3d(x,y,z));
-         fathers.push_back(father);
-         names.push_back(name);
-         //cout << "v " << x << " " << y << " " << z << endl;
+         if (lineData[0].compare("j")==0)
+         {
+            names.push_back(lineData[2]);
+            fathers.push_back(std::stoi(lineData[3]));
+
+            if(lineData.size()==7){
+               jointsTranslations.push_back(cg3::Vec3d(std::stod(lineData[4]),std::stod(lineData[5]),std::stod(lineData[6])));
+               jointsRotations.push_back   (cg3::Vec3d(0.0, 0.0, 0.0));
+            } else
+               if(lineData.size()==10){
+                  jointsTranslations.push_back(cg3::Vec3d(std::stod(lineData[7]),std::stod(lineData[8]),std::stod(lineData[9])));
+                  jointsRotations.push_back   (cg3::Vec3d(std::stod(lineData[4]),std::stod(lineData[5]),std::stod(lineData[6])));
+               }
+         }
       }
    }
    file.close();
@@ -459,10 +466,10 @@ void loadSparseWeights(const char *filename, SparseWeights & weights)
    file.close();
 }
 
-void loadSkelAnimation(
-      const char                       * filename,
+void loadSkelAnimation(const char * filename,
       std::vector<double>              & t,
-      std::vector<std::vector<cg3::Transform>> & skelKeyframes)
+      std::vector<std::vector<cg3::Transform>> & skelKeyframes,
+      int & animationFileVersionNumber)
 {
 
    ifstream file(filename);
@@ -475,20 +482,18 @@ void loadSkelAnimation(
 
    string line;
    bool areKeyframeInitialized = false;
-   bool isItAnOldAnimation=true;
+   animationFileVersionNumber = 1;
    while (getline(file, line))
    {
+      if ((line.compare("#V2")==0) || (line.compare("# V2")==0) || (line.compare("t rt")==0)) { animationFileVersionNumber = 2;}
+      if ((line.compare("#V3")==0) || (line.compare("# V3")==0))                              { animationFileVersionNumber = 3;}
+
       istringstream iss(line);
 
       string token;
       iss >> token;
 
-      //std::cout << line << std::endl ;
-      //std::cout << token << std::endl << std::endl;
-
       if (token.size() > 1) continue; // vn,fn  .... I don't care
-
-      if (token[0] == 't') { isItAnOldAnimation = false; }
 
       if (token[0] == 'k')
       {
@@ -507,7 +512,7 @@ void loadSkelAnimation(
 
          ulong i;
 
-         if(isItAnOldAnimation)
+         if(animationFileVersionNumber==1)
          {
             double v[16];
             iss >> i >>
@@ -532,8 +537,7 @@ void loadSkelAnimation(
             skelKeyframes[i].push_back(T);
          }
 
-         else
-
+         if(animationFileVersionNumber==2)
          {
 
             double v[6];
@@ -555,9 +559,31 @@ void loadSkelAnimation(
                   );
 
             skelKeyframes[i].push_back(T);
-
          }
 
+         if(animationFileVersionNumber==3)
+         {
+
+            double v[6];
+            iss >> i >>
+                  v[ 0] >>
+                  v[ 1] >>
+                  v[ 2] >>
+                  v[ 3] >>
+                  v[ 4] >>
+                  v[ 5];
+
+            cg3::Transform T(
+                  v[0],
+                  v[1],
+                  v[2],
+                  v[3],
+                  v[4],
+                  v[5]
+                  );
+
+            skelKeyframes[i].push_back(T);
+         }
 
       }
    }

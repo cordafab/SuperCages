@@ -1,6 +1,10 @@
 #ifndef ANIMATOROPERATIONS_H
 #define ANIMATOROPERATIONS_H
 
+#include <vector>
+#include "geom/transform.h"
+#include "rigs/skeleton.h"
+
 void initializeAnimator();
 void clearAnimator();
 void addSkelKeyframe();
@@ -19,5 +23,6 @@ void editSkelKeyframeTime(int index);
 void editCageKeyframeTime(int index);
 void quickLoadSkelAnimation(const char * filename);
 void quickLoadCageAnimation(const char * filename);
+void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Transform> > & skelKeyframes);
 
 #endif // ANIMATOROPERATIONS_H

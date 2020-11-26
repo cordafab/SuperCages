@@ -10,8 +10,8 @@
 
 #include <vector>
 
-#include "glm/glm.hpp"
-#include <glm/gtc/type_ptr.hpp>
+#include "glm.hpp"
+#include <gtc/type_ptr.hpp>
 
 void drawCube(cg3::Vec3d center, double radius, float r, float g, float b, bool wireframe)
 {

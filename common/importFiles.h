@@ -40,13 +40,15 @@ void loadMAXVOL (const char         * filename,
                  std::vector<int>   & selectedvertices );
 
 void loadSkeleton (const char                  * filename,
-                   std::vector<cg3::Vec3d>     & joints,
+                   std::vector<cg3::Vec3d> & jointsTranslations,
+                   std::vector<cg3::Vec3d> & jointsRotations,
                    std::vector<int>            & fathers,
                    std::vector<std::string>    & names);
 
 void loadSkelAnimation (const char                               * filename,
                         std::vector<double>                      & t,
-                        std::vector<std::vector<cg3::Transform>> & skelKeyframes);
+                        std::vector<std::vector<cg3::Transform>> & skelKeyframes,
+                        int & animationFileVersionNumber);
 
 void loadCageAnimation (const char                       * filename,
                         std::vector<double>              & t,

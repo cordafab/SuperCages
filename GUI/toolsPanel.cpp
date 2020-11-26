@@ -16,8 +16,8 @@
 #include "drawables/drawableSkeleton.h"
 #include "Eigen/Eigen"
 #define GLM_ENABLE_EXPERIMENTAL
-#include "glm/gtx/matrix_interpolation.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "gtx/matrix_interpolation.hpp"
+#include "gtc/type_ptr.hpp"
 
 ToolsPanel::ToolsPanel(QWidget *parent) :
    QDockWidget(parent),

@@ -26,12 +26,14 @@ public:
 
     DrawableSkeleton();
     DrawableSkeleton(const std::vector<cg3::Vec3d>     & joints,
+                     const std::vector<cg3::Vec3d>     & jointsRotations,
                      const std::vector<int>            & fathers,
                      const std::vector<std::string>    & names);
 
     bool create      ();
 
     bool create      (const std::vector<cg3::Vec3d>    & joints,
+                      const std::vector<cg3::Vec3d>    & jointsRotations,
                       const std::vector<int>           & fathers,
                       const std::vector<std::string>   & names);
 
@@ -64,8 +66,8 @@ public:
     void rotate(const cg3::dQuaternion & rotation);
 
     //Deformation Rest Pose
-    void translateRest(const cg3::Vec3d & translation);
-    void rotateRest(const cg3::dQuaternion & rotation);
+    //void translateRest(const cg3::Vec3d & translation);
+    //void rotateRest(const cg3::dQuaternion & rotation);
 
     inline const std::vector<bool> & getSelectedNodes() const
     { return sonsOfSelectedNode; }

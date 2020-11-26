@@ -6,17 +6,72 @@ TEMPLATE = app
 CONFIG += c++17
 
 #FLAG FOR CUSTOM LIGHTS
+
 DEFINES += CUSTOM_LIGHTS
 
 
 
-## libQGLViewer
+
+## Eigen
+
+unix:!macx{ # Linux
+    #apt install libeigen3-dev
+    INCLUDEPATH    += /usr/include/eigen3
+}
+
+macx:{ # Mac
+   #brew install eigen
+   INCLUDEPATH += /usr/local/include/eigen3
+   #INCLUDEPATH += /Users/Shared/libs/include/eigen
+}
+
+
+
+
+## glm
+
+unix:!macx{ # Linux
+   # apt-get install libglm-dev
+}
+
+macx:{ # Mac
+    #brew install eigen
+    INCLUDEPATH += /usr/local/include/glm
+    #INCLUDEPATH += /Users/Shared/libs/include/glm
+}
+
+
+
+
+## gsl
+
+unix:!macx{ # Linux
+   # apt-get install libgsl-dev
+   LIBS+= -lgsl
+   LIBS+= -lgslcblas
+}
+
+macx:{ # Mac
+
+    #brew install gsl
+    #INCLUDEPATH += /usr/local/include
+    #LIBS += -L'/usr/local/lib' -lgsl -lgslcblas
+
+
+    LIBS += -L'/Users/Shared/libs/lib/gsl' -lgsl -lgslcblas
+    INCLUDEPATH += /Users/Shared/libs/include/gsl
+}
+
+
+
+
+## libQGLViewer - Not on brew
 
 unix:!macx{ # Linux
 
-#apt install libglew-dev
-#apt install libqglviewer-dev-qt5
-#apt install freeglut3-dev
+    #apt install libglew-dev
+    #apt install libqglviewer-dev-qt5
+    #apt install freeglut3-dev
 
     INCLUDEPATH += /usr/include/QGLViewer
     LIBS += /usr/lib/x86_64-linux-gnu/libQGLViewer-qt5.so
@@ -37,51 +92,7 @@ macx:{ # Mac
 
 
 
-## Eigen
-
-unix:!macx{ # Linux
-
-#apt install libeigen3-dev
-    INCLUDEPATH    += /usr/include/eigen3
-}
-
-macx:{ # Mac
-   INCLUDEPATH += /Users/Shared/libs/include/eigen
-}
-
-
-
-
-## glm
-
-unix:!macx{ # Linux
-   # apt-get install libglm-dev
-}
-
-macx:{ # Mac
-   INCLUDEPATH += /Users/Shared/libs/include/glm
-}
-
-
-
-
-## gsl
-
-unix:!macx{ # Linux
-   # apt-get install libgsl-dev
-   LIBS+= -lgsl
-   LIBS+= -lgslcblas
-}
-
-macx:{ # Mac
-   LIBS += -L'/Users/Shared/libs/lib/gsl' -lgsl -lgslcblas
-   INCLUDEPATH += /Users/Shared/libs/include/gsl
-}
-
-
-
-
-##Cinolib
+##Cinolib - Not on brew nor apt
 
 unix:!macx{ # Linux
    INCLUDEPATH    += /libs/include/cinolib

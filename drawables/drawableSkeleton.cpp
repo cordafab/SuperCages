@@ -15,11 +15,12 @@ DrawableSkeleton::DrawableSkeleton()
 }
 
 DrawableSkeleton::DrawableSkeleton(const std::vector<cg3::Vec3d>     & joints,
+                                   const std::vector<cg3::Vec3d> & jointsRotations,
                                    const std::vector<int>            & fathers,
                                    const std::vector<std::string>    & names)
 
 {
-    create(joints, fathers, names);
+    create(joints, jointsRotations, fathers, names);
 }
 
 bool DrawableSkeleton::create()
@@ -31,11 +32,11 @@ bool DrawableSkeleton::create()
     return true;
 }
 
-bool DrawableSkeleton::create(const std::vector<cg3::Vec3d> &joints, const std::vector<int> &fathers, const std::vector<std::string> &names)
+bool DrawableSkeleton::create(const std::vector<cg3::Vec3d> &joints, const std::vector<cg3::Vec3d> &jointsRotations, const std::vector<int> &fathers, const std::vector<std::string> &names)
 {
     clear();
 
-    Skeleton::create(joints, fathers, names);
+    Skeleton::create(joints, jointsRotations, fathers, names);
 
     init();
     //TODO: call initPicking() here
@@ -268,13 +269,13 @@ void DrawableSkeleton::rotate(const cg3::dQuaternion & rotation)
     if(selectedFatherNode != -1 && activateTransformation)
     {
         cg3::Transform pose(rotation);
-        addGlobalTransformation(selectedFatherNode, pose);
+        addGlobalTransformation(selectedFatherNode, pose); //BUGGY
         _refreshCharacterPose = true;
         updateGlobalT();
     }
 }
 
-void DrawableSkeleton::translateRest(const cg3::Vec3d & translation)
+/*void DrawableSkeleton::translateRest(const cg3::Vec3d & translation)
 {
     if(selectedFatherNode != -1 && activateTransformation)
     {
@@ -283,17 +284,17 @@ void DrawableSkeleton::translateRest(const cg3::Vec3d & translation)
         _refreshCharacterPose = true;
         updateGlobalT();
     }
-}
+}*/
 
-void DrawableSkeleton::rotateRest(const cg3::dQuaternion & rotation)
+/*void DrawableSkeleton::rotateRest(const cg3::dQuaternion & rotation)
 {
-    /*if(selectedFatherNode != -1 && activateTransformation)
+    if(selectedFatherNode != -1 && activateTransformation)
    {
       cg3::Transform pose(rotation);
       applyRestPose(selectedFatherNode, pose);
       _refreshCharacterPose = true;
-   }*/
-}
+   }
+}*/
 
 void DrawableSkeleton::initPicking()
 {
