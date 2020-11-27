@@ -396,7 +396,7 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
          {
 
             //Check the difference between the user C' and CUPD-C'
-            std::vector<double> c1v (controller->cage->getVerticesVector());
+            std::vector<double> c1v (controller->cage->getCurrentPoseVertices());
 
             controller->cageTranslator->propagateToRest();
             controller->cageSkinning->deform();
@@ -472,7 +472,7 @@ void GlCanvas::mouseReleaseEvent(QMouseEvent* e)
       if(controller->isSkeletonSkinningInitialized &&
             controller->isCageSkinningInitialized        )
       {
-         controller->cage->updateNormals();
+         controller->cage->updateCurrentPoseNormals();
       }
 
       update();

@@ -101,8 +101,8 @@ void saveCageToFile()
     {
         if(c->isCageLoaded)
         {
-            std::vector<double> v = c->cage->getVerticesVector();
-            std::vector<int>    f = c->cage->getTrianglesVector();
+            std::vector<double> v = c->cage->getCurrentPoseVertices();
+            std::vector<int>    f = c->cage->getCurrentPoseTriangles();
 
             saveMesh(filename.c_str(), v, f);
         }

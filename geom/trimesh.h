@@ -80,6 +80,9 @@ public:
    inline const std::vector<double>     & getVerticesVector()       const { return vertices; }
    inline const std::vector<int>        & getTrianglesVector()      const { return tris;   }
 
+   inline       std::vector<double>     & getVerticesVector()             { return vertices; }
+   inline       std::vector<int>        & getTrianglesVector()            { return tris;   }
+
    //TODO: decidi il modo di richiamare l'init in modo intelligente
    inline void setVerticesVector (const std::vector<double> _vertices)  {vertices = _vertices;}
    inline void setTrianglesVector(const std::vector<int> _tris)      {tris = _tris;}
@@ -137,6 +140,8 @@ public:
    void updateNormals();
    void updateBoundingBox();
    void exportVerticesToEigen(Eigen::VectorXd & vx, Eigen::VectorXd & vy, Eigen::VectorXd & vz);
+
+   inline BoundingBox getBoundingBox() const { return boundingBox; }
 
 };
 

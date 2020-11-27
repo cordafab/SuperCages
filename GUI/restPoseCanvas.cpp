@@ -253,7 +253,7 @@ void RestPoseCanvas::mouseReleaseEvent(QMouseEvent* e)
       if(controller->isSkeletonSkinningInitialized &&
          controller->isCageSkinningInitialized        )
       {
-         controller->cage->updateNormals();
+         controller->cage->updateCurrentPoseNormals();
          //controller->cage->updateFrames();
       }
 
@@ -286,7 +286,7 @@ void RestPoseCanvas::wheelEvent(QWheelEvent *e)
       controller->cageUpdater->updatePosition();
       controller->cage->characterPoseRefreshed();
       controller->character->updateNormals();
-      controller->cage->updateNormals();
+      controller->cage->updateCurrentPoseNormals();
       //controller->cage->updateFrames();
       controller->character->updateCutVerticesPosition();
       update();

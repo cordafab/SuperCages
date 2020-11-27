@@ -345,7 +345,7 @@ void CageReverser::propagateToRest()
 
 
 
-   const std::vector<double> & oldRestVertices = cage->getRestPoseVerticesVector();
+   const std::vector<double> & oldRestVertices = cage->getRestPoseVertices();
    std::vector<double> newRestVertices(oldRestVertices.size());
    for(unsigned int i=0; i<newRestVertices.size(); ++i)
    {

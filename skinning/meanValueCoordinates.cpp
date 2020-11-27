@@ -61,9 +61,9 @@ void MeanValueCoordinates::clear()
 void MeanValueCoordinates::deform()
 {
    const ulong vertexNumber = character->getNumVertices();
-   const ulong handleNumber = cage->getNumVertices();
-   const std::vector<double> & cageVertices = cage->getActualPoseVerticesVector();
-   const std::vector<double> & restCageVertices = cage->getRestPoseVerticesVector();
+   //const ulong handleNumber = cage->getNumVertices();
+   const std::vector<double> & cageVertices = cage->getCurrentPoseVertices();
+   const std::vector<double> & restCageVertices = cage->getRestPoseVertices();
    std::vector<double> & charVertices = character->getActualPoseVerticesVector();
    std::vector<double> & restCharVertices = character->getRestPoseVerticesVector();
 
@@ -122,8 +122,8 @@ bool MeanValueCoordinates::generateCoords(Weights   * & weights,
 
    std::vector< jm::point3d > cage_vertices( cage->getNumVertices() );
    std::vector< std::vector< int > > cage_triangles( cage->getNumTriangles() );
-   const std::vector<double> & cg3Vertices = cage->getRestPoseVerticesVector();
-   const std::vector<int> & cg3Tris = cage->getTrianglesVector();
+   const std::vector<double> & cg3Vertices = cage->getRestPoseVertices();
+   const std::vector<int> & cg3Tris = cage->getCurrentPoseTriangles();
 
    for( unsigned long v = 0 ; v < cage->getNumVertices() ; ++v )
    {

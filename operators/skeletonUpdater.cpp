@@ -104,7 +104,7 @@ bool SkeletonUpdater::generateSkeletonUpdaterWeights(
    }
 
    std::vector< jm::point3d > cage_vertices( cage->getNumVertices() );
-   const std::vector<double> & cg3cage_vertices = cage->getRestPoseVerticesVector();
+   const std::vector<double> & cg3cage_vertices = cage->getRestPoseVertices();
 
 
    #pragma omp parallel for schedule(static)
@@ -207,7 +207,7 @@ bool SkeletonUpdater::generateSkeletonUpdaterWeights(
 
 void SkeletonUpdater::updatePosition()
 {
-   const std::vector<double> & cageVerticesRest = cage->getRestPoseVerticesVector();
+   const std::vector<double> & cageVerticesRest = cage->getRestPoseVertices();
 
    //#pragma omp parallel for schedule(static)
    for(unsigned long j=0; j<skeleton->getNumNodes(); ++j)

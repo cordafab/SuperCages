@@ -26,7 +26,7 @@ DrawableCage::DrawableCage(const std::vector<double> & vertices ,
 }
 
 bool DrawableCage::create(const std::vector<double> & vertices,
-                          const std::vector<int>    & tris)
+                          const std::vector<int>    & tris     )
 {
     clear();
 
@@ -48,13 +48,13 @@ void DrawableCage::init()
    drawMode       = DRAW_CAGE | DRAW_VERTICES  | DRAW_WIREFRAME;// | DRAW_FRAMES;
 
    //initialize selectedVertices vector with false (all deselected)
-   isVertexSelected.resize(getNumVertices(), false);
-   lastTranslations.resize(getNumVertices()*3,0.0);
+   isVertexSelected.resize(originalRestPose.getNumVertices(), false);
+   lastTranslations.resize(originalRestPose.getNumVertices()*3,0.0);
 
    pickerController = PickerController::get();
 
    //assign PickableIndexes to every vertex
-   for(int i=0; i<getNumVertices(); ++i)
+   for(int i=0; i<originalRestPose.getNumVertices(); ++i)
    {
       int pickableIndex = pickerController->generateIndex(this);
       pickableIndex2Vertex[pickableIndex] = i;
@@ -66,7 +66,7 @@ void DrawableCage::clear()
 {
     Cage::clear();
 
-    for(int i=0; i<getNumVertices(); ++i)
+    for(int i=0; i<originalRestPose.getNumVertices(); ++i)
     {
         pickerController->removeIndex(vertex2PickableIndex[i]);
     }
@@ -93,32 +93,31 @@ void DrawableCage::draw() const
          setSingleLighting();
          glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
          glEnableClientState(GL_VERTEX_ARRAY);
-         glVertexPointer(3, GL_DOUBLE, 0, vertices.data());
+         glVertexPointer(3, GL_DOUBLE, 0, currentPose.getVerticesVector().data()); //TO DO: optimize
 
          glLineWidth(7.0);
          //glColor4f(0.99, 0.85, 0.39, 0.7);
          glColor4f(0.20f, 0.20f, 0.20f, 0.8f);
          //glLineWidth(0.2);
          //glColor4f(0,0,0,0.1);
-         glDrawElements(GL_TRIANGLES, tris.size(), GL_UNSIGNED_INT, tris.data());
+         glDrawElements(GL_TRIANGLES, currentPose.getTrianglesVector().size(), GL_UNSIGNED_INT, currentPose.getTrianglesVector().data()); //TO DO: optimize
 
          glDisableClientState(GL_VERTEX_ARRAY);
          glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       }
 
-      double radius = boundingBox.diagonal()/400.0;
-      //double radius = boundingBox.diagonal()/150.0;
+      double radius = currentPose.getBoundingBox().diagonal()/400.0;
 
       if(drawMode & DRAW_VERTICES)
       {
          setSingleLighting();
-         for(int i=0; i<getNumVertices(); ++i)
+         for(int i=0; i<currentPose.getNumVertices(); ++i)
          {
             if (isVertexSelected[i])
-               drawSphere(getVertex(i), radius, 0.905, 0.305, 0.305);
+               drawSphere(currentPose.getVertex(i), radius, 0.905, 0.305, 0.305);
             else
                //drawSphere(getVertex(i), radius, 0.5, 0.5, 0.5);
-               drawSphere(getVertex(i), radius, 0.99, 0.85, 0.39);
+               drawSphere(currentPose.getVertex(i), radius, 0.99, 0.85, 0.39);
          }
       }
 
@@ -164,25 +163,25 @@ void DrawableCage::drawRest() const
          setSingleLighting();
          glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
          glEnableClientState(GL_VERTEX_ARRAY);
-         glVertexPointer(3, GL_DOUBLE, 0, restPoseVertices.data());
+         glVertexPointer(3, GL_DOUBLE, 0, restPose.getVerticesVector().data()); //TO DO: optimize
 
          //glLineWidth(3.0);
          //glColor3f(0.99, 0.85, 0.39);
          glLineWidth(5.0);
          //glColor4f(0.99, 0.85, 0.39, 0.7);
          glColor4f(0.20f, 0.20f, 0.20f, 0.7f);
-         glDrawElements(GL_TRIANGLES, tris.size(), GL_UNSIGNED_INT, tris.data());
+         glDrawElements(GL_TRIANGLES, restPose.getTrianglesVector().size(), GL_UNSIGNED_INT, restPose.getTrianglesVector().data()); //TO DO: optimize
 
          glDisableClientState(GL_VERTEX_ARRAY);
          glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       }
 
-      double radius = boundingBox.diagonal()/230.0;
+      double radius = restPose.getBoundingBox().diagonal()/230.0;
       //double radius = boundingBox.diagonal()/150.0;
 
       if(drawMode & DRAW_VERTICES){
          setSingleLighting();
-         for(int i=0; i<getNumVertices(); ++i)
+         for(int i=0; i<restPose.getNumVertices(); ++i)
          {
             if (isVertexSelected[i])
                drawSphere(getRestPoseVertex(i), radius, 0.905, 0.305, 0.305);
@@ -225,14 +224,14 @@ void DrawableCage::drawRest() const
 
 void DrawableCage::drawWithNames()
 {
-   double radius = boundingBox.diagonal()/200.0;
+   double radius = currentPose.getBoundingBox().diagonal()/200.0;
 
    if(drawMode & DRAW_VERTICES){
-      for(int i=0; i<getNumVertices(); ++i)
+      for(int i=0; i<currentPose.getNumVertices(); ++i)
       {
          glPushMatrix();
          glPushName(vertex2PickableIndex[i]);
-         drawSphere(getVertex(i), radius, 0.0, 0.0, 1.0);
+         drawSphere(currentPose.getVertex(i), radius, 0.0, 0.0, 1.0);
          glPopName();
          glPopMatrix();
       }
@@ -241,10 +240,10 @@ void DrawableCage::drawWithNames()
 
 void DrawableCage::drawWithNamesRest()
 {
-   double radius = boundingBox.diagonal()/200.0;
+   double radius = restPose.getBoundingBox().diagonal()/200.0;
 
    if(drawMode & DRAW_VERTICES){
-      for(int i=0; i<getNumVertices(); ++i)
+      for(int i=0; i<restPose.getNumVertices(); ++i)
       {
          glPushMatrix();
          glPushName(vertex2PickableIndex[i]);
@@ -257,13 +256,13 @@ void DrawableCage::drawWithNamesRest()
 
 bool DrawableCage::sceneCenter(cg3::Vec3d & center) const
 {
-   center = boundingBox.center();
+   center = currentPose.getBoundingBox().center();
    return true;   //center is a valid value
 }
 
 bool DrawableCage::sceneRadius(double & radius) const
 {
-   radius = boundingBox.diagonal();
+   radius = currentPose.getBoundingBox().diagonal();
    return true;   //center is a valid value
 }
 
@@ -271,14 +270,14 @@ bool DrawableCage::getSelectedObjectsBarycenter(cg3::Point3d & barycenter, const
 {
    std::vector<cg3::Point3d> selectedVerticesPositions;
 
-   for(int i=0; i<getNumVertices(); ++i)
+   for(int i=0; i<currentPose.getNumVertices(); ++i)
    {
       if(isVertexSelected[i])
       {
          if(restPose)
             selectedVerticesPositions.push_back(getRestPoseVertex(i));
          else
-            selectedVerticesPositions.push_back(getVertex(i));
+            selectedVerticesPositions.push_back(currentPose.getVertex(i));
       }
    }
 
@@ -320,18 +319,18 @@ void DrawableCage::translate(const cg3::Vec3d & translation)
 {
    if(activateTransformation)
    {
-      for(unsigned long i=0; i<getNumVertices(); ++i)
+      for(unsigned long i=0; i<currentPose.getNumVertices(); ++i)
       {
          if(isVertexSelected[i])
          {
             lastTranslations[3*i+0] = translation.x();
             lastTranslations[3*i+1] = translation.y();
             lastTranslations[3*i+2] = translation.z();
-            cg3::Vec3d deformedPose = getVertex(i);
+            cg3::Vec3d deformedPose = currentPose.getVertex(i);
 
             cg3::Vec3d newPose = deformedPose + translation;
 
-            setVertex(i,newPose);
+            currentPose.setVertex(i,newPose);
             _refreshCharacterPose = true;
          }
          else
@@ -358,7 +357,7 @@ void DrawableCage::rotateRest(const cg3::dQuaternion & rotation)
       cg3::Point3d rotationCenter;
       getSelectedObjectsBarycenter(rotationCenter, true);
 
-      for(ulong i=0; i<getNumVertices(); ++i)
+      for(ulong i=0; i<currentPose.getNumVertices(); ++i)
       {
          if(isVertexSelected[i])
          {
@@ -391,11 +390,11 @@ void DrawableCage::scale(const int delta)
       if(getSelectedObjectsBarycenter(centerOfScaling))
       {
 
-         for(unsigned long i=0; i<getNumVertices(); ++i)
+         for(unsigned long i=0; i<currentPose.getNumVertices(); ++i)
          {
             if(isVertexSelected[i])
             {
-               cg3::Point3d pos = getVertex(i);
+               cg3::Point3d pos = currentPose.getVertex(i);
                cg3::Vec3d dir = centerOfScaling - pos;
                dir *=0.05;
 
@@ -404,14 +403,14 @@ void DrawableCage::scale(const int delta)
                   lastTranslations[3*i+0] = -dir.x();
                   lastTranslations[3*i+1] = -dir.y();
                   lastTranslations[3*i+2] = -dir.z();
-                  setVertex(i,pos-dir);
+                  currentPose.setVertex(i,pos-dir);
                }
                else
                {
                   lastTranslations[3*i+0] = dir.x();
                   lastTranslations[3*i+1] = dir.y();
                   lastTranslations[3*i+2] = dir.z();
-                  setVertex(i,pos+dir);
+                  currentPose.setVertex(i,pos+dir);
                }
 
                _refreshCharacterPose = true;
@@ -431,7 +430,7 @@ void DrawableCage::translateRest(const cg3::Vec3d &translation)
 {
    if(activateTransformation)
    {
-      for(unsigned long i=0; i<getNumVertices(); ++i)
+      for(unsigned long i=0; i<restPose.getNumVertices(); ++i)
       {
          if(isVertexSelected[i])
          {
@@ -454,7 +453,7 @@ void DrawableCage::scaleRest(const int delta)
       //computer center of scale
       if(getSelectedObjectsBarycenter(centerOfScaling, true))
       {
-         for(unsigned long i=0; i<getNumVertices(); ++i)
+         for(unsigned long i=0; i<restPose.getNumVertices(); ++i)
          {
             if(isVertexSelected[i])
             {

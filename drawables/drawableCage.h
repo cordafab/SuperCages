@@ -25,10 +25,10 @@ public:
 
    DrawableCage();
    DrawableCage(const std::vector<double>   & vertices  ,
-                const std::vector<int>      & tris     );
+                const std::vector<int> & tris     );
 
    bool create  (const std::vector<double>   & vertices  ,
-                 const std::vector<int>      & tris     );
+                 const std::vector<int > & tris     );
 
    ~DrawableCage();
 

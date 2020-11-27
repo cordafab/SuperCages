@@ -294,12 +294,12 @@ void addCageKeyframe()
       {
 
          //cage keyframe
-         const std::vector<double> & baseCage = c->cage->getBasePoseVerticesVector();
-         const std::vector<double> & restCage = c->cage->getRestPoseVerticesVector();
+         const std::vector<double> & originalRestCage = c->cage->getOriginalRestPoseVertices();
+         const std::vector<double> & restCage = c->cage->getRestPoseVertices();
          std::vector<double> cageOffsets(restCage.size());
          for(int i=0; i<restCage.size(); ++i)
          {
-            cageOffsets[i] = restCage[i] - baseCage[i];
+            cageOffsets[i] = restCage[i] - originalRestCage[i];
          }
 
          c->asyncAnimator->addCageKeyframe(t, cageOffsets);

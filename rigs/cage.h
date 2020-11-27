@@ -5,96 +5,102 @@
 #include "common/types.h"
 
 class Cage
-      : public Trimesh
 {
 public:
-   Cage();
-   Cage( const std::vector<double>      & vertices ,
-         const std::vector<int>         & tris     );
+        Cage  ();
+        Cage  (const std::vector<double> & vertices ,
+               const std::vector<int> & tris );
 
-   bool create(const std::vector<double>    & vertices ,
-               const std::vector<int>       & tris     );
+   bool create(const std::vector<double> & vertices ,
+               const std::vector<int> & tris );
 
    void init();
    void clear();
 
-   void updateNormals();
+protected:
 
-   inline const std::vector<double> & getRestPoseVerticesVector() const
+   Trimesh originalRestPose;
+   Trimesh restPose;
+   Trimesh currentPose;
+
+   //TO DO: MOVE TO CAGE REVERSER
+   std::vector<double> lastTranslations;
+
+public:
+
+   void updateCurrentPoseNormals();
+
+   inline int getNumVertices() const
    {
-      return restPoseVertices;
+      return originalRestPose.getNumVertices();
    }
 
-   inline const std::vector<double> & getBasePoseVerticesVector() const
+   inline int getNumTriangles() const
    {
-      return basePoseVertices;   //needed for the animator
+      return originalRestPose.getNumTriangles();
+   }
+
+   inline const std::vector<int> & getCurrentPoseTriangles() const
+   {
+      return currentPose.getTrianglesVector();
+   }
+
+   inline const std::vector<double> & getCurrentPoseVertices() const
+   {
+      return currentPose.getVerticesVector();
+   }
+
+   inline const std::vector<double> & getRestPoseVertices() const
+   {
+      return restPose.getVerticesVector();
+   }
+
+   inline const std::vector<double> & getOriginalRestPoseVertices() const
+   {
+      return originalRestPose.getVerticesVector();
    }
 
    inline cg3::Vec3<double> getRestPoseVertex(unsigned long vId) const
    {
-      unsigned long vIdPtr = vId * 3;
-      //TODO: CHECK_BOUNDS(coords, vid_ptr+2);
-      return cg3::Vec3<double>(
-                  restPoseVertices[vIdPtr + 0],
-                  restPoseVertices[vIdPtr + 1],
-                  restPoseVertices[vIdPtr + 2]
-             );
+      return restPose.getVertex(vId);
    }
 
    inline void setRestPoseVertex(unsigned long vId, cg3::Vec3d newPosition)
    {
-      unsigned long vIdPtr = vId * 3;
-      //TODO: CHECK_BOUNDS(coords, vid_ptr+2);
-      restPoseVertices[vIdPtr + 0] = newPosition.x();
-      restPoseVertices[vIdPtr + 1] = newPosition.y();
-      restPoseVertices[vIdPtr + 2] = newPosition.z();
+      restPose.setVertex(vId, newPosition);
    }
 
    inline cg3::Vec3<double> getRestPoseVertexNormal(unsigned long vId) const
    {
-      unsigned long vIdPtr = vId * 3;
-      //TODO: CHECK_BOUNDS(v_norm, vid_ptr+2);
-      return cg3::Vec3<double>(
-                  restPoseVerticesNormals[vIdPtr + 0],
-                  restPoseVerticesNormals[vIdPtr + 1],
-                  restPoseVerticesNormals[vIdPtr + 2]
-             );
+      return restPose.getVertexNormal(vId);
    }
 
    inline cg3::Vec3<double> getRestPoseTriangleNormal(unsigned long tId) const
    {
-      unsigned long tIdPtr = tId * 3;
-      //TODO: CHECK_BOUNDS(v_norm, vid_ptr+2);
-      return cg3::Vec3<double>(
-                  restPoseTrianglesNormals[tIdPtr + 0],
-                  restPoseTrianglesNormals[tIdPtr + 1],
-                  restPoseTrianglesNormals[tIdPtr + 2]
-             );
+      return restPose.getTriangleNormal(tId);
    }
 
-   inline void setRestPoseVector(const std::vector<double> _vertices){restPoseVertices = _vertices;}
+   inline void setRestPoseVector(const std::vector<double> _vertices){restPose.setVerticesVector(_vertices);}
 
-   inline const std::vector<double> & getActualPoseVerticesVector() const
+   inline const std::vector<double> & getCurrentPoseVerticesVector() const
    {
-      return getVerticesVector();
+      return currentPose.getVerticesVector();
    }
 
-   inline cg3::Vec3<double> getActualPoseVertex(unsigned long vId) const
+   inline cg3::Vec3<double> getCurrentPoseVertex(unsigned long vId) const
    {
-      return getVertex(vId);
+      return currentPose.getVertex(vId);
    }
 
-   inline void setActualPoseVector(const std::vector<double> _vertices){setVerticesVector(_vertices);}
-
-
-   inline void setKeyframe(const std::vector<double> & keyframe)
+   inline void setCurrentPoseVector(const std::vector<double> _vertices)
    {
-      for(unsigned long i=0; i<vertices.size(); ++i)
-      {
-         restPoseVertices[i] = basePoseVertices[i] + keyframe[i];
-      }
+      currentPose.setVerticesVector(_vertices);
    }
 
+   //TO DO: MOVE TO CAGE ANIMATOR
+   void setKeyframe(const std::vector<double> & keyframe);
+
+   //TO DO: MOVE TO CAGE ANIMATOR
    void interpolateKeyframes(const std::vector<double> & keyframeLow,
                              const std::vector<double> & keyframeTop,
                              double a);
@@ -102,20 +108,6 @@ public:
     //TO DO: MOVE TO CAGE REVERSER
    inline const std::vector<double> & getLastTranslations() const
       { return lastTranslations; }
-
-protected:
-
-   std::vector<double> restPoseVertices;
-   std::vector<double> basePoseVertices;
-
-   void updateTrisNormals();
-   void updateVerticesNormals();
-   std::vector<double> restPoseVerticesNormals;
-   std::vector<double> restPoseTrianglesNormals;
-
-   //TO DO: MOVE TO CAGE REVERSER
-   std::vector<double> lastTranslations;
-
 };
 
 #endif // CAGE_H

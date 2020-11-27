@@ -43,7 +43,7 @@ void CoRSkinning::clear()
 
 void CoRSkinning::updateCoRs()
 {
-   const std::vector<double> & vertices = cage->getRestPoseVerticesVector();
+   const std::vector<double> & vertices = cage->getRestPoseVertices();
 
    #pragma omp parallel for schedule(static)
    for(ulong i=0; i<character->getNumVertices(); ++i)
