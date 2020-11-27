@@ -7,12 +7,12 @@
 class Cage
 {
 public:
-        Cage  ();
-        Cage  (const std::vector<double> & vertices ,
-               const std::vector<int> & tris );
+   Cage();
+   Cage(const std::vector<double> & vertices ,
+        const std::vector<int> & tris        );
 
    bool create(const std::vector<double> & vertices ,
-               const std::vector<int> & tris );
+               const std::vector<int> & tris        );
 
    void init();
    void clear();
@@ -23,14 +23,22 @@ protected:
    Trimesh restPose;
    Trimesh currentPose;
 
-   //TO DO: MOVE TO CAGE REVERSER
+   //TO DO: MOVE TO CAGE REVERSER?
    std::vector<double> lastTranslations;
 
 public:
 
-   void updateCurrentPoseNormals();
+   inline void updateCurrentPoseNormals()
+   {
+      currentPose.updateNormals();
+   }
 
-   inline int getNumVertices() const
+   inline void updateRestPoseNormals()
+   {
+      restPose.updateNormals();
+   }
+
+   inline ulong getNumVertices() const
    {
       return originalRestPose.getNumVertices();
    }
@@ -80,11 +88,9 @@ public:
       return restPose.getTriangleNormal(tId);
    }
 
-   inline void setRestPoseVector(const std::vector<double> _vertices){restPose.setVerticesVector(_vertices);}
-
-   inline const std::vector<double> & getCurrentPoseVerticesVector() const
+   inline void setRestPoseVector(const std::vector<double> _vertices)
    {
-      return currentPose.getVerticesVector();
+      restPose.setVerticesVector(_vertices);
    }
 
    inline cg3::Vec3<double> getCurrentPoseVertex(unsigned long vId) const

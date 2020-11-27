@@ -19,16 +19,15 @@ public:
    {
       DRAW_CAGE         = 0x00000001,
       DRAW_VERTICES     = 0x00000002,
-      DRAW_WIREFRAME    = 0x00000004,
-      DRAW_FRAMES       = 0x00000008
+      DRAW_WIREFRAME    = 0x00000004
    };
 
    DrawableCage();
-   DrawableCage(const std::vector<double>   & vertices  ,
-                const std::vector<int> & tris     );
+   DrawableCage(const std::vector<double> & vertices ,
+                const std::vector<int>    & tris     );
 
-   bool create  (const std::vector<double>   & vertices  ,
-                 const std::vector<int > & tris     );
+   bool create  (const std::vector<double> & vertices ,
+                 const std::vector<int >   & tris     );
 
    ~DrawableCage();
 

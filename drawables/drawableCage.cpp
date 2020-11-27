@@ -86,6 +86,10 @@ void DrawableCage::draw() const
 {
    if (drawMode & DRAW_CAGE)
    {
+
+      const std::vector<double> & currentPoseVertices  = currentPose.getVerticesVector();
+      const std::vector<int>    & currentPoseTriangles = currentPose.getTrianglesVector();
+
       if (drawMode & DRAW_WIREFRAME)
       {
          glDisable(GL_LIGHTING);
@@ -93,14 +97,11 @@ void DrawableCage::draw() const
          setSingleLighting();
          glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
          glEnableClientState(GL_VERTEX_ARRAY);
-         glVertexPointer(3, GL_DOUBLE, 0, currentPose.getVerticesVector().data()); //TO DO: optimize
+         glVertexPointer(3, GL_DOUBLE, 0, currentPoseVertices.data());
 
-         glLineWidth(7.0);
-         //glColor4f(0.99, 0.85, 0.39, 0.7);
+         glLineWidth(2.0);
          glColor4f(0.20f, 0.20f, 0.20f, 0.8f);
-         //glLineWidth(0.2);
-         //glColor4f(0,0,0,0.1);
-         glDrawElements(GL_TRIANGLES, currentPose.getTrianglesVector().size(), GL_UNSIGNED_INT, currentPose.getTrianglesVector().data()); //TO DO: optimize
+         glDrawElements(GL_TRIANGLES, currentPoseTriangles.size(), GL_UNSIGNED_INT, currentPoseTriangles.data());
 
          glDisableClientState(GL_VERTEX_ARRAY);
          glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -111,43 +112,13 @@ void DrawableCage::draw() const
       if(drawMode & DRAW_VERTICES)
       {
          setSingleLighting();
-         for(int i=0; i<currentPose.getNumVertices(); ++i)
+         for(ulong i=0; i<currentPose.getNumVertices(); ++i)
          {
             if (isVertexSelected[i])
                drawSphere(currentPose.getVertex(i), radius, 0.905, 0.305, 0.305);
             else
-               //drawSphere(getVertex(i), radius, 0.5, 0.5, 0.5);
                drawSphere(currentPose.getVertex(i), radius, 0.99, 0.85, 0.39);
          }
-      }
-
-      //create a drawFrame fuction in glUtils
-      if (drawMode & DRAW_FRAMES)
-      {
-         /*double length = boundingBox.diagonal()/50.0;
-         for(int i=0; i<getNumVertices(); ++i)
-         {
-            cg3::Frame f = deformedPoseFrames[i];
-            cg3::Vec3d p = f.o();
-            cg3::Vec3d s;
-
-            glDisable(GL_LIGHTING);
-            glShadeModel(GL_FLAT);
-            glBegin(GL_LINES);
-            s = p + (f.u()*length);
-            glColor3f(1.0,0.0,0.0);
-            glVertex3f(p.x(), p.y(), p.z());
-            glVertex3f(s.x(), s.y(), s.z());
-            s = p + (f.v()*length);
-            glColor3f(0.0,1.0,0.0);
-            glVertex3f(p.x(), p.y(), p.z());
-            glVertex3f(s.x(), s.y(), s.z());
-            s = p + (f.w()*length);
-            glColor3f(0.0,0.0,1.0);
-            glVertex3f(p.x(), p.y(), p.z());
-            glVertex3f(s.x(), s.y(), s.z());
-            glEnd();
-         }*/
       }
    }
 }
@@ -156,6 +127,10 @@ void DrawableCage::drawRest() const
 {
    if (drawMode & DRAW_CAGE)
    {
+
+      const std::vector<double> & restPoseVertices  = restPose.getVerticesVector();
+      const std::vector<int>    & restPoseTriangles = restPose.getTrianglesVector();
+
       if (drawMode & DRAW_WIREFRAME)
       {
          glDisable(GL_LIGHTING);
@@ -163,61 +138,27 @@ void DrawableCage::drawRest() const
          setSingleLighting();
          glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
          glEnableClientState(GL_VERTEX_ARRAY);
-         glVertexPointer(3, GL_DOUBLE, 0, restPose.getVerticesVector().data()); //TO DO: optimize
+         glVertexPointer(3, GL_DOUBLE, 0, restPoseVertices.data());
 
-         //glLineWidth(3.0);
-         //glColor3f(0.99, 0.85, 0.39);
-         glLineWidth(5.0);
-         //glColor4f(0.99, 0.85, 0.39, 0.7);
+         glLineWidth(2.0);
          glColor4f(0.20f, 0.20f, 0.20f, 0.7f);
-         glDrawElements(GL_TRIANGLES, restPose.getTrianglesVector().size(), GL_UNSIGNED_INT, restPose.getTrianglesVector().data()); //TO DO: optimize
+         glDrawElements(GL_TRIANGLES, restPoseTriangles.size(), GL_UNSIGNED_INT, restPoseTriangles.data());
 
          glDisableClientState(GL_VERTEX_ARRAY);
          glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       }
 
       double radius = restPose.getBoundingBox().diagonal()/230.0;
-      //double radius = boundingBox.diagonal()/150.0;
 
       if(drawMode & DRAW_VERTICES){
          setSingleLighting();
-         for(int i=0; i<restPose.getNumVertices(); ++i)
+         for(ulong i=0; i<restPose.getNumVertices(); ++i)
          {
             if (isVertexSelected[i])
                drawSphere(getRestPoseVertex(i), radius, 0.905, 0.305, 0.305);
             else
-               //drawSphere(getVertex(i), radius, 0.5, 0.5, 0.5);
                drawSphere(getRestPoseVertex(i), radius, 0.99, 0.85, 0.39);
          }
-      }
-
-      //create a drawFrame fuction in glUtils
-      if (drawMode & DRAW_FRAMES)
-      {
-         /*double length = boundingBox.diagonal()/50.0;
-         for(int i=0; i<getNumVertices(); ++i)
-         {
-            cg3::Frame f = restPoseFrames[i];
-            cg3::Vec3d p = f.o();
-            cg3::Vec3d s;
-
-            glDisable(GL_LIGHTING);
-            glShadeModel(GL_FLAT);
-            glBegin(GL_LINES);
-            s = p + (f.u()*length);
-            glColor3f(1.0,0.0,0.0);
-            glVertex3f(p.x(), p.y(), p.z());
-            glVertex3f(s.x(), s.y(), s.z());
-            s = p + (f.v()*length);
-            glColor3f(0.0,1.0,0.0);
-            glVertex3f(p.x(), p.y(), p.z());
-            glVertex3f(s.x(), s.y(), s.z());
-            s = p + (f.w()*length);
-            glColor3f(0.0,0.0,1.0);
-            glVertex3f(p.x(), p.y(), p.z());
-            glVertex3f(s.x(), s.y(), s.z());
-            glEnd();
-         }*/
       }
    }
 }
@@ -227,11 +168,11 @@ void DrawableCage::drawWithNames()
    double radius = currentPose.getBoundingBox().diagonal()/200.0;
 
    if(drawMode & DRAW_VERTICES){
-      for(int i=0; i<currentPose.getNumVertices(); ++i)
+      for(ulong i=0; i<currentPose.getNumVertices(); ++i)
       {
          glPushMatrix();
          glPushName(vertex2PickableIndex[i]);
-         drawSphere(currentPose.getVertex(i), radius, 0.0, 0.0, 1.0);
+         drawSphere(getCurrentPoseVertex(i), radius, 0.0, 0.0, 1.0);
          glPopName();
          glPopMatrix();
       }
@@ -243,7 +184,7 @@ void DrawableCage::drawWithNamesRest()
    double radius = restPose.getBoundingBox().diagonal()/200.0;
 
    if(drawMode & DRAW_VERTICES){
-      for(int i=0; i<restPose.getNumVertices(); ++i)
+      for(ulong i=0; i<restPose.getNumVertices(); ++i)
       {
          glPushMatrix();
          glPushName(vertex2PickableIndex[i]);
@@ -270,14 +211,14 @@ bool DrawableCage::getSelectedObjectsBarycenter(cg3::Point3d & barycenter, const
 {
    std::vector<cg3::Point3d> selectedVerticesPositions;
 
-   for(int i=0; i<currentPose.getNumVertices(); ++i)
+   for(ulong i=0; i<currentPose.getNumVertices(); ++i)
    {
       if(isVertexSelected[i])
       {
          if(restPose)
             selectedVerticesPositions.push_back(getRestPoseVertex(i));
          else
-            selectedVerticesPositions.push_back(currentPose.getVertex(i));
+            selectedVerticesPositions.push_back(getCurrentPoseVertex(i));
       }
    }
 
@@ -319,14 +260,14 @@ void DrawableCage::translate(const cg3::Vec3d & translation)
 {
    if(activateTransformation)
    {
-      for(unsigned long i=0; i<currentPose.getNumVertices(); ++i)
+      for(unsigned long i=0; i<getNumVertices(); ++i)
       {
          if(isVertexSelected[i])
          {
             lastTranslations[3*i+0] = translation.x();
             lastTranslations[3*i+1] = translation.y();
             lastTranslations[3*i+2] = translation.z();
-            cg3::Vec3d deformedPose = currentPose.getVertex(i);
+            cg3::Vec3d deformedPose = getCurrentPoseVertex(i);
 
             cg3::Vec3d newPose = deformedPose + translation;
 

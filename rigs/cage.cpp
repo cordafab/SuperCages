@@ -63,9 +63,3 @@ void Cage::interpolateKeyframes(const std::vector<double> & keyframeLow,
    }
 }
 
-void Cage::updateCurrentPoseNormals()
-{
-   currentPose.updateNormals();
-}
-
-

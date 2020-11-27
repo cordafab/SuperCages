@@ -87,8 +87,8 @@ public:
    inline void setVerticesVector (const std::vector<double> _vertices)  {vertices = _vertices;}
    inline void setTrianglesVector(const std::vector<int> _tris)      {tris = _tris;}
 
-   inline unsigned long getNumVertices()   const { return vertices.size()/3;  }
-   inline unsigned long getNumTriangles()  const { return tris.size()/3;    }
+   inline ulong getNumVertices()   const { return vertices.size()/3;  }
+   inline ulong getNumTriangles()  const { return tris.size()/3;    }
 
    //TODO: AGGIUNGI I CHECK_BOUNDS PER VERIFICARE CORRETTEZZA INDICI
    inline const std::vector<int> & v2t(unsigned long vId) const { return _v2t[vId]; }
