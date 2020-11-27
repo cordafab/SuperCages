@@ -34,7 +34,7 @@ public:
       return originalRestPose.getNumVertices();
    }
 
-   inline int getNumTriangles() const
+   inline ulong getNumTriangles() const
    {
       return originalRestPose.getNumTriangles();
    }
@@ -52,19 +52,14 @@ public:
       currentPose.setVerticesVector(_vertices);
    }
 
-   inline const std::vector<int> & getCurrentPoseTriangles() const
-   {
-      return currentPose.getTrianglesVector();
-   }
-
    inline cg3::Vec3<double> getCurrentPoseVertex(unsigned long vId) const
    {
       return currentPose.getVertex(vId);
    }
 
-   inline void updateCurrentPoseNormals()
+   inline void setCurrentPoseVertex(unsigned long vId, cg3::Vec3d newPosition)
    {
-      currentPose.updateNormals();
+      currentPose.setVertex(vId, newPosition);
    }
 
 
@@ -98,6 +93,11 @@ public:
       return originalRestPose.getVerticesVector();
    }
 
+   inline const std::vector<int> & getOriginalRestPoseTriangles() const
+   {
+      return currentPose.getTrianglesVector();
+   }
+
 
 
 
@@ -109,7 +109,7 @@ public:
                              const std::vector<double> & keyframeTop,
                              double a);
 
-    //TO DO: MOVE TO CAGE REVERSER
+    //TO DO: MOVE TO CAGE REVERSER?
    inline const std::vector<double> & getLastTranslations() const
       { return lastTranslations; }
 

@@ -286,7 +286,7 @@ void RestPoseCanvas::wheelEvent(QWheelEvent *e)
       controller->cageUpdater->updatePosition();
       controller->cage->characterPoseRefreshed();
       controller->character->updateNormals();
-      controller->cage->updateCurrentPoseNormals();
+      //controller->cage->updateCurrentPoseNormals();
       //controller->cage->updateFrames();
       controller->character->updateCutVerticesPosition();
       update();

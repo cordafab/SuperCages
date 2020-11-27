@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -31,15 +31,7 @@
     </property>
     <addaction name="actionQuit"/>
    </widget>
-   <widget class="QMenu" name="menuQuickLoad">
-    <property name="title">
-     <string>QuickLoad</string>
-    </property>
-    <addaction name="actionSmallHumanoid"/>
-    <addaction name="actionHorse"/>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuQuickLoad"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">

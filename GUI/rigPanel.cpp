@@ -12,10 +12,6 @@ RigPanel::RigPanel(QWidget *parent) :
    ui->loadRig->setIcon(QIcon(QPixmap(":/GUI/icons/fbx.png")));
    ui->loadRig->setStyleSheet("padding:5px; text-align:left;");
    ui->loadRig->setIconSize(QSize(18, 18));
-
-   ui->exportRig->setIcon(QIcon(QPixmap(":/GUI/icons/fbx.png")));
-   ui->exportRig->setStyleSheet("padding:5px; text-align:left;");
-   ui->exportRig->setIconSize(QSize(18, 18));
 }
 
 RigPanel::~RigPanel()
@@ -26,9 +22,4 @@ RigPanel::~RigPanel()
 void RigPanel::on_loadRig_clicked()
 {
    importRig();
-}
-
-void RigPanel::on_exportRig_clicked()
-{
-   exportRig();
 }

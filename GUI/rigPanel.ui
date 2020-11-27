@@ -43,28 +43,12 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>150</width>
+      <width>300</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
      <string>Import Rig</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="exportRig">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>10</y>
-      <width>150</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Export Rig</string>
     </property>
    </widget>
   </widget>

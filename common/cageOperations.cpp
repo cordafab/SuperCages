@@ -92,26 +92,6 @@ void updateCageInfluenceTexture()
 
 }
 
-void saveCageToFile()
-{
-    std::string filename;
-    Controller * c = Controller::get();
-
-    if (openFileSaveDialog(filename, "Save Cage", "3D Meshes (*.obj *.ply)"))
-    {
-        if(c->isCageLoaded)
-        {
-            std::vector<double> v = c->cage->getCurrentPoseVertices();
-            std::vector<int>    f = c->cage->getCurrentPoseTriangles();
-
-            saveMesh(filename.c_str(), v, f);
-        }
-    }
-
-    updateGUI();
-
-}
-
 void switchCageDeformation()
 {
     Controller * c = Controller::get();
