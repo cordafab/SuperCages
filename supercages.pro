@@ -5,24 +5,34 @@ TEMPLATE = app
 
 CONFIG += c++17
 
-#FLAG FOR CUSTOM LIGHTS
+DEFINES += CUSTOM_LIGHTS #FLAG FOR CUSTOM LIGHTS
 
-DEFINES += CUSTOM_LIGHTS
+
+
+
+##LIBS DIRECTORY
+
+unix:!macx{
+    #LIBSPATH = TO DO
+}
+
+macx:{
+    LIBSPATH = /usr/local/opt #On MacOS i suggest the use of Homebrew
+}
 
 
 
 
 ## Eigen
 
-unix:!macx{ # Linux
+unix:!macx{
     #apt install libeigen3-dev
-    INCLUDEPATH    += /usr/include/eigen3
+    INCLUDEPATH += /usr/include/eigen3
 }
 
-macx:{ # Mac
+macx:{
    #brew install eigen
-   INCLUDEPATH += /usr/local/include/eigen3
-   #INCLUDEPATH += /Users/Shared/libs/include/eigen
+   INCLUDEPATH += $${LIBSPATH}/eigen/include/eigen3
 }
 
 
@@ -30,14 +40,13 @@ macx:{ # Mac
 
 ## glm
 
-unix:!macx{ # Linux
+unix:!macx{
    # apt-get install libglm-dev
 }
 
-macx:{ # Mac
-    #brew install eigen
-    INCLUDEPATH += /usr/local/include/glm
-    #INCLUDEPATH += /Users/Shared/libs/include/glm
+macx:{
+    #brew install
+    INCLUDEPATH += $${LIBSPATH}/glm/include
 }
 
 
@@ -45,37 +54,29 @@ macx:{ # Mac
 
 ## gsl
 
-unix:!macx{ # Linux
+unix:!macx{
    # apt-get install libgsl-dev
    LIBS+= -lgsl
    LIBS+= -lgslcblas
 }
 
-macx:{ # Mac
-
+macx:{
     #brew install gsl
-    #INCLUDEPATH += /usr/local/include
-    #LIBS += -L'/usr/local/lib' -lgsl -lgslcblas
-
-
-    LIBS += -L'/Users/Shared/libs/lib/gsl' -lgsl -lgslcblas
-    INCLUDEPATH += /Users/Shared/libs/include/gsl
+    INCLUDEPATH += $${LIBSPATH}/gsl/include
+    LIBS += -L'$${LIBSPATH}/gsl/lib' -lgsl -lgslcblas
 }
 
 
 
 
-## libQGLViewer - Not on brew
+## libQGLViewer
 
-unix:!macx{ # Linux
-
+unix:!macx{
     #apt install libglew-dev
     #apt install libqglviewer-dev-qt5
     #apt install freeglut3-dev
-
     INCLUDEPATH += /usr/include/QGLViewer
     LIBS += /usr/lib/x86_64-linux-gnu/libQGLViewer-qt5.so
-
     LIBS+= -lGLU
     LIBS+= -lglut
     LIBS+= -lGLEW
@@ -83,10 +84,12 @@ unix:!macx{ # Linux
     DEFINES += GL_GLEXT_PROTOTYPES
 }
 
-macx:{ # Mac
-   INCLUDEPATH += /Users/Shared/libs/include/libqglviewer
-   LIBS += -F/Library/Frameworks -framework QGLViewer
-   #DEFINES += CUSTOMSNAPSHOTQGL
+macx:{
+    #IT IS NOT AVAILABLE ON BREW
+    INCLUDEPATH += /Users/Shared/libs/include/libqglviewer
+    LIBS += -F/Library/Frameworks -framework QGLViewer
+
+    #DEFINES += CUSTOMSNAPSHOTQGL
 }
 
 
@@ -94,12 +97,12 @@ macx:{ # Mac
 
 ##Cinolib - Not on brew nor apt
 
-unix:!macx{ # Linux
+unix:!macx{
    INCLUDEPATH    += /libs/include/cinolib
    DEPENDPATH     += /libs/include/cinolib # force recompilation if cinolib
 }
 
-macx:{ # Mac
+macx:{
    INCLUDEPATH    += /Users/Shared/libs/include/cinolib
    DEPENDPATH     += /Users/Shared/libs/include/cinolib # force recompilation if cinolib changes
 }
@@ -109,14 +112,14 @@ macx:{ # Mac
 
 ## OpenMP
 
-unix:!macx{ # Linux
+unix:!macx{
 #   QMAKE_CXXFLAGS += -fopenmp
 #   QMAKE_LFLAGS +=  -fopenmp
 #   QMAKE_CFLAGS_RELEASE += -fopenmp
 #   LIBS += -lgomp -lpthread
 }
 
-macx{ # Mac
+macx{
 #   QMAKE_CXXFLAGS += -Xpreprocessor -fopenmp
 #   INCLUDEPATH +='/libs/include/libomp/libomp'
 #   LIBS += -L'/libs/lib/libomp/libomp' -lomp

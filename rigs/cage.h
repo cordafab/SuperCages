@@ -99,6 +99,7 @@ public:
                              const std::vector<double> & keyframeTop,
                              double a);
 
+    //TO DO: MOVE TO CAGE REVERSER
    inline const std::vector<double> & getLastTranslations() const
       { return lastTranslations; }
 
@@ -112,8 +113,7 @@ protected:
    std::vector<double> restPoseVerticesNormals;
    std::vector<double> restPoseTrianglesNormals;
 
-   //TODO: ELIMINA IMPLEMENTAZIONI DA FILE H E CREA UN CPP DEDICATO
-
+   //TO DO: MOVE TO CAGE REVERSER
    std::vector<double> lastTranslations;
 
 };
