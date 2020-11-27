@@ -26,9 +26,6 @@ Transform::Transform(double rx, double ry, double rz, double tx, double ty, doub
    cg3::Transform T_ry (cg3::dQuaternion(cg3::Vec3d(0.0,1.0,0.0),ry*gradToRad));
    cg3::Transform T_rz (cg3::dQuaternion(cg3::Vec3d(0.0,0.0,1.0),rz*gradToRad));
 
-   //cg3::Transform T_rzy = T_rz.cumulateWith(T_ry);
-   //cg3::Transform T_rzyx = T_rzy.cumulateWith(T_rx);
-
    cg3::Transform T_rzyx = T_rz * T_ry * T_rx;
 
    cg3::Transform t (tx, ty, tz);
@@ -41,15 +38,6 @@ Transform::Transform(dQuaternion r)
    Eigen::Quaterniond rotation(r.s(), r.x(), r.y(), r.z());
 
    transformation = rotation;
-}
-
-Transform::Transform(dQuaternion r, cg3::Vec3d t)
-{
-   /*Eigen::Quaterniond rotation(r.s(), r.x(), r.y(), r.z());
-   Eigen::Vector3d translation(t.x(), t.y(), t.z());
-
-   transformation = rotation;
-   transformation.translation() = translation;*/
 }
 
 Transform::Transform(double mat[16])

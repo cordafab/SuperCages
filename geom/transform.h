@@ -20,7 +20,6 @@ public:
    Transform(double tx, double ty, double tz);
    Transform(double rx, double ry, double rz, double tx, double ty, double tz);
    Transform(cg3::dQuaternion r);
-   Transform(dQuaternion r, cg3::Vec3d t);
    Transform(double mat[16]);
    Transform(cg3::Vec3d col1, cg3::Vec3d col2, cg3::Vec3d col3);
    Transform(cg3::eigenTransformation t); //This is ugly
