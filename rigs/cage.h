@@ -19,24 +19,15 @@ public:
 
 protected:
 
+   //TO DO: Evaluate a simpler and less memory redundant data structure than Trimesh for the three poses?
+   /*Note to self. Remeber that:
+    * - a cage can be also composed of quads (see QMVC)
+    * - a cage may need info about it's normals (see Green Coords) */
    Trimesh originalRestPose;
    Trimesh restPose;
    Trimesh currentPose;
 
-   //TO DO: MOVE TO CAGE REVERSER?
-   std::vector<double> lastTranslations;
-
 public:
-
-   inline void updateCurrentPoseNormals()
-   {
-      currentPose.updateNormals();
-   }
-
-   inline void updateRestPoseNormals()
-   {
-      restPose.updateNormals();
-   }
 
    inline ulong getNumVertices() const
    {
@@ -48,24 +39,45 @@ public:
       return originalRestPose.getNumTriangles();
    }
 
-   inline const std::vector<int> & getCurrentPoseTriangles() const
-   {
-      return currentPose.getTrianglesVector();
-   }
+
+   //Current Pose encapsulation methods
 
    inline const std::vector<double> & getCurrentPoseVertices() const
    {
       return currentPose.getVerticesVector();
    }
 
+   inline void setCurrentPoseVector(const std::vector<double> & _vertices)
+   {
+      currentPose.setVerticesVector(_vertices);
+   }
+
+   inline const std::vector<int> & getCurrentPoseTriangles() const
+   {
+      return currentPose.getTrianglesVector();
+   }
+
+   inline cg3::Vec3<double> getCurrentPoseVertex(unsigned long vId) const
+   {
+      return currentPose.getVertex(vId);
+   }
+
+   inline void updateCurrentPoseNormals()
+   {
+      currentPose.updateNormals();
+   }
+
+
+   //Rest Pose encapsulation methods
+
    inline const std::vector<double> & getRestPoseVertices() const
    {
       return restPose.getVerticesVector();
    }
 
-   inline const std::vector<double> & getOriginalRestPoseVertices() const
+   inline void setRestPoseVector(const std::vector<double> & _vertices)
    {
-      return originalRestPose.getVerticesVector();
+      restPose.setVerticesVector(_vertices);
    }
 
    inline cg3::Vec3<double> getRestPoseVertex(unsigned long vId) const
@@ -88,20 +100,21 @@ public:
       return restPose.getTriangleNormal(tId);
    }
 
-   inline void setRestPoseVector(const std::vector<double> _vertices)
+   inline void updateRestPoseNormals()
    {
-      restPose.setVerticesVector(_vertices);
+      restPose.updateNormals();
    }
 
-   inline cg3::Vec3<double> getCurrentPoseVertex(unsigned long vId) const
+
+   //Original Rest Pose encapsulation methods
+
+   inline const std::vector<double> & getOriginalRestPoseVertices() const
    {
-      return currentPose.getVertex(vId);
+      return originalRestPose.getVerticesVector();
    }
 
-   inline void setCurrentPoseVector(const std::vector<double> _vertices)
-   {
-      currentPose.setVerticesVector(_vertices);
-   }
+
+
 
    //TO DO: MOVE TO CAGE ANIMATOR
    void setKeyframe(const std::vector<double> & keyframe);
@@ -114,6 +127,11 @@ public:
     //TO DO: MOVE TO CAGE REVERSER
    inline const std::vector<double> & getLastTranslations() const
       { return lastTranslations; }
+
+protected:
+
+   //TO DO: MOVE TO CAGE REVERSER?
+   std::vector<double> lastTranslations;
 };
 
 #endif // CAGE_H

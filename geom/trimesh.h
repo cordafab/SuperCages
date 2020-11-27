@@ -84,8 +84,8 @@ public:
    inline       std::vector<int>        & getTrianglesVector()            { return tris;   }
 
    //TODO: decidi il modo di richiamare l'init in modo intelligente
-   inline void setVerticesVector (const std::vector<double> _vertices)  {vertices = _vertices;}
-   inline void setTrianglesVector(const std::vector<int> _tris)      {tris = _tris;}
+   inline void setVerticesVector (const std::vector<double> & _vertices)  {vertices = _vertices;}
+   inline void setTrianglesVector(const std::vector<int> & _tris)         {tris = _tris;}
 
    inline ulong getNumVertices()   const { return vertices.size()/3;  }
    inline ulong getNumTriangles()  const { return tris.size()/3;    }
