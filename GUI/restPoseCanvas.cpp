@@ -253,7 +253,7 @@ void RestPoseCanvas::mouseReleaseEvent(QMouseEvent* e)
       if(controller->isSkeletonSkinningInitialized &&
          controller->isCageSkinningInitialized        )
       {
-         controller->cage->updateCurrentPoseNormals();
+         //controller->cage->updateCurrentPoseNormals();
          //controller->cage->updateFrames();
       }
 

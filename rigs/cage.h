@@ -90,7 +90,7 @@ public:
       restPose.setVertex(vId, newPosition);
    }
 
-   inline cg3::Vec3<double> getRestPoseVertexNormal(unsigned long vId) const
+   /*inline cg3::Vec3<double> getRestPoseVertexNormal(unsigned long vId) const
    {
       return restPose.getVertexNormal(vId);
    }
@@ -98,7 +98,7 @@ public:
    inline cg3::Vec3<double> getRestPoseTriangleNormal(unsigned long tId) const
    {
       return restPose.getTriangleNormal(tId);
-   }
+   }*/
 
    inline void updateRestPoseNormals()
    {
