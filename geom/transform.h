@@ -35,8 +35,6 @@ public:
    Transform cumulateWith(const Transform & t) const;
    Transform inverse() const;
 
-   //Transform scale(double s) const;
-
    cg3::Vec3d applyToPoint(cg3::Vec3d p) const;
    cg3::Vec3d applyToPoint(double x, double y, double z) const;
 
@@ -47,40 +45,17 @@ public:
    inline double & operator() (int x, int y) { return transformation(x,y); }
    inline double operator() (int x, int y) const { return transformation(x,y); }
 
-//   inline const cg3::eigenTransformation & getEigenTransformation() const { return transformation; }
-//   inline cg3::eigenTransformation & getEigenTransformation() { return transformation; }
+   inline const cg3::eigenTransformation & getEigenTransformation() const { return transformation; }
+   inline       cg3::eigenTransformation & getEigenTransformation()       { return transformation; }
 
    Transform operator+(const Transform & other) const;
+   Transform operator*(const Transform & other) const;
    Transform operator*(const double s) const;
 
-
    Transform interpolate(const Transform & other, double a) const;
-
-   /*inline Transform operator+(const Transform other) const
-   {
-      Eigen::Matrix4d a(transformation);
-      Eigen::Matrix4d b(other.transformation);
-      cg3::eigenTransformation res(a+b);
-      return Transform ( res );
-   }*/
-
-   /*inline Transform operator+=(const Transform other) const
-   {
-      Eigen::Matrix4d a(transformation);
-      Eigen::Matrix4d b(other.transformation);
-      cg3::eigenTransformation res(a+b);
-      transformation = res;
-      return res;
-   }*/
-
-
-
 };
 
 std::ostream & operator<< (std::ostream & stream, const Transform & t);
-
-//Transform operator*(const double & s, const Transform & t);
-//Transform operator*(const Transform & t, const double & s);
 
 }
 
