@@ -8,7 +8,6 @@ Cage::Cage()
 
 }
 
-
 Cage::Cage( const std::vector<double>   & vertices ,
             const std::vector<int>      & tris     )
 {
