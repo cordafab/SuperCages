@@ -469,12 +469,6 @@ void GlCanvas::mouseReleaseEvent(QMouseEvent* e)
          controller->character->updateNormals();
       }
 
-      if(controller->isSkeletonSkinningInitialized &&
-            controller->isCageSkinningInitialized        )
-      {
-         //controller->cage->updateCurrentPoseNormals();
-      }
-
       update();
    }
    else

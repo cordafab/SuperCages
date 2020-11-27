@@ -86,10 +86,10 @@ void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Tra
    if(keyframesVersion==2)
    {
       //Compute the local transform for the current pose keyframes
-      for(int i=0; i<skelKeyframes.size(); i++)
+      for(ulong i=0; i<skelKeyframes.size(); i++)
       {
 
-         for(int j=0; j<skelKeyframes[i].size(); j++){
+         for(ulong j=0; j<skelKeyframes[i].size(); j++){
 
             if(nodes[j].getFather()==-1)
             {
@@ -217,39 +217,6 @@ void saveCageAnimationToFile()
                            c->asyncAnimator->getCageKeyframeTimeVector(),
                            c->asyncAnimator->getCageKeyframeVector());
       }
-   }
-}
-
-void quickLoadSkelAnimation(const char * filename)
-{
-   /*Controller * c = Controller::get();
-
-   if(c->isAnimatorInitialized)
-   {
-      std::vector<double> t;
-      std::vector<std::vector<cg3::Transform>> skelKeyframes;
-
-      loadSkelAnimation(filename,
-                        t,
-                        skelKeyframes);
-
-      c->asyncAnimator->loadSkelAnimation(t,skelKeyframes);
-   }*/
-}
-
-void quickLoadCageAnimation(const char * filename)
-{
-   Controller * c = Controller::get();
-
-   if(c->isAnimatorInitialized)
-   {
-      std::vector<double> t;
-      std::vector<std::vector<double>> cageKeyframes;
-
-      loadCageAnimation(filename,
-                        t,
-                        cageKeyframes);
-      c->asyncAnimator->loadCageAnimation(t,cageKeyframes);
    }
 }
 
