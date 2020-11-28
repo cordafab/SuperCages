@@ -60,7 +60,7 @@ void Trimesh::buildAdjacency()
    std::set<edge>     edges;
    std::map<edge,int> edge2tri;
 
-   for(int tId=0; tId<getNumTriangles(); ++tId)
+   for(ulong tId=0; tId<getNumTriangles(); ++tId)
    {
       int tIdPtr = tId * 3;
       for(int i=0; i<3; ++i)
@@ -235,7 +235,7 @@ void Trimesh::updateVerticesNormals()
 void Trimesh::updateBoundingBox()
 {
    boundingBox.clear();
-   for(int vId=0; vId<getNumVertices(); ++vId)
+   for(ulong vId=0; vId<getNumVertices(); ++vId)
    {
       cg3::Vec3<double> v = getVertex(vId);
       boundingBox.min = boundingBox.min.min(v);

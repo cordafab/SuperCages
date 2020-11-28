@@ -1,8 +1,8 @@
 #include "skeletonUpdater.h"
 
-#include "external/JM/point3.h"
-#include "external/JM/MEC.h"
-#include "external/JM/MVCoordinates3D.h"
+#include "_external/JM/point3.h"
+#include "_external/JM/MEC.h"
+#include "_external/JM/MVCoordinates3D.h"
 
 SkeletonUpdater::SkeletonUpdater()
 {
@@ -162,9 +162,9 @@ bool SkeletonUpdater::generateSkeletonUpdaterWeights(
       {
          //Express the skeleton nodes as a linear combination of the cage vertices:
          std::vector< double > jointWeightsInvalid( cage->getNumVertices() , 0.0 );
-         for(int c = 0; c < cage->getNumVertices(); ++c)
+         for(ulong c = 0; c < cage->getNumVertices(); ++c)
          {
-            for(int v = 0; v < character->getNumVertices(); ++v)
+            for(ulong v = 0; v < character->getNumVertices(); ++v)
             {
                jointWeightsInvalid[c] += weightPrior[v] * cageWeights->getWeight(c,v);
             }
@@ -183,9 +183,9 @@ bool SkeletonUpdater::generateSkeletonUpdaterWeights(
             std::cout << "MEC hass failed with the LBS derived prior. Computation without it" << std::endl;
             jointWeightsInvalid.clear();
             jointWeightsInvalid.resize(cage->getNumVertices() , 0.0 );
-            for(int c = 0; c < cage->getNumVertices(); ++c)
+            for(ulong c = 0; c < cage->getNumVertices(); ++c)
             {
-               for(int v = 0; v < character->getNumVertices(); ++v)
+               for(ulong v = 0; v < character->getNumVertices(); ++v)
                {
                   jointWeightsInvalid[c] += mvcoords[v] * cageWeights->getWeight(c,v);
                }
@@ -193,7 +193,7 @@ bool SkeletonUpdater::generateSkeletonUpdaterWeights(
             mecStats = MEC::computeCoordinates< jm::mat33d >( jmJointJ , cage_vertices , jointWeightsInvalid , jointWeights , 100 , 50 , 0.001 );
          }
 
-         for(int c = 0; c < cage->getNumVertices(); ++c)
+         for(ulong c = 0; c < cage->getNumVertices(); ++c)
          {
             skeletonUpdaterWeights->setWeight(c,j,jointWeights[c]);
          }
@@ -311,7 +311,7 @@ bool SkeletonUpdater::generateSkeletonUpdaterWeights(Weights   * & skeletonUpdat
       {
          std::vector< double > charSkelWeights( character->getNumVertices() , 0.0 );
          MEC::computeCoordinates< jm::mat33d >( jmJointJ , mesh_vertices , weightPrior , charSkelWeights , 100 , 50 , 0.001 );
-         for(int v = 0; v < character->getNumVertices(); ++v)
+         for(ulong v = 0; v < character->getNumVertices(); ++v)
          {
             skeletonUpdaterWeights->setWeight(v,j,charSkelWeights[v]);
          }

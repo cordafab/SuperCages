@@ -1,7 +1,7 @@
 #include "meanValueCoordinates.h"
 
-#include "external/JM/point3.h"
-#include "external/JM/MVCoordinates3D.h"
+#include "_external/JM/point3.h"
+#include "_external/JM/MVCoordinates3D.h"
 
 MeanValueCoordinates::MeanValueCoordinates()
 {

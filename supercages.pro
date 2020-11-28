@@ -183,9 +183,9 @@ HEADERS = \
     skinning/noCageSkinning.h \
     common/animatorOperations.h \
     GUI/restPoseCanvas.h \
-    external/JM/MEC.h \
-    external/JM/point3.h \
-    external/JM/MVCoordinates3D.h \
+    _external/JM/MEC.h \
+    _external/JM/point3.h \
+    _external/JM/MVCoordinates3D.h \
     GUI/rigPanel.h \
     common/rigOperations.h \
     animation/asyncAnimator.h \

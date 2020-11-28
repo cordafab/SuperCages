@@ -51,11 +51,11 @@ void updateSkeletonInfluenceTexture(bool renderOnlyTheFather)
       {
          //Rendering with "Forward selection"
          const std::vector<bool> isNodeSelected = c->skeleton->getSelectedNodes();
-         for(int i=0; i < isNodeSelected.size(); i++)
+         for(ulong i=0; i < isNodeSelected.size(); i++)
          {
             if(isNodeSelected[i])
             {
-               for(int j=0; j<c->character->getNumVertices();j++){
+               for(ulong j=0; j<c->character->getNumVertices();j++){
                   tex1D[j] += c->skeletonWeights->getWeight(i,j);
                   if (tex1D[j]>0.99) tex1D[j]=0.99;
                   if (tex1D[j]<0.01) tex1D[j]=0.01;
@@ -69,7 +69,7 @@ void updateSkeletonInfluenceTexture(bool renderOnlyTheFather)
          int i = c->skeleton->getSelectedFatherNode();
          if(i!=-1)
          {
-            for(int j=0; j<c->character->getNumVertices();j++){
+            for(ulong j=0; j<c->character->getNumVertices();j++){
                float w = c->skeletonWeights->getWeight(i,j);
                tex1D[j] += w;
                if (tex1D[j]>0.99){ tex1D[j]=0.99; }
@@ -97,10 +97,10 @@ void updateSkeletonUpdaterInfluenceTexture()
       int i = c->skeleton->getSelectedFatherNode();
       if(i!=-1)
       {
-         for(int j=0; j<c->character->getNumVertices();j++)
+         for(ulong j=0; j<c->character->getNumVertices();j++)
          {
-            float w = 0.0;
-            for(int h=0; h<c->cage->getNumVertices(); ++h)
+
+            for(ulong h=0; h<c->cage->getNumVertices(); ++h)
             {
                //the skeleton is influenced by the cage, but the texture refers to the char skin
                tex1D[j] += c->skeletonUpdaterWeights->getWeight(h,i) * c->cageWeights->getWeight(h,j);
@@ -108,15 +108,15 @@ void updateSkeletonUpdaterInfluenceTexture()
 
          }
          double max = 0.000000001;
-         for(int j=0; j<tex1D.size(); ++j)
+         for(ulong j=0; j<tex1D.size(); ++j)
          {
             if(tex1D[j] > max) max = tex1D[j];
          }
-         for(int j=0; j<tex1D.size(); ++j)
+         for(ulong j=0; j<tex1D.size(); ++j)
          {
             tex1D[j] /= max;
          }
-         for(int j=0; j<tex1D.size(); ++j)
+         for(ulong j=0; j<tex1D.size(); ++j)
          {
             if (tex1D[j]>0.99){ tex1D[j]=0.99; }
             if (tex1D[j]<0.01){ tex1D[j]=0.01; }
@@ -192,7 +192,7 @@ void initializeSkeletonUpdater()
 void addFakeBones(Skeleton * skeleton) //Is it necessary?
 {
    std::vector<SkeletonNode> nodesCopy = skeleton->getNodesVector();
-   for(int i=0; i<nodesCopy.size(); ++i)
+   for(ulong i=0; i<nodesCopy.size(); ++i)
    {
       if(nodesCopy[i].getNext().size()==0)
       {

@@ -90,10 +90,10 @@ void saveWeights(const char    * filename,
       exit(-1);
    }
 
-   for( int i = 0; i < weights->getNumberOfVertices(); i++ )
+   for(ulong i = 0; i < weights->getNumberOfVertices(); i++)
    {
 
-      for( int j = 0; j < weights->getNumberOfHandles(); j++ )
+      for(ulong j = 0; j < weights->getNumberOfHandles(); j++)
       {
          double w = weights->getWeight(j,i);
          if(w != 0.0)
