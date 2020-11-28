@@ -161,6 +161,7 @@ public:
        return false;
    }
 
+   //TO DO: Move this in a separate file to delete Eigen dependency?
    bool computeIntersectionWithLine(const Vec3<T> & v1,
                                     const Vec3<T> & v2,
                                           Vec3<T> & intersection)

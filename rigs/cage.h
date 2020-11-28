@@ -2,7 +2,7 @@
 #define CAGE_H
 
 #include "common/types.h"
-#include "geom/trimesh.h"
+#include "mesh/trimesh.h"
 
 class Cage
 {

@@ -135,7 +135,7 @@ macx{
 HEADERS = \
     GUI/glCanvas.h \
     GUI/mainWindow.h \
-    geom/trimesh.h \
+    mesh/trimesh.h \
     geom/boundingBox.h \
     geom/vec3.h \
     geom/edge.h \
@@ -150,7 +150,7 @@ HEADERS = \
     drawables/pickerController.h \
     drawables/pickableObject.h \
     geom/plane.h \
-    math/dualQuaternion.h \
+    geom/dualQuaternion.h \
     rigs/skeleton.h \
     drawables/drawableSkeleton.h \
     geom/transform.h \
@@ -177,7 +177,7 @@ HEADERS = \
     GUI/toolsPanel.h \
     common/characterOperations.h \
     math/leastSquareSolver.h \
-    math/quaternion.h \
+    geom/quaternion.h \
     geom/ray.h \
     skinning/dualQuaternionSkinning.h \
     skinning/noCageSkinning.h \
@@ -198,7 +198,6 @@ SOURCES = \
     main.cpp \
     GUI/glCanvas.cpp \
     GUI/mainWindow.cpp \
-    geom/boundingBox.cpp \
     drawables/drawableObject.cpp \
     drawables/drawableTrimesh.cpp \
     common/importFiles.cpp \
@@ -226,7 +225,7 @@ SOURCES = \
     GUI/cagePanel.cpp \
     GUI/skeletonPanel.cpp \
     common/exportFiles.cpp \
-    geom/trimesh.cpp \
+    mesh/trimesh.cpp \
     rigs/cage.cpp \
     rigs/character.cpp \
     drawables/drawableCharacter.cpp \

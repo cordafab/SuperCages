@@ -5,7 +5,7 @@
 
 #include "common/types.h"
 #include "geom/vec3.h"
-#include "math/quaternion.h"
+#include "geom/quaternion.h"
 
 #ifdef EIGEN_AVAILABLE
 #include "Eigen/Geometry"

@@ -22,7 +22,7 @@
 #include "Eigen/Eigen"
 #include "QGLViewer/vec.h"
 #include "geom/plane.h"
-#include "math/quaternion.h"
+#include "geom/quaternion.h"
 #include "QGLViewer/manipulatedCameraFrame.h"
 #include "operators/cageUpdater.h"
 #include "operators/skeletonUpdater.h"

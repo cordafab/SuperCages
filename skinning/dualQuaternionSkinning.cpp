@@ -1,5 +1,5 @@
 #include "dualQuaternionSkinning.h"
-#include "math/dualQuaternion.h"
+#include "geom/dualQuaternion.h"
 
 DualQuaternionSkinning::DualQuaternionSkinning()
 {

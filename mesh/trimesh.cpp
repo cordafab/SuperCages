@@ -1,4 +1,4 @@
-#include "geom/trimesh.h"
+#include "mesh/trimesh.h"
 
 Trimesh::Trimesh()
 {
