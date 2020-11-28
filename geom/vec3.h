@@ -5,10 +5,8 @@
 #include <cfloat>
 #include <algorithm>
 #include <iostream>
-#include <common/types.h>
 
-//for cinolib conversion
-//#include <cinolib/geometry/vec3.h>
+#include "common/types.h"
 
 namespace cg3 {
 
@@ -238,12 +236,6 @@ public:
                std::max(this->_z, other._z)
              );
    }
-
-   /*inline operator cinolib::vec3<T>() const
-   {
-      return cinolib::vec3<T>(_x, _y, _z);
-   }*/
-
 };
 
 template<typename T>

@@ -316,7 +316,6 @@ void drawSelectionRectangle(int top, int bottom, int left, int right)
 }
 
 void initLighting () {
-#ifdef CUSTOM_LIGHTS
    GLfloat light_position0[4] = {0, 0, 50, 0};
    GLfloat light_position1[4] = {52, 16, 50, 0};
    GLfloat light_position2[4] = {26, 48, 50, 0};
@@ -347,11 +346,9 @@ void initLighting () {
    glLightfv (GL_LIGHT4, GL_SPOT_DIRECTION, direction4);
    glLightfv (GL_LIGHT4, GL_DIFFUSE, color4);
    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, ambient);
-#endif
 }
 
 void initMaterial () {
-#ifdef CUSTOM_LIGHTS
    GLfloat material_color[4] = {1,1,1,1.0f};
    GLfloat material_specular[4] = {0.85,0.85,0.85,1.0};
    GLfloat material_ambient[4] = {0.0,0.0,0.0,0.0};
@@ -359,11 +356,9 @@ void initMaterial () {
    glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, material_color);
    glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, material_ambient);
    glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, 128.0f);
-#endif
 }
 
 void initInverseMaterial () {
-#ifdef CUSTOM_LIGHTS
    GLfloat material_color[4] = {0.0, 0.0, 0.0, 1.0f};
    GLfloat material_specular[4] = {0.0,0.0,0.0,1.0};
    GLfloat material_ambient[4] = {0.0,0.0,0.0,0.0};
@@ -371,36 +366,29 @@ void initInverseMaterial () {
    glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, material_color);
    glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, material_ambient);
    glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, 0);
-#endif
 }
 
 void setSingleLighting () {
-#ifdef CUSTOM_LIGHTS
    glEnable (GL_LIGHT0);
    glDisable (GL_LIGHT1);
    glDisable (GL_LIGHT2);
    glDisable (GL_LIGHT3);
    glEnable (GL_LIGHT4);
-#endif
 }
 
 void setMultiLighting () {
-#ifdef CUSTOM_LIGHTS
    glDisable (GL_LIGHT0);
    glEnable (GL_LIGHT1);
    glEnable (GL_LIGHT2);
    glEnable (GL_LIGHT3);
    glDisable (GL_LIGHT4);
-#endif
 }
 
 void disableLighting ()
 {
-#ifdef CUSTOM_LIGHTS
    glDisable (GL_LIGHT0);
    glDisable (GL_LIGHT1);
    glDisable (GL_LIGHT2);
    glDisable (GL_LIGHT3);
    glDisable (GL_LIGHT4);
-#endif
 }

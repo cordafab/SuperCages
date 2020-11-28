@@ -1,11 +1,15 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "Eigen/Geometry"
+#include <vector>
+
+#include "common/types.h"
 #include "geom/vec3.h"
 #include "math/quaternion.h"
-#include "common/types.h"
-#include <vector>
+
+#ifdef EIGEN_AVAILABLE
+#include "Eigen/Geometry"
+#endif
 
 namespace cg3 {
 

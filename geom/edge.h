@@ -3,8 +3,6 @@
 
 #include <algorithm>
 
-//CODE FROM CAGELAB
-
 typedef std::pair<int,int> edge;
 
 inline edge uniqueEdge(int v0, int v1)

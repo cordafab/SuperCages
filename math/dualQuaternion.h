@@ -1,21 +1,17 @@
 #ifndef DUALQUATERNIONS_H
 #define DUALQUATERNIONS_H
 
+#include <cmath>
+
 #include "geom/vec3.h"
 #include "math/quaternion.h"
 #include "geom/transform.h"
-#include <cmath>
+
 
 namespace cg3 {
 
-/* Additional infos on http://rodolphe-vaillant.fr/?e=29
- * Thanks Rodolphe
- *
- * TODO:
- * riorganizza il codice per gestire la normalizzazione nei costruttori
- *
- *
- */
+// Additional infos on http://rodolphe-vaillant.fr/?e=29
+// Thanks Rodolphe!
 
 template<class T> class DualQuaternion
 {

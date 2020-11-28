@@ -8,9 +8,6 @@ CONFIG += c++17
 CONFIG += sdk_no_version_check #Disable Warnings with Qt 5.15 and MacOS 11
 
 
-DEFINES += CUSTOM_LIGHTS #FLAG FOR CUSTOM LIGHTS
-
-
 
 
 ##LIBS DIRECTORY
@@ -31,11 +28,13 @@ macx:{
 unix:!macx{
     #apt install libeigen3-dev
     INCLUDEPATH += /usr/include/eigen3
+    DEFINES += EIGEN_AVAILABLE
 }
 
 macx:{
    #brew install eigen
    INCLUDEPATH += $${LIBSPATH}/eigen/include/eigen3
+   DEFINES += EIGEN_AVAILABLE
 }
 
 

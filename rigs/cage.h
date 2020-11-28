@@ -1,8 +1,8 @@
 #ifndef CAGE_H
 #define CAGE_H
 
-#include "geom/trimesh.h"
 #include "common/types.h"
+#include "geom/trimesh.h"
 
 class Cage
 {

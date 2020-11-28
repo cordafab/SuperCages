@@ -1,6 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include "common/types.h"
 #include "geom/trimesh.h"
 
 class Character

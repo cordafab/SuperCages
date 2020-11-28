@@ -1,11 +1,14 @@
 #ifndef PLANE_H
 #define PLANE_H
 
+#include <vector>
+
 #include "geom/vec3.h"
 
+#ifdef EIGEN_AVAILABLE
 #include "Eigen/Geometry"
 #include "Eigen/Core"
-#include <vector>
+#endif
 
 namespace cg3 {
 

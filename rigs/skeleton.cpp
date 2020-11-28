@@ -2,7 +2,6 @@
 
 #include <stack>
 
-
 SkeletonNode::SkeletonNode(      std::string      nodeName,
                                  int              father,
                            const cg3::Transform & localT,

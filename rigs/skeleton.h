@@ -5,7 +5,6 @@
 #include <string>
 
 #include "common/types.h"
-
 #include "geom/transform.h"
 #include "geom/boundingBox.h"
 

@@ -3,8 +3,6 @@
 
 #include "geom/vec3.h"
 
-//CODE FROM CAGELAB
-
 class BoundingBox
 {
 public:

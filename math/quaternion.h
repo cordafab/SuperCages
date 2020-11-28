@@ -1,8 +1,9 @@
 #ifndef QUATERNION_H
 #define QUATERNION_H
 
-#include "geom/vec3.h"
 #include <cmath>
+
+#include "geom/vec3.h"
 
 namespace cg3 {
 

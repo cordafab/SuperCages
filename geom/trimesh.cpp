@@ -1,7 +1,5 @@
 #include "geom/trimesh.h"
 
-//METHODS DEFINITION
-
 Trimesh::Trimesh()
 {
 
@@ -245,6 +243,7 @@ void Trimesh::updateBoundingBox()
    }
 }
 
+#ifdef EIGEN_AVAILABLE
 void Trimesh::exportVerticesToEigen(Eigen::VectorXd & vx,
                                     Eigen::VectorXd & vy,
                                     Eigen::VectorXd & vz)
@@ -264,3 +263,4 @@ void Trimesh::exportVerticesToEigen(Eigen::VectorXd & vx,
    /*v = Eigen::Map<Eigen::VectorXd, Eigen::Unaligned>
          (vertices.data(), vertices.size());*/
 }
+#endif
