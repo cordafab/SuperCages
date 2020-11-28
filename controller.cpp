@@ -27,7 +27,7 @@ Controller::Controller()
 
    asyncAnimator                          = nullptr;
 
-   cageTranslator                         = nullptr;
+   cageReverser                           = nullptr;
    cageUpdater                            = nullptr;
    skeletonUpdater                        = nullptr;
 

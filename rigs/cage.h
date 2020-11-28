@@ -23,6 +23,7 @@ protected:
    /*Note to self. Remeber that:
     * - a cage can be also composed of quads (see QMVC)
     * - a cage may need info about it's normals (see Green Coords) */
+
    Trimesh originalRestPose;
    Trimesh restPose;
    Trimesh currentPose;

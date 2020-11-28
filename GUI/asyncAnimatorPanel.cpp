@@ -194,7 +194,7 @@ void AsyncAnimatorPanel::on_nextSkelKeyframe_clicked()
 {
    setNextSkelKeyframe();
    Controller * c = Controller::get();
-   c->cageTranslator->skeletonEdited();
+   c->cageReverser->skeletonEdited();
 }
 
 void AsyncAnimatorPanel::on_nextCageKeyframe_clicked()
@@ -234,7 +234,7 @@ void AsyncAnimatorPanel::on_skelKeyframeList_itemClicked(QListWidgetItem *item)
    setSkelKeyframe(keyFrameIndex);
    Controller * c = Controller::get();
    c->glCanvas->runSkinningPipeline();
-   c->cageTranslator->skeletonEdited();
+   c->cageReverser->skeletonEdited();
    c->glCanvas->updateGL();
 }
 

@@ -57,7 +57,7 @@ private:
    AsyncAnimator                asyncAnimator;
 
 // SuperCages
-   CageReverser               cageTranslator;
+   CageReverser                 cageReverser;
    CageUpdater                  cageUpdater;
    SkeletonUpdater              skeletonUpdater;
 

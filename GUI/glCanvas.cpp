@@ -381,7 +381,7 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
 
             if(controller->isCageUpdaterActive)
             {
-               controller->cageTranslator->skeletonEdited();
+               controller->cageReverser->skeletonEdited();
                controller->cageUpdater->updatePosition();
             }
 
@@ -398,7 +398,7 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
             //Check the difference between the user C' and CUPD-C'
             std::vector<double> c1v (controller->cage->getCurrentPoseVertices());
 
-            controller->cageTranslator->propagateToRest();
+            controller->cageReverser->propagateToRest();
             controller->cageSkinning->deform();
 
             if(controller->skeletonSkinning == controller->cor)
@@ -483,7 +483,7 @@ void GlCanvas::wheelEvent(QWheelEvent *e)
       //potrebbe creare bug se uso la rotellina mentre ruoto skel/cage
       scalePickableObjects(e->delta());
 
-      controller->cageTranslator->propagateToRest();
+      controller->cageReverser->propagateToRest();
       controller->cageSkinning->deform();
 
       if(controller->skeletonSkinning == controller->cor)
@@ -517,7 +517,7 @@ void GlCanvas::keyPressEvent(QKeyEvent *e)
    {
    case Qt::Key_P:
       controller->asyncAnimator->rewindAnimator();
-      if(controller->isCageSkinningInitialized) controller->cageTranslator->skeletonEdited();
+      if(controller->isCageSkinningInitialized) controller->cageReverser->skeletonEdited();
       if(controller->isAnimatorActivated)
       {
          controller->skeleton->resetRootMotion();

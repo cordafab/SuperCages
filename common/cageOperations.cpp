@@ -57,7 +57,7 @@ void clearCage()
    c->isCageUpdaterActive = false;
    c->cageUpdater->clear();
 
-   c->cageTranslator->clear();
+   c->cageReverser->clear();
    c->selectedVerticesForInversion.clear();
 
    updateGUI();
@@ -133,7 +133,7 @@ void initializeCageUpdater()
             c->cageUpdater->create(c->cageWeights,
                                              c->character,
                                              c->cage);
-            c->cageTranslator->create(c->character,
+            c->cageReverser->create(c->character,
                                                    c->cage,
                                                    c->skeleton,
                                                    c->skeletonUpdaterWeights,
@@ -150,7 +150,7 @@ void initializeCageUpdater()
             std::cout << "  initializeCageUpdater  :  new CageUpdater  IS OK" << std::endl;
 
             std::cout << "  initializeCageUpdater  :  new CageTranslator" << std::endl;
-            c->cageTranslator->create(c->character,
+            c->cageReverser->create(c->character,
                                                    c->cage,
                                                    c->skeleton,
                                                    c->skeletonUpdaterWeights,
