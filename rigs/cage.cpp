@@ -30,7 +30,7 @@ bool Cage::create(const std::vector<double> & vertices ,
 
 void Cage::init()
 {
-
+   lastTranslations.resize(originalRestPose.getNumVertices()*3, 0.0);
 }
 
 void Cage::clear()

@@ -224,6 +224,11 @@ void drawDiamond(cg3::Vec3d center, double radius, float r, float g, float b, bo
 
 void drawSphere(cg3::Vec3d center, double radius, float r, float g, float b, bool wireframe)
 {
+   drawSphere(center.x(), center.y(), center.z(), radius, r, g, b, wireframe);
+}
+
+void drawSphere(double x, double y, double z, double radius, float r, float g, float b, bool wireframe)
+{
    if(wireframe)
    {
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -238,7 +243,7 @@ void drawSphere(cg3::Vec3d center, double radius, float r, float g, float b, boo
    }
 
    glPushMatrix();
-   glTranslated(center.x(), center.y(), center.z());
+   glTranslated(x, y, z);
    glColor3f(r, g, b);
    GLUquadric *sphere = gluNewQuadric();
    gluQuadricOrientation(sphere,GLU_OUTSIDE);

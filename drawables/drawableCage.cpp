@@ -49,12 +49,11 @@ void DrawableCage::init()
 
    //initialize selectedVertices vector with false (all deselected)
    isVertexSelected.resize(originalRestPose.getNumVertices(), false);
-   lastTranslations.resize(originalRestPose.getNumVertices()*3,0.0);
 
    pickerController = PickerController::get();
 
    //assign PickableIndexes to every vertex
-   for(int i=0; i<originalRestPose.getNumVertices(); ++i)
+   for(ulong i=0; i<originalRestPose.getNumVertices(); ++i)
    {
       int pickableIndex = pickerController->generateIndex(this);
       pickableIndex2Vertex[pickableIndex] = i;
@@ -79,14 +78,12 @@ void DrawableCage::clear()
     vertex2PickableIndex.clear();
     isVertexSelected.clear();
     selectedVertices.clear();
-    lastTranslations.clear();
 }
 
 void DrawableCage::draw() const
 {
    if (drawMode & DRAW_CAGE)
    {
-
       const std::vector<double> & currentPoseVertices  = currentPose.getVerticesVector();
       const std::vector<int>    & currentPoseTriangles = currentPose.getTrianglesVector();
 
@@ -107,7 +104,7 @@ void DrawableCage::draw() const
          glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       }
 
-      double radius = currentPose.getBoundingBox().diagonal()/400.0;
+      double radius = currentPose.getBoundingBox().diagonal()/230.0;
 
       if(drawMode & DRAW_VERTICES)
       {
@@ -115,9 +112,9 @@ void DrawableCage::draw() const
          for(ulong i=0; i<currentPose.getNumVertices(); ++i)
          {
             if (isVertexSelected[i])
-               drawSphere(currentPose.getVertex(i), radius, 0.905, 0.305, 0.305);
+               drawSphere(currentPoseVertices[i*3+0], currentPoseVertices[i*3+1], currentPoseVertices[i*3+2], radius, 0.905, 0.305, 0.305);
             else
-               drawSphere(currentPose.getVertex(i), radius, 0.99, 0.85, 0.39);
+               drawSphere(currentPoseVertices[i*3+0], currentPoseVertices[i*3+1], currentPoseVertices[i*3+2], radius, 0.99, 0.85, 0.39);
          }
       }
    }
@@ -141,7 +138,7 @@ void DrawableCage::drawRest() const
          glVertexPointer(3, GL_DOUBLE, 0, restPoseVertices.data());
 
          glLineWidth(2.0);
-         glColor4f(0.20f, 0.20f, 0.20f, 0.7f);
+         glColor4f(0.20f, 0.20f, 0.20f, 0.8f);
          glDrawElements(GL_TRIANGLES, restPoseTriangles.size(), GL_UNSIGNED_INT, restPoseTriangles.data());
 
          glDisableClientState(GL_VERTEX_ARRAY);
@@ -155,9 +152,9 @@ void DrawableCage::drawRest() const
          for(ulong i=0; i<restPose.getNumVertices(); ++i)
          {
             if (isVertexSelected[i])
-               drawSphere(getRestPoseVertex(i), radius, 0.905, 0.305, 0.305);
+               drawSphere(restPoseVertices[i*3+0], restPoseVertices[i*3+1], restPoseVertices[i*3+2], radius, 0.905, 0.305, 0.305);
             else
-               drawSphere(getRestPoseVertex(i), radius, 0.99, 0.85, 0.39);
+               drawSphere(restPoseVertices[i*3+0], restPoseVertices[i*3+1], restPoseVertices[i*3+2], radius, 0.99, 0.85, 0.39);
          }
       }
    }
@@ -166,13 +163,14 @@ void DrawableCage::drawRest() const
 void DrawableCage::drawWithNames()
 {
    double radius = currentPose.getBoundingBox().diagonal()/200.0;
+   const std::vector<double> & currentPoseVertices  = currentPose.getVerticesVector();
 
    if(drawMode & DRAW_VERTICES){
       for(ulong i=0; i<currentPose.getNumVertices(); ++i)
       {
          glPushMatrix();
          glPushName(vertex2PickableIndex[i]);
-         drawSphere(getCurrentPoseVertex(i), radius, 0.0, 0.0, 1.0);
+         drawSphere(currentPoseVertices[i*3+0], currentPoseVertices[i*3+1], currentPoseVertices[i*3+2], radius, 0.99, 0.85, 0.39);
          glPopName();
          glPopMatrix();
       }
@@ -182,13 +180,14 @@ void DrawableCage::drawWithNames()
 void DrawableCage::drawWithNamesRest()
 {
    double radius = restPose.getBoundingBox().diagonal()/200.0;
+   const std::vector<double> & restPoseVertices  = restPose.getVerticesVector();
 
    if(drawMode & DRAW_VERTICES){
       for(ulong i=0; i<restPose.getNumVertices(); ++i)
       {
          glPushMatrix();
          glPushName(vertex2PickableIndex[i]);
-         drawSphere(getRestPoseVertex(i), radius, 0.0, 0.0, 1.0);
+         drawSphere(restPoseVertices[i*3+0], restPoseVertices[i*3+1], restPoseVertices[i*3+2], radius, 0.99, 0.85, 0.39);
          glPopName();
          glPopMatrix();
       }

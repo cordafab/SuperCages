@@ -212,7 +212,7 @@ void DrawableCharacter::drawRest() const
       {
          glEnable(GL_LIGHTING);
          glShadeModel(GL_SMOOTH);
-         setSingleLighting();
+         setMultiLighting();
          glEnableClientState(GL_VERTEX_ARRAY);
          glVertexPointer(3, GL_DOUBLE, 0, restPoseVertices.data());
          glEnableClientState(GL_NORMAL_ARRAY);
@@ -227,7 +227,7 @@ void DrawableCharacter::drawRest() const
       {
          glEnable(GL_LIGHTING);
          glShadeModel(GL_FLAT);
-         setSingleLighting();
+         setMultiLighting();
          glEnableClientState(GL_VERTEX_ARRAY);
          glVertexPointer(3, GL_DOUBLE, 0, restPoseVertices.data());
          glEnableClientState(GL_NORMAL_ARRAY);

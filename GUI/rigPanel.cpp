@@ -10,7 +10,7 @@ RigPanel::RigPanel(QWidget *parent) :
    ui->setupUi(this);
 
    ui->loadRig->setIcon(QIcon(QPixmap(":/GUI/icons/fbx.png")));
-   ui->loadRig->setStyleSheet("padding:5px; text-align:left;");
+   //ui->loadRig->setStyleSheet("padding:5px; text-align:left;");
    ui->loadRig->setIconSize(QSize(18, 18));
 }
 

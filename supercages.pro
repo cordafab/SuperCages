@@ -5,6 +5,9 @@ TEMPLATE = app
 
 CONFIG += c++17
 
+CONFIG += sdk_no_version_check #Disable Warnings with Qt 5.15 and MacOS 11
+
+
 DEFINES += CUSTOM_LIGHTS #FLAG FOR CUSTOM LIGHTS
 
 
