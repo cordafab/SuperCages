@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "common/types.h"
 #include "geom/vec3.h"
 #include "geom/quaternion.h"
 
@@ -12,6 +11,10 @@
 #endif
 
 namespace cg3 {
+
+
+//TO DO: Delete Eigen dependency [check personal OneNote notebook]
+typedef Eigen::Transform<double, 3, Eigen::Affine> eigenTransformation;
 
 class Transform
 {
@@ -45,8 +48,8 @@ public:
 
    void data(std::vector<double> & v) const;
 
-   inline double & operator() (int x, int y) { return transformation(x,y); }
-   inline double operator() (int x, int y) const { return transformation(x,y); }
+   inline double & operator() (int x, int y)       { return transformation(x,y); }
+   inline double   operator() (int x, int y) const { return transformation(x,y); }
 
    inline const cg3::eigenTransformation & getEigenTransformation() const { return transformation; }
    inline       cg3::eigenTransformation & getEigenTransformation()       { return transformation; }

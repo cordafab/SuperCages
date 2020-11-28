@@ -161,6 +161,7 @@ public:
        return false;
    }
 
+#ifdef EIGEN_AVAILABLE
    //TO DO: Move this in a separate file to delete Eigen dependency?
    bool computeIntersectionWithLine(const Vec3<T> & v1,
                                     const Vec3<T> & v2,
@@ -187,6 +188,7 @@ public:
 
        return true;
    }
+#endif
 
    inline const cg3::Vec3<T> projectPointOnPlane(const cg3::Vec3<T> & point)
    {
