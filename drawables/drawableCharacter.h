@@ -24,8 +24,7 @@ public:
       DRAW_SMOOTH           = 0x00000008,
       DRAW_WIREFRAME        = 0x00000010,
       DRAW_TEXTURE1D        = 0x00000020,
-      DRAW_SKELCAGEBLEND    = 0x00000040,
-      DRAW_TEXTURE2D        = 0x00000080
+      DRAW_TEXTURE2D        = 0x00000040
    };
 
    DrawableCharacter();
@@ -63,7 +62,6 @@ public:
    void activateWireframe();
    void activateTexture1D();
    void activateTexture2D();
-   void activateSkelCageBlending(bool activate);
    void updateCutVerticesPosition();
    void updateTexture1DCoords(std::vector<float> _textureCoords);
    void updateTexture1D(const GLubyte tex[]);

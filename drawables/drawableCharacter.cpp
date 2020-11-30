@@ -318,29 +318,10 @@ void DrawableCharacter::activateTexture2D()
    drawMode |=  DRAW_TEXTURE2D;
 }
 
-void DrawableCharacter::activateSkelCageBlending(bool activate)
-{
-   if (activate)  drawMode |=  DRAW_SKELCAGEBLEND;
-   else           drawMode &= ~DRAW_SKELCAGEBLEND;
-}
 
 void DrawableCharacter::updateCutVerticesPosition()
 {
-   if (drawMode & DRAW_SKELCAGEBLEND)
-   {
-      for(unsigned long i=0; i < verticesCut.size()/3; ++i)
-      {
-         verticesCut[i*3+0] = skelCageBlendVertices[originalToCut[i]*3+0];
-         verticesCut[i*3+1] = skelCageBlendVertices[originalToCut[i]*3+1];
-         verticesCut[i*3+2] = skelCageBlendVertices[originalToCut[i]*3+2];
 
-         normalsCut[i*3+0] = verticesNorm[originalToCut[i]*3+0];
-         normalsCut[i*3+1] = verticesNorm[originalToCut[i]*3+1];
-         normalsCut[i*3+2] = verticesNorm[originalToCut[i]*3+2];
-      }
-   }
-   else
-   {
       for(unsigned long i=0; i < verticesCut.size()/3; ++i)
       {
          verticesCut[i*3+0] = vertices[originalToCut[i]*3+0];
@@ -351,7 +332,7 @@ void DrawableCharacter::updateCutVerticesPosition()
          normalsCut[i*3+1] = verticesNorm[originalToCut[i]*3+1];
          normalsCut[i*3+2] = verticesNorm[originalToCut[i]*3+2];
       }
-   }
+
 }
 
 void DrawableCharacter::updateTexture1DCoords(std::vector<float> _textureCoords)

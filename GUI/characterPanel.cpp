@@ -147,32 +147,6 @@ void CharacterPanel::on_texturedRB_clicked(bool checked)
 
 }
 
-void CharacterPanel::on_skelSkin_clicked()
-{
-   Controller * c = Controller::get();
-   if(c->isCharacterLoaded              &&
-      c->isSkeletonSkinningInitialized   )
-   {
-      c->skeletonSkinning->deform();
-      c->character->updateNormals();
-      c->character->updateCutVerticesPosition();
-      c->glCanvas->updateGL();
-   }
-}
-
-void CharacterPanel::on_cageSkin_clicked()
-{
-   Controller * c = Controller::get();
-   if(c->isCharacterLoaded              &&
-      c->isCageSkinningInitialized   )
-   {
-      c->cageSkinning->deform();
-      c->character->updateNormals();
-      c->character->updateCutVerticesPosition();
-      c->glCanvas->updateGL();
-   }
-}
-
 void CharacterPanel::on_exportChar_clicked()
 {
    Controller * controller = Controller::get();
