@@ -374,7 +374,7 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
 
          //Skeleton Skinning
          if(controller->isSkeletonSkinningInitialized &&
-               controller->skeleton->refreshCharacterPoseIsNeeded())
+            controller->skeleton->refreshCharacterPoseIsNeeded())
          {
 
             controller->skeletonSkinning->deform();
@@ -385,18 +385,14 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
                controller->cageUpdater->updatePosition();
             }
 
-            //controller->cageSkinning->deform();
             controller->character->updateNormals();
          }
 
 
          //Cage Skinning
          if(controller->isCageSkinningInitialized &&
-               controller->cage->refreshCharacterPose())
+            controller->cage->refreshCharacterPose())
          {
-
-            //Check the difference between the user C' and CUPD-C'
-            std::vector<double> c1v (controller->cage->getCurrentPoseVertices());
 
             controller->cageReverser->propagateToRest();
             controller->cageSkinning->deform();
@@ -413,14 +409,11 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
             }
 
             controller->skeletonSkinning->deform();
-
-            //controller->cageSkinning->deform();
-
             controller->cageUpdater->updatePosition();
-            controller->character->updateNormals();
-         }
 
-         controller->character->updateCutVerticesPosition();
+            controller->character->updateNormals();
+            controller->character->updateCutVerticesPosition();
+         }
 
          update();
       }

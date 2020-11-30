@@ -198,12 +198,11 @@ void RestPoseCanvas::mouseMoveEvent(QMouseEvent* e)
          if(controller->isSkeletonUpdaterActive)
          {
             controller->skeletonUpdater->updatePosition();
+            controller->skeleton->updateGlobalT();
          }
 
          controller->skeletonSkinning->deform();
          controller->cageUpdater->updatePosition();
-         //controller->cageSkinning->deform();
-
 
          controller->character->updateNormals();
          controller->character->updateCutVerticesPosition();
@@ -268,26 +267,30 @@ void RestPoseCanvas::wheelEvent(QWheelEvent *e)
       controller->isCageSkinningInitialized  )
    {
       computePickableObjectsScaling(e->delta());
-      controller->cageSkinning->deform();
 
-      if(controller->skeletonSkinning == controller->cor)
+      //Cage Skinning
+      if(controller->isCageSkinningInitialized &&
+         controller->cage->refreshCharacterPose())
       {
-         controller->cor->updateCoRs();
+         controller->cageSkinning->deform();
+
+         if(controller->skeletonSkinning == controller->cor)
+         {
+            controller->cor->updateCoRs();
+         }
+
+         if(controller->isSkeletonUpdaterActive)
+         {
+            controller->skeletonUpdater->updatePosition();
+            controller->skeleton->updateGlobalT();
+         }
+
+         controller->skeletonSkinning->deform();
+         controller->cageUpdater->updatePosition();
+
+         controller->character->updateNormals();
+         controller->character->updateCutVerticesPosition();
       }
-
-      if(controller->isSkeletonUpdaterActive)
-      {
-         controller->skeletonUpdater->updatePosition();
-
-      }
-
-      controller->skeletonSkinning->deform();
-      controller->cageUpdater->updatePosition();
-      controller->cage->characterPoseRefreshed();
-      controller->character->updateNormals();
-      //controller->cage->updateCurrentPoseNormals();
-      //controller->cage->updateFrames();
-      controller->character->updateCutVerticesPosition();
       update();
    }
    else
