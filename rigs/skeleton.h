@@ -32,9 +32,9 @@ protected:
    cg3::Transform      localTRest;
    cg3::Transform      globalTRest;
 
-//T is the transformation that goes from TRest to TCurrent
-// cg3::Transform      localT; //Is this equal to boneRotation? Only if applied from the root to the top
-   cg3::Transform      globalT;
+
+   // cg3::Transform      localT;
+   cg3::Transform      globalT; //TO DO: Rename it "finalT"
 
 public:
 
@@ -86,9 +86,6 @@ protected:
    std::vector<SkeletonNode>    nodes;
    BoundingBox                  boundingBox;
 
-   //TO DO: MOVE IT INTO SKELETON UPDATER
-   cg3::Transform               rootMotion;
-
    int addNode(std::string nodeName,
                int father,
                const cg3::Transform & localTransformation,
@@ -102,8 +99,9 @@ protected:
 
    void updateBoundingBox();
 
-   //TO DO: CLEAN THIS
-   //void propagatePose(int nodeIndex);
+
+   //TO DO: MOVE IT INTO SKELETON UPDATER
+   cg3::Transform               rootMotion;
 
 public:
 
@@ -118,27 +116,29 @@ public:
    inline const SkeletonNode                & getNode(ulong index)  const { return nodes[index]; }
    inline       SkeletonNode                & getNode(ulong index)        { return nodes[index]; }
 
-   //TO DO: MOVE IT INTO SKELETON UPDATER
-   inline const cg3::Transform              & getRootMotion()       const { return rootMotion; }
-
-   //TO DO: MOVE IT INTO SKELETON UPDATER
-   inline void resetRootMotion() { rootMotion.setTranslation(cg3::Vec3d(0.0,0.0,0.0)); }
-
    void updateLocalFromGlobalRest();
    void updateLocalFromGlobalCurrent();
 
    void updateGlobalFromLocalRest();
    void updateGlobalFromLocalCurrent();
 
-   void updateGlobalT();   //compute the globalT transformations
+   void updateGlobalT();
+
+
+
+   //TO DO: MOVE IT INTO SKELETON UPDATER
+   inline const cg3::Transform              & getRootMotion()       const { return rootMotion; }
+
+   //TO DO: MOVE IT INTO SKELETON UPDATER
+   inline void resetRootMotion() { rootMotion.setTranslation(cg3::Vec3d(0.0,0.0,0.0)); }
 
    //TO DO: MOVE IT INTO ANIMATOR
    void setKeyframe(const std::vector<cg3::Transform> & keyframe);
 
    //TO DO: MOVE IT INTO ANIMATOR
    void interpolateKeyframes(const std::vector<cg3::Transform> & keyframeLow,
-                              const std::vector<cg3::Transform> & keyframeTop,
-                              double a);
+                             const std::vector<cg3::Transform> & keyframeTop,
+                             double a);
 
    //TO DO: CLEAN THIS
    void addGlobalTransformation(int nodeIndex, const cg3::Transform & transformation);

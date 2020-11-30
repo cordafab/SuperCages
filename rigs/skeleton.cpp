@@ -152,38 +152,6 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
    }
 }
 
-
-/*void Skeleton::propagatePose(int nodeIndex)
-//aggiorna il globalTCurrent del nodo con indice nodeIndex, e propaga ai figli
-{
-   int fatherIndex = nodes[nodeIndex].getFather();
-
-   if(fatherIndex != -1)
-   {
-      const cg3::Transform & fatherTransformation = nodes[fatherIndex].globalTCurrent;
-      const cg3::Transform & restFatherTransformation = nodes[fatherIndex].globalTRest;
-
-      nodes[nodeIndex].globalTCurrent =
-            fatherTransformation * nodes[nodeIndex].localTCurrent;
-
-      nodes[nodeIndex].globalTRest =
-            restFatherTransformation * nodes[nodeIndex].localTRest;
-   }
-   else
-   {
-      nodes[nodeIndex].globalTCurrent =
-            nodes[nodeIndex].localTCurrent;
-
-      nodes[nodeIndex].globalTRest =
-            nodes[nodeIndex].localTRest;
-   }
-
-   for(int i:nodes[nodeIndex].next)
-   {
-      propagatePose(i);
-   }
-}*/
-
 void Skeleton::updateBoundingBox()
 {
    //CODE FROM CAGELAB
