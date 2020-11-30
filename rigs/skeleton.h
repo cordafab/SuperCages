@@ -103,7 +103,7 @@ protected:
    void updateBoundingBox();
 
    //TO DO: CLEAN THIS
-   void propagatePose(int nodeIndex);
+   //void propagatePose(int nodeIndex);
 
 public:
 

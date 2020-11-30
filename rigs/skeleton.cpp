@@ -101,8 +101,7 @@ void Skeleton::addGlobalTransformation(int nodeIndex, const cg3::Transform & tra
       cg3::Transform fatherTransformation = nodes[fatherIndex].globalTCurrent;
 
       nodes[nodeIndex].localTCurrent =
-            fatherTransformation.inverse()
-            .cumulateWith(nodes[nodeIndex].globalTCurrent);
+            fatherTransformation.inverse() * nodes[nodeIndex].globalTCurrent;
    }
    else
    {
@@ -112,7 +111,8 @@ void Skeleton::addGlobalTransformation(int nodeIndex, const cg3::Transform & tra
 
    for(int i:nodes[nodeIndex].next)
    {
-      propagatePose(i);
+      updateGlobalFromLocalCurrent();
+      updateGlobalFromLocalRest();
    }
 }
 
@@ -153,7 +153,7 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
 }
 
 
-void Skeleton::propagatePose(int nodeIndex)
+/*void Skeleton::propagatePose(int nodeIndex)
 //aggiorna il globalTCurrent del nodo con indice nodeIndex, e propaga ai figli
 {
    int fatherIndex = nodes[nodeIndex].getFather();
@@ -164,12 +164,10 @@ void Skeleton::propagatePose(int nodeIndex)
       const cg3::Transform & restFatherTransformation = nodes[fatherIndex].globalTRest;
 
       nodes[nodeIndex].globalTCurrent =
-            fatherTransformation.cumulateWith
-            (nodes[nodeIndex].localTCurrent);
+            fatherTransformation * nodes[nodeIndex].localTCurrent;
 
       nodes[nodeIndex].globalTRest =
-            restFatherTransformation.cumulateWith
-            (nodes[nodeIndex].localTRest);
+            restFatherTransformation * nodes[nodeIndex].localTRest;
    }
    else
    {
@@ -184,7 +182,7 @@ void Skeleton::propagatePose(int nodeIndex)
    {
       propagatePose(i);
    }
-}
+}*/
 
 void Skeleton::updateBoundingBox()
 {
@@ -218,8 +216,7 @@ void Skeleton::updateLocalFromGlobalRest()
       {
          const cg3::Transform & restFatherTransformation = nodes[fatherIndex].globalTRest;
          nodes[n].localTRest =
-               nodes[n].globalTRest.cumulateWith
-               (restFatherTransformation.inverse());
+               nodes[n].globalTRest * restFatherTransformation.inverse();
       }
       else
       {
@@ -256,8 +253,7 @@ void Skeleton::updateLocalFromGlobalCurrent()
          const cg3::Transform & fatherTransformation = nodes[fatherIndex].globalTCurrent;
 
          nodes[n].localTCurrent =
-               nodes[n].globalTCurrent.cumulateWith
-               (fatherTransformation.inverse());
+               nodes[n].globalTCurrent * fatherTransformation.inverse();
       }
       else
       {
@@ -292,8 +288,7 @@ void Skeleton::updateGlobalFromLocalRest()
       {
          const cg3::Transform & restFatherTransformation = nodes[fatherIndex].globalTRest;
          nodes[n].globalTRest =
-               restFatherTransformation.cumulateWith
-               (nodes[n].localTRest);
+               restFatherTransformation * nodes[n].localTRest;
       }
       else
       {
@@ -330,8 +325,7 @@ void Skeleton::updateGlobalFromLocalCurrent()
          const cg3::Transform & fatherTransformation = nodes[fatherIndex].globalTCurrent;
 
          nodes[n].globalTCurrent =
-               fatherTransformation.cumulateWith
-               (nodes[n].localTCurrent);
+               fatherTransformation * nodes[n].localTCurrent;
       }
       else
       {
@@ -353,6 +347,6 @@ void Skeleton::updateGlobalT()
    {
       const cg3::Transform & TRest = nodes[i].getGlobalTRest();
       const cg3::Transform & TCurrent = nodes[i].getGlobalTCurrent();
-      nodes[i].globalT = TCurrent.cumulateWith(TRest.inverse());
+      nodes[i].globalT = TCurrent * TRest.inverse();
    }
 }
