@@ -16,6 +16,7 @@
 #include "operators/cageUpdater.h"
 #include "GUI/restPoseCanvas.h"
 #include "operators/cageReverser.h"
+#include "skinning/skeletonSkinning.h"
 
 void saveCageWeightsToFile()
 {
@@ -178,5 +179,16 @@ void switchSkelUpdater()
     Controller * c = Controller::get();
 
     c->isSkeletonUpdaterActive = !c->isSkeletonUpdaterActive;
+
+    if(!c->isSkeletonUpdaterActive)
+    {
+       c->skeletonSkinning->rootMotion = false;
+       c->skeleton->isRootMotionEnabled = false;
+    } else
+    {
+       c->skeletonSkinning->rootMotion = c->isRootMotionEnabled;
+       c->skeleton->isRootMotionEnabled = c->isRootMotionEnabled;
+    }
+
     updateGUI();
 }

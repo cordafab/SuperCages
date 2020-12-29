@@ -188,7 +188,7 @@ void GlCanvas::runSkinningPipeline()
       controller->character->updateCutVerticesPosition();
    }
 
-   if(controller->isCageUpdaterActive)
+   if(controller->isCageUpdaterInitialized && controller->isCageUpdaterActive)
    {
       controller->cageUpdater->updatePosition();
    }
@@ -379,7 +379,7 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
 
             controller->skeletonSkinning->deform();
 
-            if(controller->isCageUpdaterActive)
+            if(controller->isCageUpdaterInitialized && controller->isCageUpdaterActive)
             {
                controller->cageReverser->skeletonEdited();
                controller->cageUpdater->updatePosition();

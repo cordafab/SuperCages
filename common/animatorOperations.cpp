@@ -238,7 +238,7 @@ void addSkelKeyframe()
          {
 
             const SkeletonNode & n = c->skeleton->getNode(i);
-            cg3::Transform Tdeformed(n.getLocalTCurrent().getRotation());
+            cg3::Transform Tdeformed(n.getLocalTCurrent());
 
             skelKeyframes[i] = Tdeformed;//.cumulateWith(Trest.inverse());
          }
@@ -286,7 +286,7 @@ void setSkelKeyframe(unsigned long frameIndex)
 
       c->skeletonSkinning->deform();
 
-      if(c->isCageUpdaterActive)
+      if(c->isCageUpdaterInitialized && c->isCageUpdaterActive)
       {
          c->cageUpdater->updatePosition();
       }

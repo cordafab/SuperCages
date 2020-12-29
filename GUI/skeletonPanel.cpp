@@ -62,9 +62,12 @@ void SkeletonPanel::on_dqsRB_toggled(bool checked)
 void SkeletonPanel::on_rootMotionCB_clicked(bool checked)
 {
    Controller * c = Controller::get();
-   c->isRootMotionEnabled = checked;
-   c->skeletonSkinning->rootMotion = checked;
-   c->skeleton->isRootMotionEnabled = checked;
+   if(c->isSkeletonUpdaterInitialized)
+   {
+      c->isRootMotionEnabled = checked;
+      c->skeletonSkinning->rootMotion = checked;
+      c->skeleton->isRootMotionEnabled = checked;
+   }
 }
 
 void SkeletonPanel::on_corRB_toggled(bool checked)
