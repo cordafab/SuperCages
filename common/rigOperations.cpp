@@ -34,7 +34,7 @@
 #include <fstream>
 
 
-#include "cinolib/io/read_OBJ.h"
+#include "_external/cinolib/io/read_OBJ.h"
 
 #include <QElapsedTimer>
 

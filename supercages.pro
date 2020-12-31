@@ -97,35 +97,20 @@ macx:{
 
 
 
-##Cinolib - Not on brew nor apt
-
-unix:!macx{
-   INCLUDEPATH    += /libs/include/cinolib
-   DEPENDPATH     += /libs/include/cinolib # force recompilation if cinolib
-}
-
-macx:{
-   INCLUDEPATH    += /Users/Shared/libs/include/cinolib
-   DEPENDPATH     += /Users/Shared/libs/include/cinolib # force recompilation if cinolib changes
-}
-
-
-
-
 ## OpenMP
 
-unix:!macx{
+#unix:!macx{
 #   QMAKE_CXXFLAGS += -fopenmp
 #   QMAKE_LFLAGS +=  -fopenmp
 #   QMAKE_CFLAGS_RELEASE += -fopenmp
 #   LIBS += -lgomp -lpthread
-}
+#}
 
-macx{
+#macx{
 #   QMAKE_CXXFLAGS += -Xpreprocessor -fopenmp
 #   INCLUDEPATH +='/libs/include/libomp/libomp'
 #   LIBS += -L'/libs/lib/libomp/libomp' -lomp
-}
+#}
 
 
 
@@ -183,16 +168,32 @@ HEADERS = \
     skinning/noCageSkinning.h \
     common/animatorOperations.h \
     GUI/restPoseCanvas.h \
-    _external/JM/MEC.h \
-    _external/JM/point3.h \
-    _external/JM/MVCoordinates3D.h \
     GUI/rigPanel.h \
     common/rigOperations.h \
     animation/asyncAnimator.h \
     GUI/asyncAnimatorPanel.h \
     skinning/corSkinning.h \
     environment.h \
-    skinning/sparseWeights.h
+    skinning/sparseWeights.h \
+    _external/JM/MEC.h \
+    _external/JM/point3.h \
+    _external/JM/MVCoordinates3D.h \
+    _external/cinolib/textures/textures.h \
+    _external/cinolib/textures/texture_hsv.h \
+    _external/cinolib/textures/texture_hsv_w_isolines.h \
+    _external/cinolib/textures/texture_parula.h \
+    _external/cinolib/textures/texture_parula_w_isolines.h \
+    _external/cinolib/serialize_2D.h \
+    _external/cinolib/cino_inline.h \
+    _external/cinolib/color.h \
+    _external/cinolib/pi.h \
+    _external/cinolib/ANSI_color_codes.h \
+    _external/cinolib/geometry/vec3.h \
+    _external/cinolib/ipair.h \
+    _external/cinolib/io/read_OBJ.h \
+    _external/cinolib/string_utilities.h \
+    _external/cinolib/cut_along_seams.h
+
 
 SOURCES = \
     main.cpp \
@@ -244,7 +245,14 @@ SOURCES = \
     GUI/asyncAnimatorPanel.cpp \
     skinning/corSkinning.cpp \
     environment.cpp \
-    skinning/sparseWeights.cpp
+    skinning/sparseWeights.cpp \
+    _external/cinolib/textures/textures.cpp \
+    _external/cinolib/color.cpp \
+    _external/cinolib/serialize_2D.cpp \
+    _external/cinolib/ipair.cpp \
+    _external/cinolib/io/read_OBJ.cpp \
+    _external/cinolib/string_utilities.cpp \
+    _external/cinolib/cut_along_seams.cpp
 
 FORMS *= \
     GUI/mainWindow.ui \

@@ -7,7 +7,7 @@
 #define CINOLIB_USES_OPENGL
 #define CINOLIB_USES_QT
 
-#include "cinolib/textures/textures.h"
+#include "_external/cinolib/textures/textures.h"
 
 
 class DrawableCharacter

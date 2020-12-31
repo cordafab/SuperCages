@@ -180,15 +180,5 @@ void switchSkelUpdater()
 
     c->isSkeletonUpdaterActive = !c->isSkeletonUpdaterActive;
 
-    if(!c->isSkeletonUpdaterActive)
-    {
-       c->skeletonSkinning->rootMotion = false;
-       c->skeleton->isRootMotionEnabled = false;
-    } else
-    {
-       c->skeletonSkinning->rootMotion = c->isRootMotionEnabled;
-       c->skeleton->isRootMotionEnabled = c->isRootMotionEnabled;
-    }
-
     updateGUI();
 }

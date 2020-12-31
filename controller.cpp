@@ -59,8 +59,6 @@ Controller::Controller()
 
    isDiffuseTextureInitialized            = false;
 
-   isRootMotionEnabled                    = false;
-
    mainWindow                             = nullptr;
    glCanvas                               = nullptr;
    rigPanel                               = nullptr;

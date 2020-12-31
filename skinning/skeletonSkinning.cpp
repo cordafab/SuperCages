@@ -22,8 +22,6 @@ bool SkeletonSkinning::create(Weights *_w,
     setCharacter(_character);
     setSkeleton(_skeleton);
 
-    rootMotion = false;
-
     return true;
 }
 
@@ -32,8 +30,6 @@ void SkeletonSkinning::clear()
     w = nullptr;
     character = nullptr;
     skeleton = nullptr;
-
-    rootMotion = false;
 }
 
 

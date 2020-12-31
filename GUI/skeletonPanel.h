@@ -22,8 +22,6 @@ private slots:
 
    void on_dqsRB_toggled(bool checked);
 
-   void on_rootMotionCB_clicked(bool checked);
-
    void on_corRB_toggled(bool checked);
 
 private:

@@ -70,7 +70,6 @@ void DrawableSkeleton::clear()
    sonsOfSelectedNode.clear();
    selectedFatherNode = -1;
    _refreshCharacterPose = false;
-   isRootMotionEnabled = false;
    pickerController = nullptr;
    drawMode = 0;
 
@@ -94,12 +93,10 @@ void DrawableSkeleton::draw() const
             {
                 SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
-                if(isRootMotionEnabled) p = getRootMotion().applyToPoint(p);
                 for(int sonIndex: n.getNext())
                 {
                     SkeletonNode son = getNode(sonIndex);
                     cg3::Vec3d s = son.getGlobalTCurrent().getTranslation();
-                    if(isRootMotionEnabled) s = getRootMotion().applyToPoint(s);
                     glLineWidth(4.0);
                     glColor4f(0.156, 0.333, 0.8, 0.7);
                     glBegin(GL_LINES);
@@ -122,7 +119,6 @@ void DrawableSkeleton::draw() const
             {
                 SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
-                if(isRootMotionEnabled) p = getRootMotion().applyToPoint(p);
                 if(sonsOfSelectedNode[i])
                 {
                     drawSphere(p, radius, 0.905, 0.305, 0.305);

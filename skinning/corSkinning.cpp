@@ -117,7 +117,6 @@ void CoRSkinning::deform()
       cg3::Point3d v = character->getRestPoseVertex(i);
       cg3::Point3d v1 = Tfinal.applyToPoint(v);
 
-      if(rootMotion) v1 = skeleton->getRootMotion().applyToPoint(v1);
       character->setVertex(i, v1);
       //character->setSkelPoseVertex(i, v1);
 
