@@ -3,21 +3,22 @@ QT += core gui opengl xml widgets
 TARGET   = Supercages
 TEMPLATE = app
 
-CONFIG += c++17
-
-CONFIG += sdk_no_version_check #Disable Warnings with Qt 5.15 and MacOS 11
-
-
-
+CONFIG += c++14
 
 ##LIBS DIRECTORY
 
-unix:!macx{
-    #LIBSPATH = TO DO
-}
-
 macx:{
-    LIBSPATH = /usr/local/opt #On MacOS i suggest the use of Homebrew
+    #On MacOS i suggest the use of Homebrew
+
+    #MacOS Intel 
+    !equals(QMAKE_HOST.arch, "x86_64") { 
+        LIBSPATH = /usr/local/opt    
+    }
+
+    #MacOS ARM
+    equals(QMAKE_HOST.arch, "arm64") { 
+        LIBSPATH = /opt/homebrew/opt 
+    }
 }
 
 
@@ -26,13 +27,17 @@ macx:{
 ## Eigen
 
 unix:!macx{
+
     #apt install libeigen3-dev
+
     INCLUDEPATH += /usr/include/eigen3
     DEFINES += EIGEN_AVAILABLE
 }
 
 macx:{
+
    #brew install eigen
+
    INCLUDEPATH += $${LIBSPATH}/eigen/include/eigen3
    DEFINES += EIGEN_AVAILABLE
 }
@@ -43,11 +48,15 @@ macx:{
 ## glm
 
 unix:!macx{
-   # apt-get install libglm-dev
+ 
+  # apt-get install libglm-dev
+
 }
 
 macx:{
-    #brew install
+ 
+   #brew install glm
+
     INCLUDEPATH += $${LIBSPATH}/glm/include
 }
 
@@ -57,13 +66,17 @@ macx:{
 ## gsl
 
 unix:!macx{
+
    # apt-get install libgsl-dev
+
    LIBS+= -lgsl
    LIBS+= -lgslcblas
 }
 
 macx:{
+
     #brew install gsl
+
     INCLUDEPATH += $${LIBSPATH}/gsl/include
     LIBS += -L'$${LIBSPATH}/gsl/lib' -lgsl -lgslcblas
 }
@@ -74,23 +87,29 @@ macx:{
 ## libQGLViewer
 
 unix:!macx{
+
     #apt install libglew-dev
     #apt install libqglviewer-dev-qt5
     #apt install freeglut3-dev
     INCLUDEPATH += /usr/include/QGLViewer
+
     LIBS += /usr/lib/x86_64-linux-gnu/libQGLViewer-qt5.so
     LIBS+= -lGLU
     LIBS+= -lglut
     LIBS+= -lGLEW
-
     DEFINES += GL_GLEXT_PROTOTYPES
 }
 
 macx:{
-    #IT IS NOT AVAILABLE ON BREW
-    INCLUDEPATH += /Users/Shared/libs/include/libqglviewer
-    LIBS += -F/Library/Frameworks -framework QGLViewer
 
+    # Follow the official install instructions provided
+    # here http://libqglviewer.com/installUnix.html#mac
+    # and edit the INCLUDEPATH and LIBS path accordingly
+    # ( I'm compiling it using qmake+make and placing
+    # "QGLViewer.framework" in /Library/Frameworks )
+
+    INCLUDEPATH += /Library/Frameworks/QGLViewer.framework/Headers
+    LIBS += -F/Library/Frameworks -framework QGLViewer
     #DEFINES += CUSTOMSNAPSHOTQGL
 }
 
