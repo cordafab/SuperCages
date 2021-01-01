@@ -105,11 +105,11 @@ macx:{
     # Follow the official install instructions provided
     # here http://libqglviewer.com/installUnix.html#mac
     # and edit the INCLUDEPATH and LIBS path accordingly
-    # ( I'm compiling it using qmake+make and placing
-    # "QGLViewer.framework" in /Library/Frameworks )
+    # (In our build, we compiling it using qmake+make and placing
+    # "QGLViewer.framework" in "~/Library/Frameworks")
 
-    INCLUDEPATH += /Library/Frameworks/QGLViewer.framework/Headers
-    LIBS += -F/Library/Frameworks -framework QGLViewer
+    INCLUDEPATH += $$(HOME)/Library/Frameworks/QGLViewer.framework/Headers
+    LIBS += -F$$(HOME)/Library/Frameworks -framework QGLViewer
     #DEFINES += CUSTOMSNAPSHOTQGL
 }
 
