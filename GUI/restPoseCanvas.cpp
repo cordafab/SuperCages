@@ -29,6 +29,15 @@ RestPoseCanvas::RestPoseCanvas(QWidget *parent)
 void RestPoseCanvas::draw()
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glEnable (GL_BLEND);
+   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+   glEnable (GL_LINE_SMOOTH);
+   glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+   initLighting();
+   initMaterial();
+   initInverseMaterial();
 
    setBackgroundColor(customBackgroundColor);
 

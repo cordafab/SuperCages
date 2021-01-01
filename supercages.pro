@@ -11,7 +11,7 @@ macx:{
     #On MacOS i suggest the use of Homebrew
 
     #MacOS Intel 
-    !equals(QMAKE_HOST.arch, "x86_64") { 
+    equals(QMAKE_HOST.arch, "x86_64") {
         LIBSPATH = /usr/local/opt    
     }
 

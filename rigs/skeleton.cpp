@@ -156,7 +156,7 @@ void Skeleton::updateBoundingBox()
 {
    //CODE FROM CAGELAB
    boundingBox.clear();
-   for(int id=0; id<getNumNodes(); ++id)
+   for(ulong id=0; id<getNumNodes(); ++id)
    {
       cg3::Vec3d v = getNode(id).getGlobalTCurrent().getTranslation();
       boundingBox.min = boundingBox.min.min(v);
