@@ -65,9 +65,12 @@ void DrawableCage::clear()
 {
     Cage::clear();
 
-    for(ulong i=0; i<originalRestPose.getNumVertices(); ++i)
+    if(pickerController)
     {
-        pickerController->removeIndex(vertex2PickableIndex[i]);
+       for(ulong i=0; i<originalRestPose.getNumVertices(); ++i)
+       {
+           pickerController->removeIndex(vertex2PickableIndex[i]);
+       }
     }
 
     drawMode = 0;

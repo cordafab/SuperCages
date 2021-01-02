@@ -92,7 +92,6 @@ protected :
    qglviewer::Vec savedCameraUpVector;
    qglviewer::Vec savedCameraViewDirection;
 
-   //Experimental stuffz
 };
 
 #endif // GLCANVAS_H

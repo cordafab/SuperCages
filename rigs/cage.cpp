@@ -34,6 +34,9 @@ void Cage::init()
 void Cage::clear()
 {
    lastTranslations.clear();
+   originalRestPose.clear();
+   restPose.clear();
+   currentPose.clear();
 }
 
 void Cage::setKeyframe(const std::vector<double> & keyframe)

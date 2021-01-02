@@ -33,7 +33,6 @@ protected:
    std::vector<std::vector<int>>      _t2t;
    BoundingBox                        boundingBox;
 
-   void clear();
    void init();
    void buildAdjacency();
    void updateTrisNormals();
@@ -41,6 +40,7 @@ protected:
 
 public:
 
+   void clear();
    bool create(const std::vector<double>     & _vertices ,
                const std::vector<int>        & _tris     );
 

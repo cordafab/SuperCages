@@ -62,9 +62,12 @@ void DrawableSkeleton::clear()
 {
    Skeleton::clear();
 
-   for(ulong i=0; i<getNumNodes(); ++i)
+   if(pickerController)
    {
-      pickerController->removeIndex(node2PickableIndex[i]);
+      for(ulong i=0; i<getNumNodes(); ++i)
+      {
+         pickerController->removeIndex(node2PickableIndex[i]);
+      }
    }
 
    sonsOfSelectedNode.clear();
