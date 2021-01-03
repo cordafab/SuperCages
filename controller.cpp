@@ -27,7 +27,7 @@ Controller::Controller()
 
    asyncAnimator                          = nullptr;
 
-   cageTranslator                         = nullptr;
+   cageReverser                           = nullptr;
    cageUpdater                            = nullptr;
    skeletonUpdater                        = nullptr;
 
@@ -58,8 +58,6 @@ Controller::Controller()
    isAnimatorActivated                    = false;
 
    isDiffuseTextureInitialized            = false;
-
-   isRootMotionEnabled                    = false;
 
    mainWindow                             = nullptr;
    glCanvas                               = nullptr;

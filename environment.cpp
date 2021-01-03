@@ -34,7 +34,7 @@ void Environment::initController()
 
    controller->asyncAnimator           =   & asyncAnimator;
 
-   controller->cageTranslator          =   & cageTranslator;
+   controller->cageReverser          =   & cageReverser;
    controller->cageUpdater             =   & cageUpdater;
    controller->skeletonUpdater         =   & skeletonUpdater;
 

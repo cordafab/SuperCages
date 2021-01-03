@@ -26,8 +26,6 @@ public:
 
    virtual void deform() = 0;
 
-   bool rootMotion;
-
 protected:
    Weights   * w;
    Character * character;

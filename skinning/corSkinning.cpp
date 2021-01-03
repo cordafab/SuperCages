@@ -43,7 +43,7 @@ void CoRSkinning::clear()
 
 void CoRSkinning::updateCoRs()
 {
-   const std::vector<double> & vertices = cage->getRestPoseVerticesVector();
+   const std::vector<double> & vertices = cage->getRestPoseVertices();
 
    #pragma omp parallel for schedule(static)
    for(ulong i=0; i<character->getNumVertices(); ++i)
@@ -73,7 +73,7 @@ void CoRSkinning::deform()
    updateCoRs();
    ulong vertexNumber = character->getNumVertices();
 
-   const std::vector<Node> & skelNodes = skeleton->getNodesVector();
+   const std::vector<SkeletonNode> & skelNodes = skeleton->getNodesVector();
    std::vector<cg3::dQuaternion> qList;
 
    for(ulong h=0; h<skeleton->getNumNodes(); ++h)
@@ -117,7 +117,6 @@ void CoRSkinning::deform()
       cg3::Point3d v = character->getRestPoseVertex(i);
       cg3::Point3d v1 = Tfinal.applyToPoint(v);
 
-      if(rootMotion) v1 = skeleton->getRootMotion().applyToPoint(v1);
       character->setVertex(i, v1);
       //character->setSkelPoseVertex(i, v1);
 

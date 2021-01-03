@@ -34,7 +34,7 @@
 #include <fstream>
 
 
-#include "cinolib/io/read_OBJ.h"
+#include "_external/cinolib/io/read_OBJ.h"
 
 #include <QElapsedTimer>
 
@@ -89,65 +89,6 @@ void importRig()
 
    updateGUI();
 
-}
-
-void exportRig()
-{
-   std::string filename;
-   Controller * c = Controller::get();
-
-   if (openFileSaveDialog(filename, "Save Character", "3D Meshes (*.obj *.ply)"))
-   {
-
-      std::string extension = filename.substr(filename.size()-4,4);
-      std::string filenameNoExt = filename.substr(0, filename.size()-4);
-
-      if(c->isCharacterLoaded)
-      {
-         const std::vector<double> & v = c->character->getVerticesVector();
-         const std::vector<int>    & f = c->character->getTrianglesVector();
-
-         saveMesh(filename.c_str(), v, f);
-      }
-
-      if(c->isCageLoaded)
-      {
-         std::vector<double> v = c->cage->getVerticesVector();
-         std::vector<int>    f = c->cage->getTrianglesVector();
-
-         saveMesh((filenameNoExt+"_cage"+extension).c_str(), v, f);
-      }
-
-      if(c->areCageWeightsLoaded)
-      {
-         saveWeights((filenameNoExt+"_cageWeights.txt").c_str(), c->cageWeights);
-      }
-
-      if(c->isSkeletonLoaded)
-      {
-         std::vector<Node> nodes = c->skeleton->getNodesVector();
-         std::vector<cg3::Vec3d> joints;
-         std::vector<int> fathers;
-         std::vector<std::string> names;
-
-         for(int i=0; i < c->skeleton->getNumNodes(); ++i)
-         {
-            joints.push_back(nodes[i].getGlobalTRest().getTranslation());
-            fathers.push_back(nodes[i].getFather());
-            names.push_back(nodes[i].getNodeName());
-         }
-
-         saveSkeleton((filenameNoExt+"_skel.txt").c_str(),
-                      joints,
-                      fathers,
-                      names);
-
-         if(c->areSkeletonWeightsLoaded)
-         {
-            saveWeights((filenameNoExt+"_skelWeights.txt").c_str(), c->skeletonWeights);
-         }
-      }
-   }
 }
 
 void clearRig()

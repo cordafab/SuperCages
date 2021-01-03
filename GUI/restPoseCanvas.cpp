@@ -38,8 +38,6 @@ void RestPoseCanvas::draw()
    initLighting();
    initMaterial();
    initInverseMaterial();
-   //setSingleLighting();
-   //setMultiLighting();
 
    setBackgroundColor(customBackgroundColor);
 
@@ -85,8 +83,18 @@ void RestPoseCanvas::init()
 
    startAnimation();
 
-
    camera()->frame()->setSpinningSensitivity(100.0);
+
+   //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   //glEnable (GL_BLEND);
+   //glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+   //glEnable (GL_LINE_SMOOTH);
+   //glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+   //nitLighting();
+   //initMaterial();
+   //initInverseMaterial();
 }
 
 void RestPoseCanvas::fitScene()
@@ -199,12 +207,11 @@ void RestPoseCanvas::mouseMoveEvent(QMouseEvent* e)
          if(controller->isSkeletonUpdaterActive)
          {
             controller->skeletonUpdater->updatePosition();
+            controller->skeleton->updateGlobalT();
          }
 
          controller->skeletonSkinning->deform();
          controller->cageUpdater->updatePosition();
-         //controller->cageSkinning->deform();
-
 
          controller->character->updateNormals();
          controller->character->updateCutVerticesPosition();
@@ -253,7 +260,7 @@ void RestPoseCanvas::mouseReleaseEvent(QMouseEvent* e)
       if(controller->isSkeletonSkinningInitialized &&
          controller->isCageSkinningInitialized        )
       {
-         controller->cage->updateNormals();
+         //controller->cage->updateCurrentPoseNormals();
          //controller->cage->updateFrames();
       }
 
@@ -269,26 +276,30 @@ void RestPoseCanvas::wheelEvent(QWheelEvent *e)
       controller->isCageSkinningInitialized  )
    {
       computePickableObjectsScaling(e->delta());
-      controller->cageSkinning->deform();
 
-      if(controller->skeletonSkinning == controller->cor)
+      //Cage Skinning
+      if(controller->isCageSkinningInitialized &&
+         controller->cage->refreshCharacterPose())
       {
-         controller->cor->updateCoRs();
+         controller->cageSkinning->deform();
+
+         if(controller->skeletonSkinning == controller->cor)
+         {
+            controller->cor->updateCoRs();
+         }
+
+         if(controller->isSkeletonUpdaterActive)
+         {
+            controller->skeletonUpdater->updatePosition();
+            controller->skeleton->updateGlobalT();
+         }
+
+         controller->skeletonSkinning->deform();
+         controller->cageUpdater->updatePosition();
+
+         controller->character->updateNormals();
+         controller->character->updateCutVerticesPosition();
       }
-
-      if(controller->isSkeletonUpdaterActive)
-      {
-         controller->skeletonUpdater->updatePosition();
-
-      }
-
-      controller->skeletonSkinning->deform();
-      controller->cageUpdater->updatePosition();
-      controller->cage->characterPoseRefreshed();
-      controller->character->updateNormals();
-      controller->cage->updateNormals();
-      //controller->cage->updateFrames();
-      controller->character->updateCutVerticesPosition();
       update();
    }
    else

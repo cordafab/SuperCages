@@ -81,15 +81,15 @@ void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Tra
 {
 
    Controller * c = Controller::get();
-   std::vector<Node> nodes = c->skeleton->getNodesVector();
+   std::vector<SkeletonNode> nodes = c->skeleton->getNodesVector();
 
    if(keyframesVersion==2)
    {
       //Compute the local transform for the current pose keyframes
-      for(int i=0; i<skelKeyframes.size(); i++)
+      for(ulong i=0; i<skelKeyframes.size(); i++)
       {
 
-         for(int j=0; j<skelKeyframes[i].size(); j++){
+         for(ulong j=0; j<skelKeyframes[i].size(); j++){
 
             if(nodes[j].getFather()==-1)
             {
@@ -109,7 +109,7 @@ void convertSkelKeyframes(int keyframesVersion, std::vector<std::vector<cg3::Tra
 
          for(ulong n=0; n<skelKeyframes[i].size(); n++)
          {
-            Node & node = nodes[n];
+            SkeletonNode & node = nodes[n];
             const int fatherIndex = node.getFather();
 
             if(fatherIndex != -1)
@@ -136,7 +136,7 @@ void saveSkelAnimationToFile()
          //SAVE V3 KEYFRAMES
          std::stack<int> stack;
 
-         std::vector<Node> nodes = c->skeleton->getNodesVector();
+         std::vector<SkeletonNode> nodes = c->skeleton->getNodesVector();
 
          for(int n:c->skeleton->getRootsIndexes())
          {
@@ -147,7 +147,7 @@ void saveSkelAnimationToFile()
          {
             const int n = stack.top();
             stack.pop();
-            Node & node = nodes[n];
+            SkeletonNode & node = nodes[n];
             const int fatherIndex = node.getFather();
 
             for(ulong i=0; i<skelKeyframes.size(); i++)
@@ -220,39 +220,6 @@ void saveCageAnimationToFile()
    }
 }
 
-void quickLoadSkelAnimation(const char * filename)
-{
-   /*Controller * c = Controller::get();
-
-   if(c->isAnimatorInitialized)
-   {
-      std::vector<double> t;
-      std::vector<std::vector<cg3::Transform>> skelKeyframes;
-
-      loadSkelAnimation(filename,
-                        t,
-                        skelKeyframes);
-
-      c->asyncAnimator->loadSkelAnimation(t,skelKeyframes);
-   }*/
-}
-
-void quickLoadCageAnimation(const char * filename)
-{
-   Controller * c = Controller::get();
-
-   if(c->isAnimatorInitialized)
-   {
-      std::vector<double> t;
-      std::vector<std::vector<double>> cageKeyframes;
-
-      loadCageAnimation(filename,
-                        t,
-                        cageKeyframes);
-      c->asyncAnimator->loadCageAnimation(t,cageKeyframes);
-   }
-}
-
 void addSkelKeyframe()
 {
    Controller * c = Controller::get();
@@ -270,8 +237,8 @@ void addSkelKeyframe()
          for(unsigned long i=0; i<c->skeleton->getNumNodes(); ++i)
          {
 
-            const Node & n = c->skeleton->getNode(i);
-            cg3::Transform Tdeformed(n.getLocalTCurrent().getRotation());
+            const SkeletonNode & n = c->skeleton->getNode(i);
+            cg3::Transform Tdeformed(n.getLocalTCurrent());
 
             skelKeyframes[i] = Tdeformed;//.cumulateWith(Trest.inverse());
          }
@@ -294,12 +261,12 @@ void addCageKeyframe()
       {
 
          //cage keyframe
-         const std::vector<double> & baseCage = c->cage->getBasePoseVerticesVector();
-         const std::vector<double> & restCage = c->cage->getRestPoseVerticesVector();
+         const std::vector<double> & originalRestCage = c->cage->getOriginalRestPoseVertices();
+         const std::vector<double> & restCage = c->cage->getRestPoseVertices();
          std::vector<double> cageOffsets(restCage.size());
          for(int i=0; i<restCage.size(); ++i)
          {
-            cageOffsets[i] = restCage[i] - baseCage[i];
+            cageOffsets[i] = restCage[i] - originalRestCage[i];
          }
 
          c->asyncAnimator->addCageKeyframe(t, cageOffsets);
@@ -319,7 +286,7 @@ void setSkelKeyframe(unsigned long frameIndex)
 
       c->skeletonSkinning->deform();
 
-      if(c->isCageUpdaterActive)
+      if(c->isCageUpdaterInitialized && c->isCageUpdaterActive)
       {
          c->cageUpdater->updatePosition();
       }

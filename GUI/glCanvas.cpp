@@ -22,7 +22,7 @@
 #include "Eigen/Eigen"
 #include "QGLViewer/vec.h"
 #include "geom/plane.h"
-#include "math/quaternion.h"
+#include "geom/quaternion.h"
 #include "QGLViewer/manipulatedCameraFrame.h"
 #include "operators/cageUpdater.h"
 #include "operators/skeletonUpdater.h"
@@ -60,20 +60,9 @@ void GlCanvas::init()
 
    camera()->frame()->setSpinningSensitivity(100.0);
 
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   glEnable (GL_BLEND);
-   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-   glEnable (GL_LINE_SMOOTH);
-   glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);
-
-   initLighting();
-   initMaterial();
-   initInverseMaterial();
-   //setSingleLighting();
-   //setMultiLighting();
-
+   QGLViewer::init();
 }
+
 
 void GlCanvas::pushDrawableObject(const DrawableObject * object)
 {
@@ -117,6 +106,15 @@ void GlCanvas::removePickableObject(PickableObject *object)
 void GlCanvas::draw()
 {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   glEnable (GL_BLEND);
+   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+   glEnable (GL_LINE_SMOOTH);
+   glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+   initLighting();
+   //initMaterial();
+   initInverseMaterial();
 
    setBackgroundColor(customBackgroundColor);
 
@@ -188,7 +186,7 @@ void GlCanvas::runSkinningPipeline()
       controller->character->updateCutVerticesPosition();
    }
 
-   if(controller->isCageUpdaterActive)
+   if(controller->isCageUpdaterInitialized && controller->isCageUpdaterActive)
    {
       controller->cageUpdater->updatePosition();
    }
@@ -374,31 +372,27 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
 
          //Skeleton Skinning
          if(controller->isSkeletonSkinningInitialized &&
-               controller->skeleton->refreshCharacterPoseIsNeeded())
+            controller->skeleton->refreshCharacterPoseIsNeeded())
          {
-
             controller->skeletonSkinning->deform();
-
-            if(controller->isCageUpdaterActive)
+            
+            if(controller->isCageUpdaterInitialized && controller->isCageUpdaterActive)
             {
-               controller->cageTranslator->skeletonEdited();
+               controller->cageReverser->skeletonEdited();
                controller->cageUpdater->updatePosition();
             }
 
-            //controller->cageSkinning->deform();
             controller->character->updateNormals();
+            controller->character->updateCutVerticesPosition();
          }
 
 
          //Cage Skinning
          if(controller->isCageSkinningInitialized &&
-               controller->cage->refreshCharacterPose())
+            controller->cage->refreshCharacterPose())
          {
 
-            //Check the difference between the user C' and CUPD-C'
-            std::vector<double> c1v (controller->cage->getVerticesVector());
-
-            controller->cageTranslator->propagateToRest();
+            controller->cageReverser->propagateToRest();
             controller->cageSkinning->deform();
 
             if(controller->skeletonSkinning == controller->cor)
@@ -413,14 +407,11 @@ void GlCanvas::mouseMoveEvent(QMouseEvent* e)
             }
 
             controller->skeletonSkinning->deform();
-
-            //controller->cageSkinning->deform();
-
             controller->cageUpdater->updatePosition();
-            controller->character->updateNormals();
-         }
 
-         controller->character->updateCutVerticesPosition();
+            controller->character->updateNormals();
+            controller->character->updateCutVerticesPosition();
+         }
 
          update();
       }
@@ -469,12 +460,6 @@ void GlCanvas::mouseReleaseEvent(QMouseEvent* e)
          controller->character->updateNormals();
       }
 
-      if(controller->isSkeletonSkinningInitialized &&
-            controller->isCageSkinningInitialized        )
-      {
-         controller->cage->updateNormals();
-      }
-
       update();
    }
    else
@@ -489,7 +474,7 @@ void GlCanvas::wheelEvent(QWheelEvent *e)
       //potrebbe creare bug se uso la rotellina mentre ruoto skel/cage
       scalePickableObjects(e->delta());
 
-      controller->cageTranslator->propagateToRest();
+      controller->cageReverser->propagateToRest();
       controller->cageSkinning->deform();
 
       if(controller->skeletonSkinning == controller->cor)
@@ -523,7 +508,7 @@ void GlCanvas::keyPressEvent(QKeyEvent *e)
    {
    case Qt::Key_P:
       controller->asyncAnimator->rewindAnimator();
-      if(controller->isCageSkinningInitialized) controller->cageTranslator->skeletonEdited();
+      if(controller->isCageSkinningInitialized) controller->cageReverser->skeletonEdited();
       if(controller->isAnimatorActivated)
       {
          controller->skeleton->resetRootMotion();

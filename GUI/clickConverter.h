@@ -2,7 +2,7 @@
 #define CLICKCONVERTER_H
 
 #include "geom/vec3.h"
-#include "math/quaternion.h"
+#include "geom/quaternion.h"
 #include "geom/ray.h"
 #include "geom/plane.h"
 

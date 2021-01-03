@@ -62,15 +62,17 @@ void DrawableSkeleton::clear()
 {
    Skeleton::clear();
 
-   for(int i=0; i<getNumNodes(); ++i)
+   if(pickerController)
    {
-      pickerController->removeIndex(node2PickableIndex[i]);
+      for(ulong i=0; i<getNumNodes(); ++i)
+      {
+         pickerController->removeIndex(node2PickableIndex[i]);
+      }
    }
 
    sonsOfSelectedNode.clear();
    selectedFatherNode = -1;
    _refreshCharacterPose = false;
-   isRootMotionEnabled = false;
    pickerController = nullptr;
    drawMode = 0;
 
@@ -90,19 +92,15 @@ void DrawableSkeleton::draw() const
             glDisable(GL_LIGHTING);
             glShadeModel(GL_FLAT);
             setSingleLighting();
-            for(int i=0; i<getNumNodes(); ++i)
+            for(ulong i=0; i<getNumNodes(); ++i)
             {
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
-                if(isRootMotionEnabled) p = getRootMotion().applyToPoint(p);
                 for(int sonIndex: n.getNext())
                 {
-                    Node son = getNode(sonIndex);
+                    SkeletonNode son = getNode(sonIndex);
                     cg3::Vec3d s = son.getGlobalTCurrent().getTranslation();
-                    if(isRootMotionEnabled) s = getRootMotion().applyToPoint(s);
-                    //glLineWidth(3.0);
-                    //glColor3f(0.8, 0.8, 0.8);
-                    glLineWidth(6.0);
+                    glLineWidth(4.0);
                     glColor4f(0.156, 0.333, 0.8, 0.7);
                     glBegin(GL_LINES);
                     glVertex3f(p.x(), p.y(), p.z());
@@ -117,86 +115,76 @@ void DrawableSkeleton::draw() const
             glEnable(GL_LIGHTING);
             glShadeModel(GL_FLAT);
             setSingleLighting();
-            //double radius = boundingBox.diagonal()/70;
             double radius = boundingBox.diagonal()/150.0;
             if (radius == 0) radius = 0.1;
 
-            for(int i=0; i<getNumNodes(); ++i)
+            for(ulong i=0; i<getNumNodes(); ++i)
             {
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
-                if(isRootMotionEnabled) p = getRootMotion().applyToPoint(p);
                 if(sonsOfSelectedNode[i])
                 {
-
-                    //drawDiamond(p, radius, 0.905, 0.105, 0.105, true);
                     drawSphere(p, radius, 0.905, 0.305, 0.305);
                 }
                 else
                 {
-                    //drawDiamond(p, radius, 0.356, 0.633, 0.853, true);
                     drawSphere(p, radius, 0.156, 0.333, 0.553);
                 }
             }
         }
-
         glEnable(GL_DEPTH_TEST);
     }
 }
 
 void DrawableSkeleton::drawRest() const
 {
-    if (drawMode & DRAW_SKELETON)
-    {
-        glDisable(GL_DEPTH_TEST);
+   if (drawMode & DRAW_SKELETON)
+   {
+      glDisable(GL_DEPTH_TEST);
 
-        if(drawMode & DRAW_BONES)
-        {
-            glDisable(GL_LIGHTING);
-            glShadeModel(GL_FLAT);
-            setSingleLighting();
-            for(int i=0; i<getNumNodes(); ++i)
+      if(drawMode & DRAW_BONES)
+      {
+         glDisable(GL_LIGHTING);
+         glShadeModel(GL_FLAT);
+         setSingleLighting();
+         for(ulong i=0; i<getNumNodes(); ++i)
+         {
+            SkeletonNode n = getNode(i);
+            cg3::Vec3d p = n.getGlobalTRest().getTranslation();
+            for(int sonIndex: n.getNext())
             {
-                Node n = getNode(i);
-                cg3::Vec3d p = n.getGlobalTRest().getTranslation();
-                for(int sonIndex: n.getNext())
-                {
-                    Node son = getNode(sonIndex);
-                    cg3::Vec3d s = son.getGlobalTRest().getTranslation();
-                    glLineWidth(6.0);
-                    glColor4f(0.156, 0.333, 0.8, 0.7);
-                    //glLineWidth(4.0);
-                    //glColor4f(0.156, 0.333, 0.553, 0.5);
-                    glBegin(GL_LINES);
-                    glVertex3f(p.x(), p.y(), p.z());
-                    glVertex3f(s.x(), s.y(), s.z());
-                    glEnd();
-                }
+               SkeletonNode son = getNode(sonIndex);
+               cg3::Vec3d s = son.getGlobalTRest().getTranslation();
+               glLineWidth(4.0);
+               glColor4f(0.156, 0.333, 0.8, 0.7);
+               glBegin(GL_LINES);
+               glVertex3f(p.x(), p.y(), p.z());
+               glVertex3f(s.x(), s.y(), s.z());
+               glEnd();
             }
+         }
 
-        }
+      }
 
-        if(drawMode & DRAW_JOINTS)
-        {
-            glEnable(GL_LIGHTING);
-            glShadeModel(GL_FLAT);
-            disableLighting();
-            double radius = boundingBox.diagonal()/150.0;
-            //double radius = boundingBox.diagonal()/70.0;
-            if (radius == 0) radius = 0.1;
+      if(drawMode & DRAW_JOINTS)
+      {
+         glEnable(GL_LIGHTING);
+         glShadeModel(GL_FLAT);
+         setSingleLighting();
+         double radius = boundingBox.diagonal()/150.0;
+         if (radius == 0) radius = 0.1;
 
-            for(int i=0; i<getNumNodes(); ++i)
-            {
-                Node n = getNode(i);
-                cg3::Vec3d p = n.getGlobalTRest().getTranslation();
+         for(ulong i=0; i<getNumNodes(); ++i)
+         {
+            SkeletonNode n = getNode(i);
+            cg3::Vec3d p = n.getGlobalTRest().getTranslation();
 
-                drawDiamond(p, radius, 0.905, 0.305, 0.305, true);
+            drawSphere(p, radius, 0.156, 0.333, 0.553);
 
-            }
-        }
-
-        glEnable(GL_DEPTH_TEST);
-    }
+         }
+      }
+      glEnable(GL_DEPTH_TEST);
+   }
 }
 
 void DrawableSkeleton::drawWithNames()
@@ -208,11 +196,11 @@ void DrawableSkeleton::drawWithNames()
             double radius = boundingBox.diagonal()/100.0;
             if (radius == 0) radius = 0.1;
 
-            for(int i=0; i<getNumNodes(); ++i)
+            for(ulong i=0; i<getNumNodes(); ++i)
             {
                 glPushMatrix();
                 glPushName(node2PickableIndex[i]);
-                Node n = getNode(i);
+                SkeletonNode n = getNode(i);
                 cg3::Vec3d p = n.getGlobalTCurrent().getTranslation();
                 drawDiamond(p, radius, 0.0, 0.0, 1.0, true);
                 glPopName();
@@ -299,7 +287,7 @@ void DrawableSkeleton::rotate(const cg3::dQuaternion & rotation)
 void DrawableSkeleton::initPicking()
 {
     //assign PickableIndexes to every vertex
-    for(int i=0; i<getNumNodes(); ++i)
+    for(ulong i=0; i<getNumNodes(); ++i)
     {
         int pickableIndex = pickerController->generateIndex(this);
         pickableIndex2Node[pickableIndex] = i;

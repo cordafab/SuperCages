@@ -100,7 +100,7 @@ void CageUpdater::updatePosition()
          newCageStd[i*3+2] = newCageZ[i];
       }
 
-      cage->setActualPoseVector(newCageStd);
+      cage->setCurrentPoseVector(newCageStd);
    }
    else  {
       // THEN DO THE COMPUTATIONS BASED ON SELECTED MESH VERTICES ONLY:
@@ -134,6 +134,6 @@ void CageUpdater::updatePosition()
          newCageStd[i*3+2] = newCageZ[i];
       }
 
-      cage->setActualPoseVector(newCageStd);
+      cage->setCurrentPoseVector(newCageStd);
    }
 }

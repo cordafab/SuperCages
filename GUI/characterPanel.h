@@ -27,8 +27,6 @@ private slots:
    void on_skelColourRB_clicked(bool checked);
    void on_skelUpdtrColourRB_clicked(bool checked);
    void on_texturedRB_clicked(bool checked);
-   void on_skelSkin_clicked();
-   void on_cageSkin_clicked();
    void on_exportChar_clicked();
 };
 

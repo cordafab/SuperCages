@@ -4,7 +4,6 @@
 #import <iostream>
 
 void importRig();
-void exportRig();
 void clearRig();
 void importCharacter(const std::string & filename);
 void importSkeleton(const std::string & filename);

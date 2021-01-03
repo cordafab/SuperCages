@@ -1,10 +1,6 @@
 #ifndef LEASTSQUARESOLVER_H
 #define LEASTSQUARESOLVER_H
 
-//#include "cinolib/cinolib.h"
-//#include "cinolib/common.h"
-//#include "cinolib/linear_solvers.h"
-
 #include "Eigen/Sparse"
 
 class LeastSquareSolver

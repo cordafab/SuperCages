@@ -26,8 +26,7 @@ Transform::Transform(double rx, double ry, double rz, double tx, double ty, doub
    cg3::Transform T_ry (cg3::dQuaternion(cg3::Vec3d(0.0,1.0,0.0),ry*gradToRad));
    cg3::Transform T_rz (cg3::dQuaternion(cg3::Vec3d(0.0,0.0,1.0),rz*gradToRad));
 
-   cg3::Transform T_rzy = T_rz.cumulateWith(T_ry);
-   cg3::Transform T_rzyx = T_rzy.cumulateWith(T_rx);
+   cg3::Transform T_rzyx = T_rz * T_ry * T_rx;
 
    cg3::Transform t (tx, ty, tz);
 
@@ -39,15 +38,6 @@ Transform::Transform(dQuaternion r)
    Eigen::Quaterniond rotation(r.s(), r.x(), r.y(), r.z());
 
    transformation = rotation;
-}
-
-Transform::Transform(dQuaternion r, cg3::Vec3d t)
-{
-   /*Eigen::Quaterniond rotation(r.s(), r.x(), r.y(), r.z());
-   Eigen::Vector3d translation(t.x(), t.y(), t.z());
-
-   transformation = rotation;
-   transformation.translation() = translation;*/
 }
 
 Transform::Transform(double mat[16])
@@ -106,18 +96,13 @@ void Transform::setTranslation(const cg3::Vec3d & t)
 
 Transform Transform::cumulateWith(const Transform & t) const
 {
-   return Transform(transformation * t.transformation);
+   return (*this) * t;
 }
 
 Transform Transform::inverse() const
 {
    return Transform(transformation.inverse(Eigen::Affine));
 }
-
-/*Transform Transform::scale(double s) const
-{
-   return Transform(s * transformation);
-}*/
 
 cg3::Vec3d Transform::applyToPoint(cg3::Vec3d p) const
 {
@@ -193,6 +178,11 @@ Transform Transform::operator+(const Transform & other) const
    return Transform(v);
 }
 
+Transform Transform::operator*(const Transform & other) const
+{
+   return Transform(transformation * other.transformation);
+}
+
 Transform Transform::operator*(const double s) const
 {
    double v[16];
@@ -239,9 +229,6 @@ Transform Transform::interpolate(const Transform & other, double a) const
    return Transform(T);
 }
 
-
-
-
 std::ostream & operator<< (std::ostream & stream, const Transform & t)
 {
    std::vector<double> vi;
@@ -254,27 +241,5 @@ std::ostream & operator<< (std::ostream & stream, const Transform & t)
           << v[12] << " " << v [13] << " "  << v[14] << " "  << v[15] << " \n"*/;
    return stream;
 }
-
-
-
-/*Transform operator*(const double & s, const Transform & t)
-{
-   return t.scale(s);
-}
-
-Transform operator*(const Transform & t, const double & s)
-{
-   return t.scale(s);
-}
-*/
-
-/*void Transform::addTranslation(cg3::Transform t)
-{
-   //transformation.translate(t.transformation);
-
-   transformation(0,3) += t.transformation(0,3);
-   transformation(1,3) += t.transformation(1,3);
-   transformation(2,3) += t.transformation(2,3);
-}*/
 
 }

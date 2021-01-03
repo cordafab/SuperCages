@@ -1,7 +1,7 @@
 #include "meanValueCoordinates.h"
 
-#include "external/JM/point3.h"
-#include "external/JM/MVCoordinates3D.h"
+#include "_external/JM/point3.h"
+#include "_external/JM/MVCoordinates3D.h"
 
 MeanValueCoordinates::MeanValueCoordinates()
 {
@@ -61,9 +61,9 @@ void MeanValueCoordinates::clear()
 void MeanValueCoordinates::deform()
 {
    const ulong vertexNumber = character->getNumVertices();
-   const ulong handleNumber = cage->getNumVertices();
-   const std::vector<double> & cageVertices = cage->getActualPoseVerticesVector();
-   const std::vector<double> & restCageVertices = cage->getRestPoseVerticesVector();
+   //const ulong handleNumber = cage->getNumVertices();
+   const std::vector<double> & cageVertices = cage->getCurrentPoseVertices();
+   const std::vector<double> & restCageVertices = cage->getRestPoseVertices();
    std::vector<double> & charVertices = character->getActualPoseVerticesVector();
    std::vector<double> & restCharVertices = character->getRestPoseVerticesVector();
 
@@ -122,8 +122,8 @@ bool MeanValueCoordinates::generateCoords(Weights   * & weights,
 
    std::vector< jm::point3d > cage_vertices( cage->getNumVertices() );
    std::vector< std::vector< int > > cage_triangles( cage->getNumTriangles() );
-   const std::vector<double> & cg3Vertices = cage->getRestPoseVerticesVector();
-   const std::vector<int> & cg3Tris = cage->getTrianglesVector();
+   const std::vector<double> & cg3Vertices = cage->getOriginalRestPoseVertices();
+   const std::vector<int> & cg3Tris = cage->getOriginalRestPoseTriangles();
 
    for( unsigned long v = 0 ; v < cage->getNumVertices() ; ++v )
    {
@@ -131,7 +131,7 @@ bool MeanValueCoordinates::generateCoords(Weights   * & weights,
       cage_vertices[v] = p;
    }
 
-   for( unsigned long t = 0 ; t < cage->getNumTriangles() ; ++t )
+   for(ulong t = 0 ; t < cage->getNumTriangles() ; ++t )
    {
       std::vector<int> tv(3);
       tv[0] = cg3Tris[t*3+0];
@@ -149,7 +149,7 @@ bool MeanValueCoordinates::generateCoords(Weights   * & weights,
       char_vertices[v] = p;
    }
 
-   for(int i=0; i<character->getNumVertices(); ++i)
+   for(ulong i=0; i<character->getNumVertices(); ++i)
    {
       vecWeights[i].resize(cage->getNumVertices());
 

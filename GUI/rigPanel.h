@@ -19,7 +19,6 @@ public:
 
 private slots:
    void on_loadRig_clicked();
-   void on_exportRig_clicked();
 
 private:
    Ui::rigPanel *ui;

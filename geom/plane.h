@@ -1,11 +1,14 @@
 #ifndef PLANE_H
 #define PLANE_H
 
+#include <vector>
+
 #include "geom/vec3.h"
 
+#ifdef EIGEN_AVAILABLE
 #include "Eigen/Geometry"
 #include "Eigen/Core"
-#include <vector>
+#endif
 
 namespace cg3 {
 
@@ -158,6 +161,8 @@ public:
        return false;
    }
 
+#ifdef EIGEN_AVAILABLE
+   //TO DO: Move this in a separate file to delete Eigen dependency?
    bool computeIntersectionWithLine(const Vec3<T> & v1,
                                     const Vec3<T> & v2,
                                           Vec3<T> & intersection)
@@ -183,6 +188,7 @@ public:
 
        return true;
    }
+#endif
 
    inline const cg3::Vec3<T> projectPointOnPlane(const cg3::Vec3<T> & point)
    {

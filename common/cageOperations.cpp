@@ -16,6 +16,7 @@
 #include "operators/cageUpdater.h"
 #include "GUI/restPoseCanvas.h"
 #include "operators/cageReverser.h"
+#include "skinning/skeletonSkinning.h"
 
 void saveCageWeightsToFile()
 {
@@ -57,7 +58,7 @@ void clearCage()
    c->isCageUpdaterActive = false;
    c->cageUpdater->clear();
 
-   c->cageTranslator->clear();
+   c->cageReverser->clear();
    c->selectedVerticesForInversion.clear();
 
    updateGUI();
@@ -86,26 +87,6 @@ void updateCageInfluenceTexture()
             }
         }
         c->character->updateTexture1DCoords(tex1D);
-    }
-
-    updateGUI();
-
-}
-
-void saveCageToFile()
-{
-    std::string filename;
-    Controller * c = Controller::get();
-
-    if (openFileSaveDialog(filename, "Save Cage", "3D Meshes (*.obj *.ply)"))
-    {
-        if(c->isCageLoaded)
-        {
-            std::vector<double> v = c->cage->getVerticesVector();
-            std::vector<int>    f = c->cage->getTrianglesVector();
-
-            saveMesh(filename.c_str(), v, f);
-        }
     }
 
     updateGUI();
@@ -153,7 +134,7 @@ void initializeCageUpdater()
             c->cageUpdater->create(c->cageWeights,
                                              c->character,
                                              c->cage);
-            c->cageTranslator->create(c->character,
+            c->cageReverser->create(c->character,
                                                    c->cage,
                                                    c->skeleton,
                                                    c->skeletonUpdaterWeights,
@@ -170,7 +151,7 @@ void initializeCageUpdater()
             std::cout << "  initializeCageUpdater  :  new CageUpdater  IS OK" << std::endl;
 
             std::cout << "  initializeCageUpdater  :  new CageTranslator" << std::endl;
-            c->cageTranslator->create(c->character,
+            c->cageReverser->create(c->character,
                                                    c->cage,
                                                    c->skeleton,
                                                    c->skeletonUpdaterWeights,
@@ -198,5 +179,6 @@ void switchSkelUpdater()
     Controller * c = Controller::get();
 
     c->isSkeletonUpdaterActive = !c->isSkeletonUpdaterActive;
+
     updateGUI();
 }

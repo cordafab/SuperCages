@@ -3,26 +3,43 @@ QT += core gui opengl xml widgets
 TARGET   = Supercages
 TEMPLATE = app
 
-CONFIG += c++17
+CONFIG += c++14
 
-#FLAG FOR CUSTOM LIGHTS
+##LIBS DIRECTORY
 
-DEFINES += CUSTOM_LIGHTS
+macx:{
+    #On MacOS i suggest the use of Homebrew
+
+    #MacOS Intel 
+    equals(QMAKE_HOST.arch, "x86_64") {
+        LIBSPATH = /usr/local/opt    
+    }
+
+    #MacOS ARM
+    equals(QMAKE_HOST.arch, "arm64") { 
+        LIBSPATH = /opt/homebrew/opt 
+    }
+}
 
 
 
 
 ## Eigen
 
-unix:!macx{ # Linux
+unix:!macx{
+
     #apt install libeigen3-dev
-    INCLUDEPATH    += /usr/include/eigen3
+
+    INCLUDEPATH += /usr/include/eigen3
+    DEFINES += EIGEN_AVAILABLE
 }
 
-macx:{ # Mac
+macx:{
+
    #brew install eigen
-   INCLUDEPATH += /usr/local/include/eigen3
-   #INCLUDEPATH += /Users/Shared/libs/include/eigen
+
+   INCLUDEPATH += $${LIBSPATH}/eigen/include/eigen3
+   DEFINES += EIGEN_AVAILABLE
 }
 
 
@@ -30,14 +47,17 @@ macx:{ # Mac
 
 ## glm
 
-unix:!macx{ # Linux
-   # apt-get install libglm-dev
+unix:!macx{
+ 
+  # apt-get install libglm-dev
+
 }
 
-macx:{ # Mac
-    #brew install eigen
-    INCLUDEPATH += /usr/local/include/glm
-    #INCLUDEPATH += /Users/Shared/libs/include/glm
+macx:{
+ 
+   #brew install glm
+
+    INCLUDEPATH += $${LIBSPATH}/glm/include
 }
 
 
@@ -45,63 +65,52 @@ macx:{ # Mac
 
 ## gsl
 
-unix:!macx{ # Linux
+unix:!macx{
+
    # apt-get install libgsl-dev
+
    LIBS+= -lgsl
    LIBS+= -lgslcblas
 }
 
-macx:{ # Mac
+macx:{
 
     #brew install gsl
-    #INCLUDEPATH += /usr/local/include
-    #LIBS += -L'/usr/local/lib' -lgsl -lgslcblas
 
-
-    LIBS += -L'/Users/Shared/libs/lib/gsl' -lgsl -lgslcblas
-    INCLUDEPATH += /Users/Shared/libs/include/gsl
+    INCLUDEPATH += $${LIBSPATH}/gsl/include
+    LIBS += -L'$${LIBSPATH}/gsl/lib' -lgsl -lgslcblas
 }
 
 
 
 
-## libQGLViewer - Not on brew
+## libQGLViewer
 
-unix:!macx{ # Linux
+unix:!macx{
 
     #apt install libglew-dev
     #apt install libqglviewer-dev-qt5
     #apt install freeglut3-dev
-
     INCLUDEPATH += /usr/include/QGLViewer
-    LIBS += /usr/lib/x86_64-linux-gnu/libQGLViewer-qt5.so
 
+    LIBS += /usr/lib/x86_64-linux-gnu/libQGLViewer-qt5.so
     LIBS+= -lGLU
     LIBS+= -lglut
     LIBS+= -lGLEW
-
     DEFINES += GL_GLEXT_PROTOTYPES
 }
 
-macx:{ # Mac
-   INCLUDEPATH += /Users/Shared/libs/include/libqglviewer
-   LIBS += -F/Library/Frameworks -framework QGLViewer
-   #DEFINES += CUSTOMSNAPSHOTQGL
-}
+macx:{
 
+    # Follow the official install instructions provided
+    # here http://libqglviewer.com/installUnix.html#mac
+    # and edit the INCLUDEPATH and LIBS path accordingly
+    # (In our build, we compiling it using qmake+make and placing
+    # "QGLViewer.framework" in "~/Library/Frameworks")
 
-
-
-##Cinolib - Not on brew nor apt
-
-unix:!macx{ # Linux
-   INCLUDEPATH    += /libs/include/cinolib
-   DEPENDPATH     += /libs/include/cinolib # force recompilation if cinolib
-}
-
-macx:{ # Mac
-   INCLUDEPATH    += /Users/Shared/libs/include/cinolib
-   DEPENDPATH     += /Users/Shared/libs/include/cinolib # force recompilation if cinolib changes
+    INCLUDEPATH += $$(HOME)/Library/Frameworks/QGLViewer.framework/Headers
+    LIBS += -F$$(HOME)/Library/Frameworks -framework QGLViewer
+    #DEFINES += CUSTOMSNAPSHOTQGL
 }
 
 
@@ -109,18 +118,18 @@ macx:{ # Mac
 
 ## OpenMP
 
-unix:!macx{ # Linux
+#unix:!macx{
 #   QMAKE_CXXFLAGS += -fopenmp
 #   QMAKE_LFLAGS +=  -fopenmp
 #   QMAKE_CFLAGS_RELEASE += -fopenmp
 #   LIBS += -lgomp -lpthread
-}
+#}
 
-macx{ # Mac
+#macx{
 #   QMAKE_CXXFLAGS += -Xpreprocessor -fopenmp
 #   INCLUDEPATH +='/libs/include/libomp/libomp'
 #   LIBS += -L'/libs/lib/libomp/libomp' -lomp
-}
+#}
 
 
 
@@ -130,7 +139,7 @@ macx{ # Mac
 HEADERS = \
     GUI/glCanvas.h \
     GUI/mainWindow.h \
-    geom/trimesh.h \
+    mesh/trimesh.h \
     geom/boundingBox.h \
     geom/vec3.h \
     geom/edge.h \
@@ -145,7 +154,7 @@ HEADERS = \
     drawables/pickerController.h \
     drawables/pickableObject.h \
     geom/plane.h \
-    math/dualQuaternion.h \
+    geom/dualQuaternion.h \
     rigs/skeleton.h \
     drawables/drawableSkeleton.h \
     geom/transform.h \
@@ -172,28 +181,43 @@ HEADERS = \
     GUI/toolsPanel.h \
     common/characterOperations.h \
     math/leastSquareSolver.h \
-    math/quaternion.h \
+    geom/quaternion.h \
     geom/ray.h \
     skinning/dualQuaternionSkinning.h \
     skinning/noCageSkinning.h \
     common/animatorOperations.h \
     GUI/restPoseCanvas.h \
-    external/JM/MEC.h \
-    external/JM/point3.h \
-    external/JM/MVCoordinates3D.h \
     GUI/rigPanel.h \
     common/rigOperations.h \
     animation/asyncAnimator.h \
     GUI/asyncAnimatorPanel.h \
     skinning/corSkinning.h \
     environment.h \
-    skinning/sparseWeights.h
+    skinning/sparseWeights.h \
+    _external/JM/MEC.h \
+    _external/JM/point3.h \
+    _external/JM/MVCoordinates3D.h \
+    _external/cinolib/textures/textures.h \
+    _external/cinolib/textures/texture_hsv.h \
+    _external/cinolib/textures/texture_hsv_w_isolines.h \
+    _external/cinolib/textures/texture_parula.h \
+    _external/cinolib/textures/texture_parula_w_isolines.h \
+    _external/cinolib/serialize_2D.h \
+    _external/cinolib/cino_inline.h \
+    _external/cinolib/color.h \
+    _external/cinolib/pi.h \
+    _external/cinolib/ANSI_color_codes.h \
+    _external/cinolib/geometry/vec3.h \
+    _external/cinolib/ipair.h \
+    _external/cinolib/io/read_OBJ.h \
+    _external/cinolib/string_utilities.h \
+    _external/cinolib/cut_along_seams.h
+
 
 SOURCES = \
     main.cpp \
     GUI/glCanvas.cpp \
     GUI/mainWindow.cpp \
-    geom/boundingBox.cpp \
     drawables/drawableObject.cpp \
     drawables/drawableTrimesh.cpp \
     common/importFiles.cpp \
@@ -221,7 +245,7 @@ SOURCES = \
     GUI/cagePanel.cpp \
     GUI/skeletonPanel.cpp \
     common/exportFiles.cpp \
-    geom/trimesh.cpp \
+    mesh/trimesh.cpp \
     rigs/cage.cpp \
     rigs/character.cpp \
     drawables/drawableCharacter.cpp \
@@ -240,7 +264,14 @@ SOURCES = \
     GUI/asyncAnimatorPanel.cpp \
     skinning/corSkinning.cpp \
     environment.cpp \
-    skinning/sparseWeights.cpp
+    skinning/sparseWeights.cpp \
+    _external/cinolib/textures/textures.cpp \
+    _external/cinolib/color.cpp \
+    _external/cinolib/serialize_2D.cpp \
+    _external/cinolib/ipair.cpp \
+    _external/cinolib/io/read_OBJ.cpp \
+    _external/cinolib/string_utilities.cpp \
+    _external/cinolib/cut_along_seams.cpp
 
 FORMS *= \
     GUI/mainWindow.ui \

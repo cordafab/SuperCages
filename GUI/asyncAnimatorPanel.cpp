@@ -11,7 +11,7 @@
 #include "common/importFiles.h"
 #include "common/exportFiles.h"
 #include "drawables/drawableCharacter.h"
-#include "cinolib/string_utilities.h"
+#include "_external/cinolib/string_utilities.h"
 #include <QString>
 
 AsyncAnimatorPanel::AsyncAnimatorPanel(QWidget *parent) :
@@ -194,7 +194,7 @@ void AsyncAnimatorPanel::on_nextSkelKeyframe_clicked()
 {
    setNextSkelKeyframe();
    Controller * c = Controller::get();
-   c->cageTranslator->skeletonEdited();
+   c->cageReverser->skeletonEdited();
 }
 
 void AsyncAnimatorPanel::on_nextCageKeyframe_clicked()
@@ -234,8 +234,8 @@ void AsyncAnimatorPanel::on_skelKeyframeList_itemClicked(QListWidgetItem *item)
    setSkelKeyframe(keyFrameIndex);
    Controller * c = Controller::get();
    c->glCanvas->runSkinningPipeline();
-   c->cageTranslator->skeletonEdited();
-   c->glCanvas->updateGL();
+   c->cageReverser->skeletonEdited();
+   c->glCanvas->update();
 }
 
 void AsyncAnimatorPanel::on_cageKeyframeList_itemClicked(QListWidgetItem *item)
@@ -248,7 +248,7 @@ void AsyncAnimatorPanel::on_cageKeyframeList_itemClicked(QListWidgetItem *item)
    setCageKeyframe(keyFrameIndex);
    Controller * c = Controller::get();
    c->glCanvas->runSkinningPipeline();
-   c->glCanvas->updateGL();
+   c->glCanvas->update();
 }
 
 void AsyncAnimatorPanel::on_bake_clicked()

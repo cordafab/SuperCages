@@ -1,5 +1,5 @@
 #include "dualQuaternionSkinning.h"
-#include "math/dualQuaternion.h"
+#include "geom/dualQuaternion.h"
 
 DualQuaternionSkinning::DualQuaternionSkinning()
 {
@@ -33,7 +33,7 @@ void DualQuaternionSkinning::deform()
 
 
    std::vector<cg3::dDualQuaternion> qList;
-   const std::vector<Node> & skelNodes = skeleton->getNodesVector();
+   const std::vector<SkeletonNode> & skelNodes = skeleton->getNodesVector();
 
    for(ulong h=0; h<skeleton->getNumNodes(); ++h)
    {
@@ -63,7 +63,6 @@ void DualQuaternionSkinning::deform()
       cg3::Point3d v = character->getRestPoseVertex(i);
       cg3::Point3d v1 = q.applyTransformation(v);
 
-      if(rootMotion) v1 = skeleton->getRootMotion().applyToPoint(v1);
       character->setVertex(i, v1);
       //character->setSkelPoseVertex(i, v1);
 

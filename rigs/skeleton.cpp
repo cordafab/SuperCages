@@ -2,11 +2,10 @@
 
 #include <stack>
 
-
-Node::Node(      std::string      nodeName,
-                 int              father,
-                 const cg3::Transform & localT,
-                 const cg3::Transform & globalT)
+SkeletonNode::SkeletonNode(      std::string      nodeName,
+                                 int              father,
+                           const cg3::Transform & localT,
+                           const cg3::Transform & globalT)
 
    : localTCurrent(localT),
      globalTCurrent(globalT),
@@ -69,7 +68,7 @@ int Skeleton::addNode(std::string nodeName,
                       const cg3::Transform & localTransformation,
                       const cg3::Transform & modelTransformation)
 {
-   Node node(nodeName,
+   SkeletonNode node(nodeName,
              father,
              localTransformation,
              modelTransformation);
@@ -102,8 +101,7 @@ void Skeleton::addGlobalTransformation(int nodeIndex, const cg3::Transform & tra
       cg3::Transform fatherTransformation = nodes[fatherIndex].globalTCurrent;
 
       nodes[nodeIndex].localTCurrent =
-            fatherTransformation.inverse()
-            .cumulateWith(nodes[nodeIndex].globalTCurrent);
+            fatherTransformation.inverse() * nodes[nodeIndex].globalTCurrent;
    }
    else
    {
@@ -113,7 +111,8 @@ void Skeleton::addGlobalTransformation(int nodeIndex, const cg3::Transform & tra
 
    for(int i:nodes[nodeIndex].next)
    {
-      propagatePose(i);
+      updateGlobalFromLocalCurrent();
+      updateGlobalFromLocalRest();
    }
 }
 
@@ -153,45 +152,11 @@ void Skeleton::interpolateKeyframes(const std::vector<cg3::Transform> & keyframe
    }
 }
 
-
-void Skeleton::propagatePose(int nodeIndex)
-//aggiorna il globalTCurrent del nodo con indice nodeIndex, e propaga ai figli
-{
-   int fatherIndex = nodes[nodeIndex].getFather();
-
-   if(fatherIndex != -1)
-   {
-      const cg3::Transform & fatherTransformation = nodes[fatherIndex].globalTCurrent;
-      const cg3::Transform & restFatherTransformation = nodes[fatherIndex].globalTRest;
-
-      nodes[nodeIndex].globalTCurrent =
-            fatherTransformation.cumulateWith
-            (nodes[nodeIndex].localTCurrent);
-
-      nodes[nodeIndex].globalTRest =
-            restFatherTransformation.cumulateWith
-            (nodes[nodeIndex].localTRest);
-   }
-   else
-   {
-      nodes[nodeIndex].globalTCurrent =
-            nodes[nodeIndex].localTCurrent;
-
-      nodes[nodeIndex].globalTRest =
-            nodes[nodeIndex].localTRest;
-   }
-
-   for(int i:nodes[nodeIndex].next)
-   {
-      propagatePose(i);
-   }
-}
-
 void Skeleton::updateBoundingBox()
 {
    //CODE FROM CAGELAB
    boundingBox.clear();
-   for(int id=0; id<getNumNodes(); ++id)
+   for(ulong id=0; id<getNumNodes(); ++id)
    {
       cg3::Vec3d v = getNode(id).getGlobalTCurrent().getTranslation();
       boundingBox.min = boundingBox.min.min(v);
@@ -212,15 +177,14 @@ void Skeleton::updateLocalFromGlobalRest()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)
       {
          const cg3::Transform & restFatherTransformation = nodes[fatherIndex].globalTRest;
          nodes[n].localTRest =
-               nodes[n].globalTRest.cumulateWith
-               (restFatherTransformation.inverse());
+               nodes[n].globalTRest * restFatherTransformation.inverse();
       }
       else
       {
@@ -249,7 +213,7 @@ void Skeleton::updateLocalFromGlobalCurrent()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)
@@ -257,8 +221,7 @@ void Skeleton::updateLocalFromGlobalCurrent()
          const cg3::Transform & fatherTransformation = nodes[fatherIndex].globalTCurrent;
 
          nodes[n].localTCurrent =
-               nodes[n].globalTCurrent.cumulateWith
-               (fatherTransformation.inverse());
+               nodes[n].globalTCurrent * fatherTransformation.inverse();
       }
       else
       {
@@ -286,15 +249,14 @@ void Skeleton::updateGlobalFromLocalRest()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)
       {
          const cg3::Transform & restFatherTransformation = nodes[fatherIndex].globalTRest;
          nodes[n].globalTRest =
-               restFatherTransformation.cumulateWith
-               (nodes[n].localTRest);
+               restFatherTransformation * nodes[n].localTRest;
       }
       else
       {
@@ -323,7 +285,7 @@ void Skeleton::updateGlobalFromLocalCurrent()
    {
       const int n = stack.top();
       stack.pop();
-      Node & node = nodes[n];
+      SkeletonNode & node = nodes[n];
       const int fatherIndex = node.getFather();
 
       if(fatherIndex != -1)
@@ -331,8 +293,7 @@ void Skeleton::updateGlobalFromLocalCurrent()
          const cg3::Transform & fatherTransformation = nodes[fatherIndex].globalTCurrent;
 
          nodes[n].globalTCurrent =
-               fatherTransformation.cumulateWith
-               (nodes[n].localTCurrent);
+               fatherTransformation * nodes[n].localTCurrent;
       }
       else
       {
@@ -354,6 +315,6 @@ void Skeleton::updateGlobalT()
    {
       const cg3::Transform & TRest = nodes[i].getGlobalTRest();
       const cg3::Transform & TCurrent = nodes[i].getGlobalTCurrent();
-      nodes[i].globalT = TCurrent.cumulateWith(TRest.inverse());
+      nodes[i].globalT = TCurrent * TRest.inverse();
    }
 }

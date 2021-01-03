@@ -77,8 +77,6 @@ public:
 
     void activateSkeletonRendering(bool activate);
 
-    bool isRootMotionEnabled;
-
 protected:
 
     int drawMode;

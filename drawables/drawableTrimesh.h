@@ -2,7 +2,7 @@
 #define DRAWABLETRIMESH_H
 
 #include "drawables/drawableObject.h"
-#include "geom/trimesh.h"
+#include "mesh/trimesh.h"
 
 class DrawableTrimesh
       : public Trimesh,

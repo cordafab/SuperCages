@@ -147,50 +147,11 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="skelSkin">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>141</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Apply Skel Skinning</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="cageSkin">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>141</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Apply Cage Skinning</string>
-    </property>
-   </widget>
-   <widget class="Line" name="line_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>145</width>
-      <height>3</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
    <widget class="QPushButton" name="exportChar">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>135</y>
+      <y>50</y>
       <width>141</width>
       <height>24</height>
      </rect>

@@ -3,19 +3,25 @@
 
 #include "geom/vec3.h"
 
-//CODE FROM CAGELAB
-
 class BoundingBox
 {
 public:
 
-   BoundingBox();
+   BoundingBox()
+   {
+      clear();
+   }
 
-   cg3::Vec3d     min, max;
+   cg3::Vec3d min, max;
 
-   void           clear();
-   cg3::Vec3d     center() const;
-   double         diagonal()   const;
+   inline void clear()
+   {
+      min = cg3::Vec3d( FLT_MAX,   FLT_MAX,   FLT_MAX);
+      max = cg3::Vec3d(-FLT_MAX,  -FLT_MAX,  -FLT_MAX);
+   }
+
+   inline cg3::Vec3d center()   const { return (min+max)*0.5; }
+   inline double     diagonal() const { return (min-max).length(); }
 
 };
 
