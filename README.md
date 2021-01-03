@@ -16,8 +16,8 @@ Skeleton-based and cage-based deformation techniques represent the two most popu
 ## Installation
 SuperCages can be compiled using the *supercages.pro* qmake file placed in the project root.
 SuperCages has been tested with: 
- - Intel-based MacOS 11.1
- - Apple-silicon MacOS 11.1
+ - Intel MacOS 11.1
+ - Apple Silicon MacOS 11.1
  - Ubuntu
 
 #### MacOS configuration
