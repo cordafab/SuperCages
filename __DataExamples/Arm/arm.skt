@@ -1,3 +1,6 @@
+# Composition of the .skt file:
+# j <jointIndex> <jointName> <fatherIndex> <(globalTranslation) x y z>
+
 j 0 Skeleton -1 -23.712885 132.778816 0.925892
 j 1 upperarm01.R 0 -23.712885 132.778816 0.925892
 j 2 upperarm02.R 1 -23.712885 132.778816 0.925892
