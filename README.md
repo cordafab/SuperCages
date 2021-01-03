@@ -22,7 +22,7 @@ SuperCages has been tested with:
 
 #### MacOS configuration
 Install [Qt](https://www.qt.io/download) and [libqglviewer](http://libqglviewer.com/download.html) using the installers provided on the respective websites.
-Use [brew](https://brew.sh/) to install *gsl*, *glm*, and *Eigen* using:
+Use [brew](https://brew.sh/) to install *gsl*, *glm*, and *Eigen*:
 
     brew install gsl
     brew install glm
@@ -30,7 +30,7 @@ Use [brew](https://brew.sh/) to install *gsl*, *glm*, and *Eigen* using:
     
 #### Ubuntu configuration
 Install Qt using these [instructions](https://wiki.qt.io/Install_Qt_5_on_Ubuntu).
-Use *apt* to install *libqglviewer*, its dependencies, *gsl*, *glm* and *Eigen* using:
+Use *apt* to install *libqglviewer*, its dependencies, *gsl*, *glm* and *Eigen*:
 
     apt install libglew-dev
     apt install libqglviewer-dev-qt5
@@ -44,17 +44,17 @@ In the *_DataExamples* folder you can find the **Arm** rig example.
 
 Press the ***Load Rig*** button placed in the left side of the SuperCages UI to open the file selection dialog window. 
 
-Choose the ***arm.obj*** file to load the skin geometry. SuperCages will load automatically the *arm.ska* and *arm.skw* files that contain the skeleton topology and weights.  
+Choose the ***arm.obj*** file to load the skin geometry. SuperCages will load automatically the *arm.ska* and *arm.skw* files that contain the skeleton topology and its weights.  
 
-Then, a second dialog window will show up: choose the ***arm_cage.obj*** to load the cage geometry, the *arm_cage_cageWeights.txt* cage weights file, and the *arm_cage.maxvol* maxvol data.
+Then, a second dialog window will show up: choose ***arm_cage.obj*** to load the cage geometry. SuperCages will load automatically the *arm_cage_cageWeights.txt* cage weights file, and the *arm_cage.maxvol* maxvol data.
 
 Press the ***Load Skel Anim*** button and select ***arm_skelAnim.txt*** to load the provided skeleton animation. 
 
 Press the ***Load Cage Anim*** button and select ***arm_cageAnim.txt*** to load the provided skeleton animation. 
 
-Click on the main canvas and press the ***P*** keyboard button to play the loaded animations.
+Click on the main canvas, and press the ***P*** keyboard button to play the example animations.
 
-You can obtain additional information about the file composition opening each file in a text editor.
+You can obtain additional information about the file composition opening each one in a text editor.
 
 ## Acknowldegment
 If you use SuperCages in your academic projects, please cite us using the following 
